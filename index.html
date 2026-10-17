@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>會考寫作錦囊｜國中段考作文寫作引導教學網頁總覽</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;900&family=Noto+Serif+TC:wght@600;700;900&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e',
+                            800: '#115e59',
+                            900: '#134e4a',
+                        },
+                        amber: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                            700: '#b45309',
+                        },
+                        navy: {
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Noto Sans TC"', 'sans-serif'],
+                        serif: ['"Noto Serif TC"', 'serif'],
+                        outfit: ['"Outfit"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        .gradient-border-b {
+            background: linear-gradient(90deg, #0d9488, #d97706, #3b82f6);
+            height: 3px;
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #0f172a 0%, #0d9488 50%, #b45309 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .card-hover:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+        }
+    </style>
+</head>
+<body class="bg-[#FAF8F5] text-slate-800 font-sans min-h-screen flex flex-col antialiased selection:bg-teal-100 selection:text-teal-900">
+
+    <!-- 頂部頂級資訊導覽列 -->
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200/80 shadow-sm transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 py-3.5 flex items-center justify-between">
+            <div class="flex items-center space-x-3.5">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-teal-600 via-teal-700 to-emerald-800 flex items-center justify-center text-white shadow-md shadow-teal-700/20">
+                    <i class="fa-solid fa-feather-pointed text-xl"></i>
+                </div>
+                <div>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-xs font-bold tracking-wider px-2 py-0.5 rounded-full bg-teal-50 text-teal-700 border border-teal-200/60 font-outfit uppercase">
+                            Composition Master
+                        </span>
+                        <span class="text-xs font-semibold text-slate-400">|</span>
+                        <span class="text-xs font-semibold text-slate-500">臺北市立龍門國中 ✕ 學思軒國文教室</span>
+                    </div>
+                    <h1 class="text-lg sm:text-xl font-bold font-serif text-slate-900 tracking-tight flex items-center">
+                        會考寫作錦囊・段考作文互動引導教學網頁
+                    </h1>
+                </div>
+            </div>
+
+            <!-- 右側特色徽章 -->
+            <div class="hidden md:flex items-center space-x-3">
+                <div class="flex items-center space-x-2 px-3 py-1.5 rounded-xl bg-amber-50 text-amber-800 text-xs font-bold border border-amber-200/60">
+                    <i class="fa-solid fa-wand-magic-sparkles text-amber-500"></i>
+                    <span>萬用例可帶 × 問津趕行程</span>
+                </div>
+                <div class="flex items-center space-x-2 px-3 py-1.5 rounded-xl bg-teal-50 text-teal-800 text-xs font-bold border border-teal-200/60">
+                    <i class="fa-solid fa-robot text-teal-600"></i>
+                    <span>AI 寫作教練 × 6 級分範文</span>
+                </div>
+            </div>
+        </div>
+        <div class="gradient-border-b"></div>
+    </header>
+
+    <!-- 主頁 Hero 區塊 -->
+    <section class="relative overflow-hidden pt-12 pb-14 bg-gradient-to-b from-white via-amber-50/20 to-[#FAF8F5]">
+        <!-- 背景裝飾微光 -->
+        <div class="absolute -top-24 -left-24 w-96 h-96 bg-teal-100/40 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute top-1/2 -right-24 w-96 h-96 bg-amber-100/40 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-3xl mx-auto">
+                <div class="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-white shadow-sm border border-slate-200 text-teal-800 text-xs sm:text-sm font-bold mb-5">
+                    <span class="flex h-2 w-2 rounded-full bg-emerald-500 animate-ping"></span>
+                    <span class="flex h-2 w-2 rounded-full bg-emerald-500 -ml-4"></span>
+                    <span>2026 會考國文寫作素養新典範</span>
+                </div>
+                <h2 class="text-3xl sm:text-5xl font-black font-serif tracking-tight text-slate-900 leading-tight mb-4">
+                    點亮寫作靈感，跨越思維框架<br>
+                    <span class="text-gradient">全方位會考寫作互動引導系統</span>
+                </h2>
+                <p class="text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl mx-auto font-normal">
+                    精選 7 大核心寫作試題，全篇融入「萬用例可帶」素材遷移心法與「問津趕行程」五段骨架，結合智慧 AI 教練即時潤飾打字機，助你從容寫出 6 級分典雅篇章。
+                </p>
+
+                <!-- 核心指標統計 -->
+                <div class="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 max-w-2xl mx-auto">
+                    <div class="bg-white/80 p-3.5 rounded-2xl border border-slate-200/80 shadow-sm">
+                        <div class="text-2xl sm:text-3xl font-extrabold text-teal-700 font-outfit">7</div>
+                        <div class="text-xs font-bold text-slate-500 mt-0.5">大精選寫作主題</div>
+                    </div>
+                    <div class="bg-white/80 p-3.5 rounded-2xl border border-slate-200/80 shadow-sm">
+                        <div class="text-2xl sm:text-3xl font-extrabold text-amber-600 font-outfit">4</div>
+                        <div class="text-xs font-bold text-slate-500 mt-0.5">大深層思維板塊</div>
+                    </div>
+                    <div class="bg-white/80 p-3.5 rounded-2xl border border-slate-200/80 shadow-sm">
+                        <div class="text-2xl sm:text-3xl font-extrabold text-indigo-600 font-outfit">5</div>
+                        <div class="text-xs font-bold text-slate-500 mt-0.5">段標準黃金骨架</div>
+                    </div>
+                    <div class="bg-white/80 p-3.5 rounded-2xl border border-slate-200/80 shadow-sm">
+                        <div class="text-2xl sm:text-3xl font-extrabold text-emerald-600 font-outfit">100%</div>
+                        <div class="text-xs font-bold text-slate-500 mt-0.5">即開即用・免安裝</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 工具列：搜尋與分類篩選 -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-4 mb-8 relative z-20">
+        <div class="bg-white rounded-2xl shadow-lg shadow-slate-200/50 border border-slate-200 p-4 sm:p-5 flex flex-col md:flex-row items-center justify-between gap-4">
+            
+            <!-- 分類標籤篩選按鈕群 -->
+            <div class="flex flex-wrap items-center gap-2 w-full md:w-auto" id="filter-buttons">
+                <button onclick="filterCards('all')" data-filter="all" class="filter-btn active px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-teal-700 text-white shadow-sm shadow-teal-700/20">
+                    <i class="fa-solid fa-layer-group mr-1.5"></i>全部主題 (7)
+                </button>
+                <button onclick="filterCards('life')" data-filter="life" class="filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-slate-100 text-slate-600 hover:bg-slate-200">
+                    <i class="fa-solid fa-seedling mr-1.5 text-emerald-600"></i>生活與成長 (2)
+                </button>
+                <button onclick="filterCards('classics')" data-filter="classics" class="filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-slate-100 text-slate-600 hover:bg-slate-200">
+                    <i class="fa-solid fa-brain mr-1.5 text-indigo-600"></i>經典與思辨 (2)
+                </button>
+                <button onclick="filterCards('senses')" data-filter="senses" class="filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-slate-100 text-slate-600 hover:bg-slate-200">
+                    <i class="fa-solid fa-palette mr-1.5 text-amber-600"></i>感官與回憶 (2)
+                </button>
+                <button onclick="filterCards('people')" data-filter="people" class="filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-slate-100 text-slate-600 hover:bg-slate-200">
+                    <i class="fa-solid fa-heart mr-1.5 text-rose-500"></i>人物與感恩 (1)
+                </button>
+            </div>
+
+            <!-- 即時搜尋輸入框 -->
+            <div class="relative w-full md:w-80">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                <input type="text" id="searchInput" onkeyup="handleSearch()" placeholder="搜尋題目、文眼、關鍵字..." 
+                       class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 bg-slate-50 transition-all placeholder:text-slate-400">
+                <button id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 卡片展示格點 (Cards Grid) -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16 flex-grow">
+        <div id="cardsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            <!-- 卡片 1: 國中新生活 -->
+            <article class="topic-card card-hover glass-card rounded-3xl p-6 flex flex-col justify-between border border-slate-200 relative overflow-hidden" 
+                     data-category="life" 
+                     data-title="國中新生活" 
+                     data-tags="國中新生活 環境轉變 適應 挑戰 萬用例 期待 友情 成長" 
+                     data-url="junior-high-new-life.html">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-teal-500/5 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none"></div>
+                <div>
+                    <!-- 頂部標籤 -->
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200/60">
+                            <i class="fa-solid fa-seedling mr-1"></i>生活與成長
+                        </span>
+                        <span class="font-outfit text-xs font-bold text-slate-400 uppercase tracking-wider">
+                            JUNIOR-HIGH-LIFE
+                        </span>
+                    </div>
+
+                    <!-- 標題與圖標 -->
+                    <div class="flex items-start space-x-3.5 mb-3">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-teal-500 to-emerald-600 text-white flex items-center justify-center text-2xl shadow-sm flex-shrink-0">
+                            🎒
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold font-serif text-slate-900 tracking-tight hover:text-teal-700 transition-colors">
+                                國中新生活
+                            </h3>
+                            <p class="text-xs font-semibold text-slate-500 mt-0.5">適應、蛻變與新旅程的自我對話</p>
+                        </div>
+                    </div>
+
+                    <!-- 審題文眼與核心聚焦 -->
+                    <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-100 text-xs text-slate-600 space-y-1.5 my-3.5">
+                        <div class="flex items-center text-slate-700 font-bold">
+                            <i class="fa-solid fa-bullseye text-teal-600 mr-1.5"></i>
+                            <span>文眼聚焦：環境節奏轉變 × 心理適應 × 自我期許</span>
+                        </div>
+                        <p class="text-slate-500 leading-relaxed">
+                            從國小的依賴到國中的自主，以「置物櫃的鑰匙」或「厚重的講義」為情感線索，展現從迷惘走向篤定的心路歷程。
+                        </p>
+                    </div>
+
+                    <!-- 特色膠囊標籤 -->
+                    <div class="flex flex-wrap gap-1.5 mb-5">
+                        <span class="px-2 py-0.5 rounded-md bg-teal-50 text-teal-700 text-[11px] font-bold">萬用例轉移</span>
+                        <span class="px-2 py-0.5 rounded-md bg-amber-50 text-amber-700 text-[11px] font-bold">五段骨架配速</span>
+                        <span class="px-2 py-0.5 rounded-md bg-indigo-50 text-indigo-700 text-[11px] font-bold">AI 即時潤飾</span>
+                        <span class="px-2 py-0.5 rounded-md bg-rose-50 text-rose-700 text-[11px] font-bold">6 級分範文</span>
+                    </div>
+                </div>
+
+                <!-- 底部操作按鈕 -->
+                <div class="pt-4 border-t border-slate-100 flex items-center gap-2">
+                    <a href="junior-high-new-life.html" target="_blank" class="flex-1 py-2.5 px-4 rounded-xl bg-teal-700 hover:bg-teal-800 text-white text-xs sm:text-sm font-bold text-center transition-all shadow-sm shadow-teal-700/20 flex items-center justify-center space-x-1.5">
+                        <span>進入寫作引導</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                    </a>
+                    <button onclick="copyPageUrl('junior-high-new-life.html', '國中新生活')" title="複製線上連結" class="p-2.5 rounded-xl bg-slate-100 hover:bg-teal-50 hover:text-teal-700 text-slate-600 transition-colors text-sm">
+                        <i class="fa-regular fa-clone"></i>
+                    </button>
+                </div>
+            </article>
+
+            <!-- 卡片 2: 我從《論語》學到的事 -->
+            <article class="topic-card card-hover glass-card rounded-3xl p-6 flex flex-col justify-between border border-slate-200 relative overflow-hidden" 
+                     data-category="classics" 
+                     data-title="我從《論語》學到的事" 
+                     data-tags="論語 經典 思辨 孔子 仁者不憂 溫故知新 智慧 修養 生活印證" 
+                     data-url="lessons-from-the-analects.html">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none"></div>
+                <div>
+                    <!-- 頂部標籤 -->
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200/60">
+                            <i class="fa-solid fa-brain mr-1"></i>經典與思辨
+                        </span>
+                        <span class="font-outfit text-xs font-bold text-slate-400 uppercase tracking-wider">
+                            ANALECTS-LESSONS
+                        </span>
+                    </div>
+
+                    <!-- 標題與圖標 -->
+                    <div class="flex items-start space-x-3.5 mb-3">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-600 to-purple-700 text-white flex items-center justify-center text-2xl shadow-sm flex-shrink-0">
+                            📜
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold font-serif text-slate-900 tracking-tight hover:text-indigo-700 transition-colors">
+                                我從《論語》學到的事
+                            </h3>
+                            <p class="text-xs font-semibold text-slate-500 mt-0.5">千載聖賢之智 × 現代青少年的生活印證</p>
+                        </div>
+                    </div>
+
+                    <!-- 審題文眼與核心聚焦 -->
+                    <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-100 text-xs text-slate-600 space-y-1.5 my-3.5">
+                        <div class="flex items-center text-slate-700 font-bold">
+                            <i class="fa-solid fa-bullseye text-indigo-600 mr-1.5"></i>
+                            <span>文眼聚焦：名言釋義 × 生活困頓 × 實踐與頓悟</span>
+                        </div>
+                        <p class="text-slate-500 leading-relaxed">
+                            不流於生硬背誦，將「三人行必有我師」或「學思並重」無縫扣連人際衝突或讀書挫折，展現智慧落地的真誠力量。
+                        </p>
+                    </div>
+
+                    <!-- 特色膠囊標籤 -->
+                    <div class="flex flex-wrap gap-1.5 mb-5">
+                        <span class="px-2 py-0.5 rounded-md bg-indigo-50 text-indigo-700 text-[11px] font-bold">以古鑑今</span>
+                        <span class="px-2 py-0.5 rounded-md bg-teal-50 text-teal-700 text-[11px] font-bold">論說抒情兼備</span>
+                        <span class="px-2 py-0.5 rounded-md bg-amber-50 text-amber-700 text-[11px] font-bold">哲理昇華</span>
+                        <span class="px-2 py-0.5 rounded-md bg-rose-50 text-rose-700 text-[11px] font-bold">AI 智慧教練</span>
+                    </div>
+                </div>
+
+                <!-- 底部操作按鈕 -->
+                <div class="pt-4 border-t border-slate-100 flex items-center gap-2">
+                    <a href="lessons-from-the-analects.html" target="_blank" class="flex-1 py-2.5 px-4 rounded-xl bg-indigo-700 hover:bg-indigo-800 text-white text-xs sm:text-sm font-bold text-center transition-all shadow-sm shadow-indigo-700/20 flex items-center justify-center space-x-1.5">
+                        <span>進入寫作引導</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                    </a>
+                    <button onclick="copyPageUrl('lessons-from-the-analects.html', '我從《論語》學到的事')" title="複製線上連結" class="p-2.5 rounded-xl bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 text-slate-600 transition-colors text-sm">
+                        <i class="fa-regular fa-clone"></i>
+                    </button>
+                </div>
+            </article>
+
+            <!-- 卡片 3: 最能代表我的一個字 -->
+            <article class="topic-card card-hover glass-card rounded-3xl p-6 flex flex-col justify-between border border-slate-200 relative overflow-hidden" 
+                     data-category="life" 
+                     data-title="最能代表我的一個字" 
+                     data-tags="最能代表我的一個字 自我探索 象徵 毅 韌 鏡 奔 誠 人格 獨特性" 
+                     data-url="one-word-that-represents-me.html">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none"></div>
+                <div>
+                    <!-- 頂部標籤 -->
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-800 border border-amber-200/60">
+                            <i class="fa-solid fa-id-badge mr-1"></i>自我探索
+                        </span>
+                        <span class="font-outfit text-xs font-bold text-slate-400 uppercase tracking-wider">
+                            ONE-WORD-REPRESENT
+                        </span>
+                    </div>
+
+                    <!-- 標題與圖標 -->
+                    <div class="flex items-start space-x-3.5 mb-3">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 text-white flex items-center justify-center text-2xl shadow-sm flex-shrink-0">
+                            🪞
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold font-serif text-slate-900 tracking-tight hover:text-amber-700 transition-colors">
+                                最能代表我的一個字
+                            </h3>
+                            <p class="text-xs font-semibold text-slate-500 mt-0.5">借字照己・凝鍊靈魂本色的深度剖白</p>
+                        </div>
+                    </div>
+
+                    <!-- 審題文眼與核心聚焦 -->
+                    <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-100 text-xs text-slate-600 space-y-1.5 my-3.5">
+                        <div class="flex items-center text-slate-700 font-bold">
+                            <i class="fa-solid fa-bullseye text-amber-600 mr-1.5"></i>
+                            <span>文眼聚焦：字義形塑 × 人格象徵 × 關鍵事件印證</span>
+                        </div>
+                        <p class="text-slate-500 leading-relaxed">
+                            挑選如「韌」、「拙」、「光」等字，剖析字形字義，並串連運動競技或琴藝堅持的生命篇章，昇華為處世座右銘。
+                        </p>
+                    </div>
+
+                    <!-- 特色膠囊標籤 -->
+                    <div class="flex flex-wrap gap-1.5 mb-5">
+                        <span class="px-2 py-0.5 rounded-md bg-amber-50 text-amber-700 text-[11px] font-bold">象徵借喻</span>
+                        <span class="px-2 py-0.5 rounded-md bg-teal-50 text-teal-700 text-[11px] font-bold">內心獨白</span>
+                        <span class="px-2 py-0.5 rounded-md bg-indigo-50 text-indigo-700 text-[11px] font-bold">立意層次深化</span>
+                        <span class="px-2 py-0.5 rounded-md bg-rose-50 text-rose-700 text-[11px] font-bold">6 級分賞析</span>
+                    </div>
+                </div>
+
+                <!-- 底部操作按鈕 -->
+                <div class="pt-4 border-t border-slate-100 flex items-center gap-2">
+                    <a href="one-word-that-represents-me.html" target="_blank" class="flex-1 py-2.5 px-4 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs sm:text-sm font-bold text-center transition-all shadow-sm shadow-amber-600/20 flex items-center justify-center space-x-1.5">
+                        <span>進入寫作引導</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                    </a>
+                    <button onclick="copyPageUrl('one-word-that-represents-me.html', '最能代表我的一個字')" title="複製線上連結" class="p-2.5 rounded-xl bg-slate-100 hover:bg-amber-50 hover:text-amber-700 text-slate-600 transition-colors text-sm">
+                        <i class="fa-regular fa-clone"></i>
+                    </button>
+                </div>
+            </article>
+
+            <!-- 卡片 4: 校園裡的聲音 -->
+            <article class="topic-card card-hover glass-card rounded-3xl p-6 flex flex-col justify-between border border-slate-200 relative overflow-hidden" 
+                     data-category="senses" 
+                     data-title="校園裡的聲音" 
+                     data-tags="校園裡的聲音 聽覺 感官 鐘聲 球場 球鞋 讀書聲 青春 摹寫 抒情" 
+                     data-url="sounds-in-campus.html">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-sky-500/5 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none"></div>
+                <div>
+                    <!-- 頂部標籤 -->
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-sky-50 text-sky-700 border border-sky-200/60">
+                            <i class="fa-solid fa-volume-high mr-1"></i>感官與回憶
+                        </span>
+                        <span class="font-outfit text-xs font-bold text-slate-400 uppercase tracking-wider">
+                            SOUNDS-IN-CAMPUS
+                        </span>
+                    </div>
+
+                    <!-- 標題與圖標 -->
+                    <div class="flex items-start space-x-3.5 mb-3">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-sky-500 to-blue-600 text-white flex items-center justify-center text-2xl shadow-sm flex-shrink-0">
+                            🔔
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold font-serif text-slate-900 tracking-tight hover:text-sky-700 transition-colors">
+                                校園裡的聲音
+                            </h3>
+                            <p class="text-xs font-semibold text-slate-500 mt-0.5">五感交響曲・譜寫熾熱青澀的青春記憶</p>
+                        </div>
+                    </div>
+
+                    <!-- 審題文眼與核心聚焦 -->
+                    <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-100 text-xs text-slate-600 space-y-1.5 my-3.5">
+                        <div class="flex items-center text-slate-700 font-bold">
+                            <i class="fa-solid fa-bullseye text-sky-600 mr-1.5"></i>
+                            <span>文眼聚焦：聽覺捕捉 × 空間挪移 × 音落情生</span>
+                        </div>
+                        <p class="text-slate-500 leading-relaxed">
+                            從早晨喧囂的車流、球場摩擦的球鞋聲、翻動書頁的沙沙聲，層層推移至放學後的寂靜，以聲音為鏡映照心境變化。
+                        </p>
+                    </div>
+
+                    <!-- 特色膠囊標籤 -->
+                    <div class="flex flex-wrap gap-1.5 mb-5">
+                        <span class="px-2 py-0.5 rounded-md bg-sky-50 text-sky-700 text-[11px] font-bold">聽覺摹寫精雕</span>
+                        <span class="px-2 py-0.5 rounded-md bg-teal-50 text-teal-700 text-[11px] font-bold">動靜對比法</span>
+                        <span class="px-2 py-0.5 rounded-md bg-indigo-50 text-indigo-700 text-[11px] font-bold">情境聯想圖鑑</span>
+                        <span class="px-2 py-0.5 rounded-md bg-amber-50 text-amber-700 text-[11px] font-bold">AI 串流打字</span>
+                    </div>
+                </div>
+
+                <!-- 底部操作按鈕 -->
+                <div class="pt-4 border-t border-slate-100 flex items-center gap-2">
+                    <a href="sounds-in-campus.html" target="_blank" class="flex-1 py-2.5 px-4 rounded-xl bg-sky-700 hover:bg-sky-800 text-white text-xs sm:text-sm font-bold text-center transition-all shadow-sm shadow-sky-700/20 flex items-center justify-center space-x-1.5">
+                        <span>進入寫作引導</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                    </a>
+                    <button onclick="copyPageUrl('sounds-in-campus.html', '校園裡的聲音')" title="複製線上連結" class="p-2.5 rounded-xl bg-slate-100 hover:bg-sky-50 hover:text-sky-700 text-slate-600 transition-colors text-sm">
+                        <i class="fa-regular fa-clone"></i>
+                    </button>
+                </div>
+            </article>
+
+            <!-- 卡片 5: 老師的教誨 -->
+            <article class="topic-card card-hover glass-card rounded-3xl p-6 flex flex-col justify-between border border-slate-200 relative overflow-hidden" 
+                     data-category="people" 
+                     data-title="老師的教誨" 
+                     data-tags="老師的教誨 人物 師恩 感恩 挫折 指引 頓悟 眼神 陪伴" 
+                     data-url="teachers-teachings.html">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-rose-500/5 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none"></div>
+                <div>
+                    <!-- 頂部標籤 -->
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-rose-50 text-rose-700 border border-rose-200/60">
+                            <i class="fa-solid fa-heart mr-1"></i>人物與感恩
+                        </span>
+                        <span class="font-outfit text-xs font-bold text-slate-400 uppercase tracking-wider">
+                            TEACHERS-TEACHINGS
+                        </span>
+                    </div>
+
+                    <!-- 標題與圖標 -->
+                    <div class="flex items-start space-x-3.5 mb-3">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-rose-500 to-pink-600 text-white flex items-center justify-center text-2xl shadow-sm flex-shrink-0">
+                            👨‍🏫
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold font-serif text-slate-900 tracking-tight hover:text-rose-700 transition-colors">
+                                老師的教誨
+                            </h3>
+                            <p class="text-xs font-semibold text-slate-500 mt-0.5">迷茫暗夜裡的燈塔・一席溫暖而堅定的指引</p>
+                        </div>
+                    </div>
+
+                    <!-- 審題文眼與核心聚焦 -->
+                    <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-100 text-xs text-slate-600 space-y-1.5 my-3.5">
+                        <div class="flex items-center text-slate-700 font-bold">
+                            <i class="fa-solid fa-bullseye text-rose-600 mr-1.5"></i>
+                            <span>文眼聚焦：情境受挫 × 話語震撼 × 實際改變與銘記</span>
+                        </div>
+                        <p class="text-slate-500 leading-relaxed">
+                            拒絕空泛感謝，具體描寫犯錯或低潮時，老師神情細微變化與某句如雷貫耳的叮嚀，成為往後每次退縮時的勇氣支柱。
+                        </p>
+                    </div>
+
+                    <!-- 特色膠囊標籤 -->
+                    <div class="flex flex-wrap gap-1.5 mb-5">
+                        <span class="px-2 py-0.5 rounded-md bg-rose-50 text-rose-700 text-[11px] font-bold">細緻神態刻劃</span>
+                        <span class="px-2 py-0.5 rounded-md bg-teal-50 text-teal-700 text-[11px] font-bold">受挫心理描摹</span>
+                        <span class="px-2 py-0.5 rounded-md bg-amber-50 text-amber-700 text-[11px] font-bold">真摯情感流露</span>
+                        <span class="px-2 py-0.5 rounded-md bg-indigo-50 text-indigo-700 text-[11px] font-bold">教師巡桌檢核</span>
+                    </div>
+                </div>
+
+                <!-- 底部操作按鈕 -->
+                <div class="pt-4 border-t border-slate-100 flex items-center gap-2">
+                    <a href="teachers-teachings.html" target="_blank" class="flex-1 py-2.5 px-4 rounded-xl bg-rose-700 hover:bg-rose-800 text-white text-xs sm:text-sm font-bold text-center transition-all shadow-sm shadow-rose-700/20 flex items-center justify-center space-x-1.5">
+                        <span>進入寫作引導</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                    </a>
+                    <button onclick="copyPageUrl('teachers-teachings.html', '老師的教誨')" title="複製線上連結" class="p-2.5 rounded-xl bg-slate-100 hover:bg-rose-50 hover:text-rose-700 text-slate-600 transition-colors text-sm">
+                        <i class="fa-regular fa-clone"></i>
+                    </button>
+                </div>
+            </article>
+
+            <!-- 卡片 6: 記憶中的那個下雨天 -->
+            <article class="topic-card card-hover glass-card rounded-3xl p-6 flex flex-col justify-between border border-slate-200 relative overflow-hidden" 
+                     data-category="senses" 
+                     data-title="記憶中的那個下雨天" 
+                     data-tags="記憶中的那個下雨天 下雨 雨天 情境 借景抒情 傘 溫暖 心境 轉折" 
+                     data-url="rainy-day-in-memory.html">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-cyan-500/5 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none"></div>
+                <div>
+                    <!-- 頂部標籤 -->
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-cyan-50 text-cyan-800 border border-cyan-200/60">
+                            <i class="fa-solid fa-cloud-showers-heavy mr-1"></i>感官與回憶
+                        </span>
+                        <span class="font-outfit text-xs font-bold text-slate-400 uppercase tracking-wider">
+                            RAINY-DAY-MEMORY
+                        </span>
+                    </div>
+
+                    <!-- 標題與圖標 -->
+                    <div class="flex items-start space-x-3.5 mb-3">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-600 to-teal-700 text-white flex items-center justify-center text-2xl shadow-sm flex-shrink-0">
+                            🌧️
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold font-serif text-slate-900 tracking-tight hover:text-cyan-800 transition-colors">
+                                記憶中的那個下雨天
+                            </h3>
+                            <p class="text-xs font-semibold text-slate-500 mt-0.5">水氣瀰漫中的溫柔片段・借景抒情的極致演繹</p>
+                        </div>
+                    </div>
+
+                    <!-- 審題文眼與核心聚焦 -->
+                    <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-100 text-xs text-slate-600 space-y-1.5 my-3.5">
+                        <div class="flex items-center text-slate-700 font-bold">
+                            <i class="fa-solid fa-bullseye text-cyan-700 mr-1.5"></i>
+                            <span>文眼聚焦：雨勢由微至滂沱 × 特殊事件 × 內心雨過天晴</span>
+                        </div>
+                        <p class="text-slate-500 leading-relaxed">
+                            以雨聲、濕潤泥土味、傘緣水珠為感官伏筆，帶出那次未帶雨傘的狼狽，或是親情與友誼在雨中遞傘的永恆溫暖。
+                        </p>
+                    </div>
+
+                    <!-- 特色膠囊標籤 -->
+                    <div class="flex flex-wrap gap-1.5 mb-5">
+                        <span class="px-2 py-0.5 rounded-md bg-cyan-50 text-cyan-800 text-[11px] font-bold">借景抒情</span>
+                        <span class="px-2 py-0.5 rounded-md bg-amber-50 text-amber-700 text-[11px] font-bold">五感情境浸潤</span>
+                        <span class="px-2 py-0.5 rounded-md bg-teal-50 text-teal-700 text-[11px] font-bold">烘托心境轉折</span>
+                        <span class="px-2 py-0.5 rounded-md bg-rose-50 text-rose-700 text-[11px] font-bold">高分範文解剖</span>
+                    </div>
+                </div>
+
+                <!-- 底部操作按鈕 -->
+                <div class="pt-4 border-t border-slate-100 flex items-center gap-2">
+                    <a href="rainy-day-in-memory.html" target="_blank" class="flex-1 py-2.5 px-4 rounded-xl bg-cyan-800 hover:bg-cyan-900 text-white text-xs sm:text-sm font-bold text-center transition-all shadow-sm shadow-cyan-800/20 flex items-center justify-center space-x-1.5">
+                        <span>進入寫作引導</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                    </a>
+                    <button onclick="copyPageUrl('rainy-day-in-memory.html', '記憶中的那個下雨天')" title="複製線上連結" class="p-2.5 rounded-xl bg-slate-100 hover:bg-cyan-50 hover:text-cyan-800 text-slate-600 transition-colors text-sm">
+                        <i class="fa-regular fa-clone"></i>
+                    </button>
+                </div>
+            </article>
+
+            <!-- 卡片 7: 青少年零碎時間運用 -->
+            <article class="topic-card card-hover glass-card rounded-3xl p-6 flex flex-col justify-between border border-slate-200 relative overflow-hidden" 
+                     data-category="classics" 
+                     data-title="青少年零碎時間運用" 
+                     data-tags="青少年零碎時間運用 圖表思辨 時間管理 滑手機 自律 積少成多 統計圖 實踐" 
+                     data-url="youth-fragmented-time.html">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-purple-500/5 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none"></div>
+                <div>
+                    <!-- 頂部標籤 -->
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-purple-50 text-purple-700 border border-purple-200/60">
+                            <i class="fa-solid fa-chart-pie mr-1"></i>圖表與思辨
+                        </span>
+                        <span class="font-outfit text-xs font-bold text-slate-400 uppercase tracking-wider">
+                            FRAGMENTED-TIME
+                        </span>
+                    </div>
+
+                    <!-- 標題與圖標 -->
+                    <div class="flex items-start space-x-3.5 mb-3">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-600 to-indigo-800 text-white flex items-center justify-center text-2xl shadow-sm flex-shrink-0">
+                            ⏳
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold font-serif text-slate-900 tracking-tight hover:text-purple-700 transition-colors">
+                                青少年零碎時間運用
+                            </h3>
+                            <p class="text-xs font-semibold text-slate-500 mt-0.5">會考圖表題型攻略・從數據洞察到自主實踐</p>
+                        </div>
+                    </div>
+
+                    <!-- 審題文眼與核心聚焦 -->
+                    <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-100 text-xs text-slate-600 space-y-1.5 my-3.5">
+                        <div class="flex items-center text-slate-700 font-bold">
+                            <i class="fa-solid fa-bullseye text-purple-600 mr-1.5"></i>
+                            <span>文眼聚焦：解讀圖表隱含現象 × 自身困局審視 × 破局心法</span>
+                        </div>
+                        <p class="text-slate-500 leading-relaxed">
+                            切中現代會考圖表資訊整合題型，解析通勤、下課等破碎時光為何被社群吞噬，進而提出具體積累習慣，展現嚴謹論理。
+                        </p>
+                    </div>
+
+                    <!-- 特色膠囊標籤 -->
+                    <div class="flex flex-wrap gap-1.5 mb-5">
+                        <span class="px-2 py-0.5 rounded-md bg-purple-50 text-purple-700 text-[11px] font-bold">圖表資訊整合</span>
+                        <span class="px-2 py-0.5 rounded-md bg-teal-50 text-teal-700 text-[11px] font-bold">論說條理清晰</span>
+                        <span class="px-2 py-0.5 rounded-md bg-amber-50 text-amber-700 text-[11px] font-bold">生活行動方案</span>
+                        <span class="px-2 py-0.5 rounded-md bg-rose-50 text-rose-700 text-[11px] font-bold">五段骨架精準</span>
+                    </div>
+                </div>
+
+                <!-- 底部操作按鈕 -->
+                <div class="pt-4 border-t border-slate-100 flex items-center gap-2">
+                    <a href="youth-fragmented-time.html" target="_blank" class="flex-1 py-2.5 px-4 rounded-xl bg-purple-700 hover:bg-purple-800 text-white text-xs sm:text-sm font-bold text-center transition-all shadow-sm shadow-purple-700/20 flex items-center justify-center space-x-1.5">
+                        <span>進入寫作引導</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                    </a>
+                    <button onclick="copyPageUrl('youth-fragmented-time.html', '青少年零碎時間運用')" title="複製線上連結" class="p-2.5 rounded-xl bg-slate-100 hover:bg-purple-50 hover:text-purple-700 text-slate-600 transition-colors text-sm">
+                        <i class="fa-regular fa-clone"></i>
+                    </button>
+                </div>
+            </article>
+
+        </div>
+
+        <!-- 無搜尋結果提示 -->
+        <div id="noResults" class="hidden text-center py-16 bg-white rounded-3xl border border-dashed border-slate-300">
+            <div class="w-16 h-16 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto text-2xl mb-3">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+            <h4 class="text-base font-bold text-slate-700">找不到相符的作文主題</h4>
+            <p class="text-xs text-slate-400 mt-1">請嘗試更換關鍵字或點選上方「全部主題」分類按鈕</p>
+            <button onclick="clearSearch()" class="mt-4 px-4 py-2 rounded-xl bg-teal-700 text-white text-xs font-bold hover:bg-teal-800 transition-colors">
+                清除搜尋條件
+            </button>
+        </div>
+    </main>
+
+    <!-- 寫作錦囊核心理念專區 -->
+    <section class="bg-gradient-to-br from-slate-900 via-teal-950 to-slate-900 text-white py-14 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-10">
+                <span class="text-xs font-bold text-teal-400 tracking-widest uppercase bg-teal-900/60 px-3 py-1 rounded-full border border-teal-500/30">
+                    Master Strategy
+                </span>
+                <h3 class="text-2xl sm:text-3xl font-black font-serif mt-3 tracking-tight">
+                    學思軒必勝技・會考寫作兩大核心心法
+                </h3>
+                <p class="text-xs sm:text-sm text-slate-400 mt-2">
+                    不靠臨場碰運氣，用精準思維體系化解任何素養題型
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                <!-- 心法 1: 萬用例可帶 -->
+                <div class="p-6 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-sm hover:border-teal-500/40 transition-all">
+                    <div class="w-12 h-12 rounded-2xl bg-teal-500/20 text-teal-300 flex items-center justify-center text-xl mb-4 border border-teal-500/30">
+                        <i class="fa-solid fa-arrows-split-up-and-left"></i>
+                    </div>
+                    <h4 class="text-lg font-bold text-white font-serif mb-2">【萬用例可帶】素材轉移術</h4>
+                    <p class="text-xs text-slate-300 leading-relaxed mb-3">
+                        精煉 1~2 個高感染力的真實生命經驗（如一次失敗的長跑、深夜的琴鍵練習、外公遞來的雨傘），透過「視角微調」與「文眼嫁接」，百搭應對 90% 以上會考題型。
+                    </p>
+                    <div class="text-[11px] font-semibold text-teal-400 flex items-center">
+                        <i class="fa-solid fa-circle-check mr-1.5"></i>
+                        <span>化被動猜題為主動出擊，省下 20 分鐘構思時間</span>
+                    </div>
+                </div>
+
+                <!-- 心法 2: 問津趕行程 -->
+                <div class="p-6 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-sm hover:border-amber-500/40 transition-all">
+                    <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-300 flex items-center justify-center text-xl mb-4 border border-amber-500/30">
+                        <i class="fa-solid fa-compass"></i>
+                    </div>
+                    <h4 class="text-lg font-bold text-white font-serif mb-2">【問津趕行程】五段骨架配速</h4>
+                    <p class="text-xs text-slate-300 leading-relaxed mb-3">
+                        <b>問</b>（破題提問・審視文眼）➔ <b>津</b>（尋津訪渡・素材開展）➔ <b>趕</b>（快馬加鞭・挫折高潮）➔ <b>行</b>（篤定前行・轉化體悟）➔ <b>程</b>（前程遠景・餘音繞樑）。
+                    </p>
+                    <div class="text-[11px] font-semibold text-amber-400 flex items-center">
+                        <i class="fa-solid fa-circle-check mr-1.5"></i>
+                        <span>段落比重黃金配速，行文節奏嚴密有神</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 頁尾 (純淨規範：嚴禁出現 GitHub 與 Excel 連結) -->
+    <footer class="bg-slate-900 text-slate-400 py-10 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-3">
+            <div class="inline-flex items-center space-x-2 text-teal-400 text-xs font-bold tracking-widest uppercase">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <span>Longmen Junior High School × Xuesixuan Chinese Studio</span>
+            </div>
+            <p class="text-sm font-serif font-bold text-slate-200">
+                𖤐 只要掌握心法，人人都是會考作文 6 級分！ 𖤐
+            </p>
+            <p class="text-xs text-slate-500">
+                臺北市立龍門國中 國文教學團隊 製作 • 學思軒國文教室 版權所有 • 全國師生教學無償推廣使用
+            </p>
+        </div>
+    </footer>
+
+    <!-- Toast 複製成功提示 -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none flex items-center space-x-2.5 px-4 py-3 rounded-2xl bg-slate-900/95 text-white shadow-xl shadow-slate-900/30 border border-slate-700 text-xs sm:text-sm font-semibold">
+        <i class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
+        <span id="toastMsg">已成功複製線上連結！</span>
+    </div>
+
+    <!-- 互動腳本 -->
+    <script>
+        // 分類篩選功能
+        function filterCards(category) {
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => {
+                if (btn.getAttribute('data-filter') === category) {
+                    btn.classList.add('bg-teal-700', 'text-white', 'shadow-sm', 'shadow-teal-700/20');
+                    btn.classList.remove('bg-slate-100', 'text-slate-600');
+                } else {
+                    btn.classList.remove('bg-teal-700', 'text-white', 'shadow-sm', 'shadow-teal-700/20');
+                    btn.classList.add('bg-slate-100', 'text-slate-600');
+                }
+            });
+
+            const cards = document.querySelectorAll('.topic-card');
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                const cardCat = card.getAttribute('data-category');
+                if (category === 'all' || cardCat === category) {
+                    card.classList.remove('hidden');
+                    visibleCount++;
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+
+            checkNoResults(visibleCount);
+        }
+
+        // 即時搜尋功能
+        function handleSearch() {
+            const query = document.getElementById('searchInput').value.trim().toLowerCase();
+            const clearBtn = document.getElementById('clearSearchBtn');
+            clearBtn.classList.toggle('hidden', query.length === 0);
+
+            const cards = document.querySelectorAll('.topic-card');
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                const title = card.getAttribute('data-title').toLowerCase();
+                const tags = card.getAttribute('data-tags').toLowerCase();
+                const text = card.innerText.toLowerCase();
+
+                if (query === '' || title.includes(query) || tags.includes(query) || text.includes(query)) {
+                    card.classList.remove('hidden');
+                    visibleCount++;
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+
+            checkNoResults(visibleCount);
+        }
+
+        // 清除搜尋
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('clearSearchBtn').classList.add('hidden');
+            filterCards('all');
+        }
+
+        // 檢查是否有結果
+        function checkNoResults(count) {
+            const noResults = document.getElementById('noResults');
+            noResults.classList.toggle('hidden', count > 0);
+        }
+
+        // 複製網址功能
+        function copyPageUrl(filename, title) {
+            // 自動偵測當前網址路徑或 GitHub Pages 標準網址
+            let baseUrl = window.location.origin + window.location.pathname;
+            if (baseUrl.endsWith('/index.html')) {
+                baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf('/index.html') + 1);
+            } else if (!baseUrl.endsWith('/')) {
+                baseUrl = baseUrl + '/';
+            }
+            
+            // 如果是在本機 file:/// 協定開啟，預設生成 GitHub Pages 網址
+            let fullUrl = baseUrl.startsWith('http') ? (baseUrl + filename) : ('https://oaoadna-1313.github.io/2026_examcomposition/' + filename);
+
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(fullUrl).then(() => {
+                    showToast(`已複製「${title}」線上網址！`);
+                }).catch(() => {
+                    fallbackCopy(fullUrl, title);
+                });
+            } else {
+                fallbackCopy(fullUrl, title);
+            }
+        }
+
+        function fallbackCopy(text, title) {
+            const input = document.createElement('textarea');
+            input.value = text;
+            input.style.position = 'fixed';
+            input.style.opacity = '0';
+            document.body.appendChild(input);
+            input.focus();
+            input.select();
+            try {
+                document.execCommand('copy');
+                showToast(`已複製「${title}」線上網址！`);
+            } catch (err) {
+                showToast(`請手動複製：${text}`);
+            }
+            document.body.removeChild(input);
+        }
+
+        // Toast 訊息顯示
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+            toastMsg.innerText = message;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 2500);
+        }
+    </script>
+</body>
+</html>

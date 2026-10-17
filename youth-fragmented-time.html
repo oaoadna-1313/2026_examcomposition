@@ -1,0 +1,2820 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⏳ 青少年零碎時間運用｜會考寫作錦囊【萬用例可帶 × 問津趕行程】GAS版</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script>
+        if (typeof Chart === 'undefined') {
+            document.write('<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"><\/script>');
+        }
+    </script>
+    <script>
+        if (typeof Chart === 'undefined') {
+            document.write('<script src="https://unpkg.com/chart.js@3.9.1/dist/chart.min.js"><\/script>');
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        paper: '#FDFBF7',      /* 溫暖宣紙白 */
+                        ink: '#2C3E50',        /* 深藍灰墨色 */
+                        primary: '#2563EB',    /* 沉穩青墨藍 */
+                        secondary: '#059669',  /* 堅韌松柏綠 */
+                        tertiary: '#D97706',   /* 活力金琥珀 */
+                        crimson: '#DC2626',    /* 熱血硃砂紅 */
+                        highlight: '#EFF6FF',  /* 柔和藍底色 */
+                        danger: '#EF4444',     /* 警示紅 */
+                        teacher: '#334155',    /* 教師區預設底色 */
+                        'teacher-light': '#475569' /* 教師區展開底色 */
+                    },
+                    fontFamily: {
+                        sans: ['"Noto Sans TC"', 'sans-serif'],
+                        serif: ['"Noto Serif TC"', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@600;700;900&display=swap');
+        
+        body {
+            background-color: #FDFBF7;
+            color: #2C3E50;
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        h1, h2, h3, h4, .serif {
+            font-family: 'Noto Serif TC', serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 380px;
+        }
+        .step-transition {
+            transition: all 0.3s ease-in-out;
+        }
+        .tab-btn {
+            transition: all 0.2s ease;
+        }
+        .tab-btn:not(.active):hover {
+            background-color: #EFF6FF;
+        }
+        .tab-btn.active {
+            background-color: #FEF9C3 !important; /* 溫潤淺鵝黃色 */
+            border-color: #FDE047 !important;
+            border-left-width: 5px !important;
+            border-left-style: solid !important;
+            box-shadow: 0 4px 12px -2px rgba(234, 179, 8, 0.25) !important;
+        }
+        .tab-btn.active[data-id="p1"] { border-left-color: #2563EB !important; }
+        .tab-btn.active[data-id="p2"] { border-left-color: #059669 !important; }
+        .tab-btn.active[data-id="p3"] { border-left-color: #D97706 !important; }
+        .tab-btn.active[data-id="p4"] { border-left-color: #7C3AED !important; }
+        .tab-btn.active[data-id="p5"] { border-left-color: #E11D48 !important; }
+
+        .tab-btn.active .text-gray-800 {
+            color: #0F172A !important; /* 黑色字體極致清晰 */
+        }
+        .tab-btn.active .text-gray-400 {
+            color: #475569 !important; /* 說明文字清晰易讀 */
+        }
+        .checklist-item {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .checklist-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.12);
+        }
+        
+        /* Loading Animation for AI */
+        .dot-flashing {
+            position: relative;
+            width: 10px;
+            height: 10px;
+            border-radius: 5px;
+            background-color: #2563EB;
+            color: #2563EB;
+            animation: dot-flashing 1s infinite linear alternate;
+            animation-delay: 0.5s;
+        }
+        .dot-flashing::before, .dot-flashing::after {
+            content: '';
+            display: inline-block;
+            position: absolute;
+            top: 0;
+        }
+        .dot-flashing::before {
+            left: -15px;
+            width: 10px;
+            height: 10px;
+            border-radius: 5px;
+            background-color: #2563EB;
+            color: #2563EB;
+            animation: dot-flashing 1s infinite alternate;
+            animation-delay: 0s;
+        }
+        .dot-flashing::after {
+            left: 15px;
+            width: 10px;
+            height: 10px;
+            border-radius: 5px;
+            background-color: #2563EB;
+            color: #2563EB;
+            animation: dot-flashing 1s infinite alternate;
+            animation-delay: 1s;
+        }
+        @keyframes dot-flashing {
+            0% { background-color: #2563EB; }
+            50%, 100% { background-color: rgba(37, 99, 235, 0.2); }
+        }
+        
+        /* Styled AI Output */
+        .ai-content b { color: #2563EB; font-weight: 700; }
+        .ai-content ul { list-style-type: disc; margin-left: 1.5rem; margin-top: 0.5rem; margin-bottom: 0.5rem; }
+        .ai-content li { margin-bottom: 0.25rem; }
+        .ai-content p { margin-bottom: 0.75rem; }
+
+        /* Essay Toggle Transition */
+        .essay-content {
+            transition: max-height 0.4s ease-in-out, padding 0.4s ease-in-out, opacity 0.4s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+        .essay-content.open {
+            max-height: 4800px;
+            opacity: 1;
+            padding-top: 1.5rem;
+            padding-bottom: 1.5rem;
+        }
+        .essay-icon {
+            transition: transform 0.3s ease;
+        }
+        .essay-btn[aria-expanded="true"] .essay-icon {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <!-- 頁首頂端導覽條 (Sticky Header 規範) -->
+    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-gray-200 px-4 py-3 shadow-xs">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <span class="text-2xl">⏳</span>
+                <div>
+                    <h1 class="font-black text-lg md:text-xl text-ink tracking-tight flex items-center gap-2">
+                        青少年零碎時間運用
+                        <span class="text-xs bg-blue-100 text-blue-800 font-bold px-2 py-0.5 rounded-full border border-blue-200">會考寫作錦囊</span>
+                    </h1>
+                    <p class="text-xs text-gray-500 font-medium hidden sm:block">素養圖表解讀 × 萬用例轉移 × 問津趕行程五結構</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2">
+                <a href="#prompt-section" class="text-xs text-gray-600 hover:text-blue-600 px-2 py-1 rounded transition hidden md:inline-block">題目卷</a>
+                <a href="#portable-example" class="text-xs text-gray-600 hover:text-blue-600 px-2 py-1 rounded transition hidden md:inline-block">萬用例轉移</a>
+                <a href="#expansion-tool" class="text-xs text-gray-600 hover:text-blue-600 px-2 py-1 rounded transition hidden md:inline-block">擴寫術</a>
+                <a href="#structure-blueprint" class="text-xs text-gray-600 hover:text-blue-600 px-2 py-1 rounded transition hidden md:inline-block">五段骨架</a>
+                <a href="#essays-section" class="text-xs text-gray-600 hover:text-blue-600 px-2 py-1 rounded transition hidden md:inline-block">高分範文</a>
+                <a href="#workshop-section" class="text-xs text-gray-600 hover:text-blue-600 px-2 py-1 rounded transition hidden md:inline-block">AI教練</a>
+                <button id="btn-open-teacher-modal" class="text-xs bg-slate-800 hover:bg-slate-700 text-white font-medium px-3 py-1.5 rounded-lg shadow-xs transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-lock text-[11px]"></i>
+                    <span>教師專區</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 py-8 space-y-16">
+
+        <!-- 單元一：題目與試題引導卡片 (Prompt Section) -->
+        <section id="prompt-section" class="scroll-mt-20">
+            <!-- 1:1 模擬會考作文試卷卡片 -->
+            <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border-2 border-[#E5DFD3] relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-blue-50 to-transparent pointer-events-none"></div>
+                <div class="text-center mb-6">
+                    <div class="text-xs tracking-widest text-gray-500 font-bold mb-1">
+                        
+                    </div>
+                    <h2 class="serif text-3xl md:text-4xl font-black text-ink tracking-wide mt-2 mb-3">
+                        青少年零碎時間運用
+                    </h2>
+                    <div class="w-16 h-1 bg-blue-600 mx-auto rounded-full"></div>
+                </div>
+
+                <!-- 引導短文與圖表呈現 -->
+                <div class="bg-paper p-5 md:p-7 rounded-xl border border-gray-200 text-gray-700 leading-relaxed text-sm md:text-base space-y-4 font-normal">
+                    <p class="indent-8 font-medium">
+                        請先閱讀以下資訊，並按題意要求完成一篇文章：<br>
+                        下列是西元二○二四年臺灣青少年日常零碎時間（如通勤、下課、睡前等 5 至 15 分鐘的短暫空檔），最常從事的活動統計：
+                    </p>
+
+                    <!-- 圖表互動控制項與畫布 -->
+                    <div class="bg-white p-4 md:p-5 rounded-xl border border-gray-200 space-y-3">
+                        <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-gray-150">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs md:text-sm font-bold text-ink">切換統計視角：</span>
+                                <button id="btn-chart-gender" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-blue-600 text-white transition shadow-xs">男女分組對照</button>
+                                <button id="btn-chart-total" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200 transition">總體平均排名</button>
+                            </div>
+                            <span class="text-xs text-gray-400 font-medium">▲ 根據 2024 年「臺灣青少年零碎時間運用現況問卷調查」共 7,260 份有效問卷</span>
+                        </div>
+                        <div class="chart-container" style="height: 320px;">
+                            <canvas id="surveyChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- 作答任務指令 -->
+                    <div class="pt-2 text-xs md:text-sm leading-relaxed text-gray-800 space-y-1">
+                        <p class="font-bold text-blue-900">文章整體內容應包含：</p>
+                        <p class="indent-4">一、對於上列圖表顯示的調查結果，簡要說明你的<strong>理解</strong>是什麼？</p>
+                        <p class="indent-4">二、將你的理解結合<strong>自身經驗、見聞</strong>，寫下感受或想法。</p>
+                        <p class="text-xs text-gray-500 italic mt-1">※不必訂題（亦可自訂題目）　※不可在文中洩漏私人身分　※不可使用詩歌體</p>
+                    </div>
+                </div>
+
+                <!-- 面向思維對照卡片 (4欄) -->
+                <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- 面向一 -->
+                    <div class="bg-blue-50/70 border border-blue-200 rounded-xl p-4 hover:shadow-md transition">
+                        <div class="flex items-center gap-2 text-blue-800 font-bold mb-2">
+                            <span class="text-lg">📱</span>
+                            <span class="text-base font-bold">【短影音】即時刺激</span>
+                        </div>
+                        <ul class="text-xs text-blue-900/80 space-y-1.5 leading-relaxed">
+                            <li>‧ 跨性別逾六成五首選，全面佔領</li>
+                            <li>‧ 演算法快節奏剪輯收割專注力</li>
+                            <li>‧ 廉價多巴胺麻痺課業疲憊神經</li>
+                            <li>‧ <strong>關鍵意象：</strong>時間黑洞、提線木偶</li>
+                        </ul>
+                    </div>
+
+                    <!-- 面向二 -->
+                    <div class="bg-emerald-50/70 border border-emerald-200 rounded-xl p-4 hover:shadow-md transition">
+                        <div class="flex items-center gap-2 text-emerald-800 font-bold mb-2">
+                            <span class="text-lg">🎮</span>
+                            <span class="text-base font-bold">【手遊社群】虛擬依賴</span>
+                        </div>
+                        <ul class="text-xs text-emerald-900/80 space-y-1.5 leading-relaxed">
+                            <li>‧ 女生瘋社群(72%)、男生拼手遊(62%)</li>
+                            <li>‧ 課間結隊快刷與即時話題認同</li>
+                            <li>‧ 逃避現實壓力的短暫虛擬反饋</li>
+                            <li>‧ <strong>關鍵意象：</strong>虛擬假面、緊繃手指</li>
+                        </ul>
+                    </div>
+
+                    <!-- 面向三 -->
+                    <div class="bg-amber-50/70 border border-amber-200 rounded-xl p-4 hover:shadow-md transition">
+                        <div class="flex items-center gap-2 text-amber-800 font-bold mb-2">
+                            <span class="text-lg">📚</span>
+                            <span class="text-base font-bold">【微型學習】聚沙成塔</span>
+                        </div>
+                        <ul class="text-xs text-amber-900/80 space-y-1.5 leading-relaxed">
+                            <li>‧ 背單字／複習學業僅佔約兩成</li>
+                            <li>‧ 通勤口袋書與課間錯題微習慣</li>
+                            <li>‧ 歐陽脩「三上」與魯迅海綿擠水</li>
+                            <li>‧ <strong>關鍵意象：</strong>滴水穿石、複利力量</li>
+                        </ul>
+                    </div>
+
+                    <!-- 面向四 -->
+                    <div class="bg-red-50/70 border border-red-200 rounded-xl p-4 hover:shadow-md transition">
+                        <div class="flex items-center gap-2 text-red-800 font-bold mb-2">
+                            <span class="text-lg">🌿</span>
+                            <span class="text-base font-bold">【心靈留白】自律沉澱</span>
+                        </div>
+                        <ul class="text-xs text-red-900/80 space-y-1.5 leading-relaxed">
+                            <li>‧ 發呆放空、運動伸展不到兩成</li>
+                            <li>‧ 拒絕資訊焦慮，走廊遠眺深呼吸</li>
+                            <li>‧ 暫停倉促節奏，守護內在澄澈定力</li>
+                            <li>‧ <strong>關鍵意象：</strong>一方留白、時間舵手</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 試題寫作要求便籤卡 -->
+                <div class="mt-6 bg-amber-50 border-l-4 border-amber-400 p-4 rounded-r-xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 text-xs text-amber-900">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-triangle-exclamation text-amber-600 text-sm"></i>
+                        <span class="font-bold">會考作答檢核點：</span>
+                        <span>可不訂題或自訂 ‧ 使用黑色墨水筆 ‧ 文中不得洩漏私人身分 ‧ 不得使用詩歌體</span>
+                    </div>
+                    <div class="text-xs bg-white px-2.5 py-1 rounded-md border border-amber-200 font-bold text-amber-800 shrink-0">
+                        建議字數：750 ~ 950 字（40 行極速配速）
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 單元三：萬用例轉移指南 (Portable Example Section) -->
+        <section id="portable-example" class="scroll-mt-20">
+            <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-200">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 pb-4 border-b border-gray-100">
+                    <div>
+                        <div class="text-xs font-bold text-blue-600 tracking-wider uppercase mb-1">UNIT 3 ‧ STRATEGY</div>
+                        <h3 class="serif text-2xl md:text-3xl font-bold text-ink">萬用例轉移指南：平時素材無縫移植</h3>
+                    </div>
+                    <p class="text-xs text-gray-500 max-w-md">
+                        不必每次都從零苦思新故事！將平時擅長的閱讀習慣、科技反思、運動伸展或同儕互動，轉換「切入視角」，立即化身滿分素材。
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    <!-- 左側雷達圖 -->
+                    <div class="lg:col-span-5 bg-paper p-4 rounded-xl border border-gray-200">
+                        <div class="text-center text-xs font-bold text-gray-700 mb-2 flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-chart-pie text-blue-600"></i>
+                            四種零碎時間運用向度多維雷達圖
+                        </div>
+                        <div class="chart-container" style="height: 280px;">
+                            <canvas id="portableChart"></canvas>
+                        </div>
+                        <div class="text-center text-[11px] text-gray-400 mt-2">
+                            數據呈現各向度在五感描摹、情境衝突與哲理昇華之側重
+                        </div>
+                    </div>
+
+                    <!-- 右側轉移卡片清單 -->
+                    <div class="lg:col-span-7 space-y-3">
+                        <div class="p-3.5 bg-blue-50/80 rounded-xl border border-blue-200 flex items-start gap-3 hover:shadow-xs transition">
+                            <div class="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center shrink-0 text-sm font-bold">1</div>
+                            <div>
+                                <div class="font-bold text-blue-900 text-sm">平時擅長「科技反思／專注力修煉」</div>
+                                <div class="text-xs text-blue-800/80 mt-0.5 leading-relaxed">
+                                    → <strong>切入【短影音與時間黑洞】：</strong>描寫段考前夕下課十分鐘「只想看五分鐘」，卻深陷魔性音效直到打鐘，由實入虛體會「在演算法時代守護自律定力，拒當提線木偶」。
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-3.5 bg-emerald-50/80 rounded-xl border border-emerald-200 flex items-start gap-3 hover:shadow-xs transition">
+                            <div class="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center shrink-0 text-sm font-bold">2</div>
+                            <div>
+                                <div class="font-bold text-emerald-900 text-sm">平時習慣「文學閱讀／單字微習慣」</div>
+                                <div class="text-xs text-emerald-800/80 mt-0.5 leading-relaxed">
+                                    → <strong>切入【搖晃公車上的口袋書】：</strong>描寫通勤十幾分鐘翻動掌中書卡或口袋詩集，在顛簸與引擎低鳴中隔絕喧囂，領會「不積跬步無以至千里」的複利成長。
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-3.5 bg-amber-50/80 rounded-xl border border-amber-200 flex items-start gap-3 hover:shadow-xs transition">
+                            <div class="w-8 h-8 rounded-lg bg-amber-600 text-white flex items-center justify-center shrink-0 text-sm font-bold">3</div>
+                            <div>
+                                <div class="font-bold text-amber-900 text-sm">平時注重「運動伸展／身心調適」</div>
+                                <div class="text-xs text-amber-800/80 mt-0.5 leading-relaxed">
+                                    → <strong>切入【走廊盡頭的心靈留白】：**描寫高壓連堂考試後的十分鐘，走出教室遠眺綠意做深呼吸，領會「給時間適度留白，才能在資訊洪流中找回清澈定力」。
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-3.5 bg-rose-50/80 rounded-xl border border-rose-200 flex items-start gap-3 hover:shadow-xs transition">
+                            <div class="w-8 h-8 rounded-lg bg-rose-600 text-white flex items-center justify-center shrink-0 text-sm font-bold">4</div>
+                            <div>
+                                <div class="font-bold text-rose-900 text-sm">平時喜愛「圖表解碼／社會議題思辨」</div>
+                                <div class="text-xs text-rose-800/80 mt-0.5 leading-relaxed">
+                                    → <strong>切入【數據照見的數位迷途】：</strong>以圖表三維度（短影音氾濫、男女分流、學習稀缺）總分總切入，結合歐陽脩「三上」典故，提煉「時間自主權」之時代警策。
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 單元二：作戰心法・問津趕行程五結構思維與擴寫術 -->
+        <section id="expansion-tool" class="scroll-mt-20">
+            <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-200">
+                <div class="text-xs font-bold text-blue-600 tracking-wider uppercase mb-1">UNIT 2 ‧ STEP 1</div>
+                <h3 class="serif text-2xl md:text-3xl font-bold text-ink mb-2">句子長大術：從平淡敘述到 6 級分意境</h3>
+                <p class="text-xs md:text-sm text-gray-500 mb-6">
+                    點擊下方按鈕，觀摩一個平凡的寫實句子如何經過 4 步驟進化，融入情境衝突、五感摹寫與哲理昇華：
+                </p>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+                    <!-- 左側文字演示卡 -->
+                    <div class="lg:col-span-8 flex flex-col justify-between bg-paper p-6 rounded-2xl border border-gray-200">
+                        <div>
+                            <div class="flex justify-between items-center mb-4 pb-3 border-b border-gray-200" id="sentence-label-container">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-blue-100 text-blue-800" id="sentence-label">步驟 1：基礎敘述</span>
+                                    <span class="text-xs text-gray-400" id="sentence-step-indicator">步驟 1 / 4</span>
+                                </div>
+                                <span class="text-xs font-bold px-3 py-1 rounded-full bg-gray-100 text-gray-700" id="word-count-badge">26 字</span>
+                            </div>
+
+                            <div class="min-h-[120px] flex items-center">
+                                <p class="text-base md:text-lg text-ink font-medium leading-relaxed step-transition" id="sentence-text">
+                                    下課時，我常常拿手機出來滑社群動態，一下子時間就過去了。
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 pt-4 border-t border-gray-200">
+                            <div class="p-3 bg-white rounded-xl border border-blue-100 text-xs text-blue-900 mb-4" id="teacher-hint-text">
+                                💡 <strong>教練指引：</strong>「不要只說『時間一下子就過去了』，試著把下課鐘聲、拿出手機時的心理藉口與時間被瞬間吸乾的情境衝突描寫出來！」
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <button id="btn-next-step" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs md:text-sm shadow-xs transition flex items-center justify-center gap-2">
+                                    <span>➕ 加上「具體情境與衝突」</span>
+                                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                                </button>
+                                <button id="btn-step-1" class="hidden bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-2.5 px-4 rounded-xl text-xs md:text-sm transition">
+                                    <i class="fa-solid fa-rotate-left mr-1"></i> 重新演示
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 右側字數長條圖 -->
+                    <div class="lg:col-span-4 bg-paper p-5 rounded-2xl border border-gray-200 flex flex-col justify-between">
+                        <div>
+                            <div class="text-xs font-bold text-gray-600 mb-1 flex items-center gap-1.5">
+                                <i class="fa-solid fa-chart-column text-blue-600"></i>
+                                <span>字數成長與深度可視化</span>
+                            </div>
+                            <div class="chart-container" style="height: 200px;">
+                                <canvas id="growthChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="text-[11px] text-gray-400 text-center mt-2">
+                            字數由 26 字 ➔ 128 字，結構由平鋪直敘晉升為心靈哲理
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 最強五段骨架 (問津趕行程) -->
+        <section id="structure-blueprint" class="scroll-mt-20">
+            <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-200 space-y-6">
+                <div>
+                    <div class="text-xs font-bold text-blue-600 tracking-wider uppercase mb-1">UNIT 2 ‧ STEP 2</div>
+                    <h3 class="serif text-2xl md:text-3xl font-bold text-ink">「問津趕行程」最強五段骨架</h3>
+                    <p class="text-xs md:text-sm text-gray-500 mt-1">
+                        將圖表解讀與個人見聞融會貫通，層次遞進，由現象洞察昇華為自主管理哲理：
+                    </p>
+                </div>
+
+                <!-- 稿紙兩面 40 行極速配速計畫橫條圖 (pacingChart) -->
+                <div class="bg-paper p-5 rounded-2xl border border-gray-200">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-3">
+                        <div class="text-xs font-bold text-gray-700 flex items-center gap-2">
+                            <i class="fa-solid fa-ruler-horizontal text-blue-600"></i>
+                            <span>會考稿紙兩面 40 行極速配速計畫（5 : 10 : 10 : 10 : 5）</span>
+                        </div>
+                        <div class="text-xs text-gray-500 font-medium">總目標約 850 ~ 950 字（滿分 6 級分黃金比例）</div>
+                    </div>
+                    <div class="chart-container" style="height: 140px;">
+                        <canvas id="pacingChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- 橫向動態 Tab 按鈕列 (依規範置於詳細任務卡片正上方) -->
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-3" id="tab-container">
+                    <button class="tab-btn active p-3 rounded-xl border border-gray-200 text-left bg-white shadow-2xs" data-id="p1">
+                        <div class="text-xs font-bold text-blue-600 mb-0.5">第 1 段 ‧ 問</div>
+                        <div class="text-sm font-bold text-gray-800">問題意識</div>
+                        <div class="text-[11px] text-gray-400 mt-1">5-7 行 (約 130 字)</div>
+                    </button>
+                    <button class="tab-btn p-3 rounded-xl border border-gray-200 text-left bg-white shadow-2xs" data-id="p2">
+                        <div class="text-xs font-bold text-emerald-600 mb-0.5">第 2 段 ‧ 津</div>
+                        <div class="text-sm font-bold text-gray-800">經驗見聞</div>
+                        <div class="text-[11px] text-gray-400 mt-1">9-12 行 (約 230 字)</div>
+                    </button>
+                    <button class="tab-btn p-3 rounded-xl border border-gray-200 text-left bg-white shadow-2xs" data-id="p3">
+                        <div class="text-xs font-bold text-amber-600 mb-0.5">第 3 段 ‧ 趕</div>
+                        <div class="text-sm font-bold text-gray-800">感受想法</div>
+                        <div class="text-[11px] text-gray-400 mt-1">9-12 行 (約 230 字)</div>
+                    </button>
+                    <button class="tab-btn p-3 rounded-xl border border-gray-200 text-left bg-white shadow-2xs" data-id="p4">
+                        <div class="text-xs font-bold text-purple-600 mb-0.5">第 4 段 ‧ 行</div>
+                        <div class="text-sm font-bold text-gray-800">行動解方</div>
+                        <div class="text-[11px] text-gray-400 mt-1">9-12 行 (約 230 字)</div>
+                    </button>
+                    <button class="tab-btn p-3 rounded-xl border border-gray-200 text-left bg-white shadow-2xs" data-id="p5">
+                        <div class="text-xs font-bold text-rose-600 mb-0.5">第 5 段 ‧ 程</div>
+                        <div class="text-sm font-bold text-gray-800">成長體悟</div>
+                        <div class="text-[11px] text-gray-400 mt-1">5-7 行 (約 130 字)</div>
+                    </button>
+                </div>
+
+                <!-- 段落詳細任務卡片 (全寬沉浸展示，大字體優化規範) -->
+                <div class="bg-paper p-6 md:p-8 rounded-2xl border border-gray-200 space-y-6" id="tab-content-card">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-gray-200 gap-2">
+                        <h4 class="serif text-xl md:text-2xl font-bold text-ink flex items-center gap-2" id="tab-title">
+                            第一段：【問】問題意識
+                        </h4>
+                        <span class="text-xs md:text-sm font-bold bg-blue-100 text-blue-800 px-3 py-1 rounded-full border border-blue-200" id="tab-words">
+                            約 110-150 字 (5-7 行)
+                        </span>
+                    </div>
+
+                    <!-- 🎯 寫作任務 (大字體規範) -->
+                    <div class="bg-white p-4 md:p-5 rounded-xl border border-gray-200">
+                        <div class="text-base md:text-lg font-bold text-blue-900 mb-2 flex items-center gap-2">
+                            <span>🎯</span> <span>寫作任務</span>
+                        </div>
+                        <p class="text-base md:text-lg text-gray-700 font-medium leading-relaxed" id="tab-task">
+                            以調查數據破題。簡述 2024 年統計圖表中短影音與社群動態高達六成以上的驚人現象，點出青少年在短短 5 至 15 分鐘的微隙中，普遍依賴被動式數位娛樂填補空虛，揭露專注力正被演算法無聲收割的時代困境。
+                        </p>
+                    </div>
+
+                    <!-- ❓ 引導思考提問 (大字體規範) -->
+                    <div class="bg-white p-4 md:p-5 rounded-xl border border-gray-200">
+                        <div class="text-base md:text-lg font-bold text-emerald-900 mb-2 flex items-center gap-2">
+                            <span>❓</span> <span>引導思考提問</span>
+                        </div>
+                        <ul class="text-base md:text-lg text-gray-700 space-y-2.5 list-disc list-inside" id="tab-prompts">
+                            <li>圖表中最令你震撼的數據是哪一項？它反映了同儕生活怎樣的集體縮影？</li>
+                            <li>當我們習慣在微小時光中拿出手機時，我們是在「享受放鬆」還是在「被動消耗」？</li>
+                        </ul>
+                    </div>
+
+                    <!-- 雙欄對稱：寫作策略與提示句型 (大字體規範) -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-blue-50/60 p-4 rounded-xl border border-blue-100">
+                            <div class="text-sm md:text-base font-bold text-blue-900 mb-1 flex items-center gap-1.5">
+                                <span>💡</span> <span>寫作策略</span>
+                            </div>
+                            <p class="text-sm md:text-base text-blue-950/80 leading-relaxed" id="tab-materials">
+                                精確引用 1~2 項代表性數據（如短影音突破六成五），以「數據如同一面鏡子」設喻，迅速切入核心問題意識。
+                            </p>
+                        </div>
+                        <div class="bg-amber-50/60 p-4 rounded-xl border border-amber-100">
+                            <div class="text-sm md:text-base font-bold text-amber-900 mb-1 flex items-center gap-1.5">
+                                <span>✍️</span> <span>開頭提示句型</span>
+                            </div>
+                            <p class="text-sm md:text-base text-amber-950/80 leading-relaxed italic" id="tab-hint">
+                                「根據二○二四年青少年日常零碎時間運用的調查統計，在下課、通勤等短短數分鐘的微隙中，短影音與社群動態高居榜首。這份數據像是一面誠實的鏡子，照見了……」
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 單元四：四篇 6 級分範文手風琴與深度賞析 (Essays Section) -->
+        <section id="essays-section" class="scroll-mt-20">
+            <div class="space-y-6">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
+                    <div>
+                        <div class="text-xs font-bold text-blue-600 tracking-wider uppercase mb-1">UNIT 4 ‧ EXEMPLARS</div>
+                        <h3 class="serif text-2xl md:text-3xl font-bold text-ink">四篇 6 級分範文手風琴與深度賞析</h3>
+                    </div>
+                    <div class="text-xs text-gray-500">涵蓋短影音省思、公車口袋書、走廊心靈留白、數據三維度深度解讀</div>
+                </div>
+
+                <!-- 範文一：指尖流逝的微光 -->
+                <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-xs">
+                    <button class="essay-btn w-full p-5 md:p-6 text-left flex justify-between items-center bg-white hover:bg-gray-50 transition" aria-expanded="false" onclick="toggleEssay('essay-1', this)">
+                        <div class="flex items-center gap-3">
+                            <span class="text-xl">📱</span>
+                            <div>
+                                <h4 class="font-bold text-base md:text-lg text-ink">範文一：以「指尖流逝的微光」為主題</h4>
+                                <p class="text-xs text-gray-400">短影音省思 ‧ 演算法與專注力拉扯 ‧ 奪回微時間的自主定力</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs font-bold bg-blue-100 text-blue-800 px-3 py-1 rounded-full border border-blue-200">895 字</span>
+                            <i class="fa-solid fa-chevron-down text-gray-400 essay-icon"></i>
+                        </div>
+                    </button>
+                    <div id="essay-1" class="essay-content px-6 md:px-8 border-t border-gray-100 bg-paper">
+                        <div class="text-sm md:text-base text-gray-700 leading-loose space-y-4 font-normal">
+                            <p class="indent-8">
+                                根據二○二四年青少年日常零碎時間運用的調查統計，在下課、通勤或睡前等短短五至十五分鐘的微隙中，觀看短影音與瀏覽社群動態高居前兩名，比例均突破六成。這份數據像是一面誠實的鏡子，照見了數位時代中青少年的集體生活縮影。零碎時間原本是緊湊課業之餘的心靈留白，如今卻在不知不覺中被演算法精密計算的聲光刺激所填滿，演變成一場專注力與科技誘惑的無聲拔河。
+                            </p>
+                            <p class="indent-8">
+                                「只看五分鐘就好。」這句輕忽的自我安慰，曾無數次將我拖入時間的黑洞。八年級某次段考前夕，兩堂課之間匆匆流逝的十分鐘裡，原本打算翻開歷史講義複習重點，然而桌角的手機螢幕驟然一亮，一則滑稽的迷因短影音吸引了我的目光。手指在冷冰冰的玻璃面板上輕輕一滑，數十秒的快節奏剪輯與魔性音樂宛如廉價的多巴胺，瞬間麻痺了焦慮的神經。我著魔般地一則接著一則往下滑，直到刺耳的上課鐘聲驟然劃破走廊，我才猛然驚醒。抬頭望向講桌上的老師，我的大腦塞滿了零碎喧鬧的配樂，桌上的歷史講義卻連一頁都未曾翻動。
+                            </p>
+                            <p class="indent-8">
+                                望著黑掉的螢幕，倒映出自己渙散而疲憊的眼神，一股強烈的懊悔與無力感如潮水般湧上心頭。我這才驚覺，那些看似被「打發」掉的微小時光，實則如鈍刀慢剮，無情地將我深層思考與閱讀的耐性切得支離破碎。短影音滿足的從來不是求知欲，而是人性中逃避課業壓力的惰性。我們自以為在消磨時間，實則是將自己寶貴的專注力拱手讓給了演算法，淪為受聲光牽引的提線木偶。
+                            </p>
+                            <p class="indent-8">
+                                為了奪回微時間的自主權，我決定發起一場「指尖的自律革命」。我刪除了手機裡的短影音應用程式，並在上課日將手機關機收進書包最底層。在課間十分鐘，當身旁同學低頭滑動螢幕時，我強迫自己走到走廊窗邊，遠眺操場上奔跑的綠意，做三次綿長深沉的呼吸；或是從口袋抽出一張折疊整齊的單字便籤，安靜記誦三個單字。起初，手指確實因缺乏刺激而感到手癢不安，但當我習慣在微隙中尋找片刻寧靜，原本焦躁浮動的心緒逐漸沈澱，思維重新變得清澈通透。
+                            </p>
+                            <p class="indent-8">
+                                時間的舵，從來不在演算法的伺服器裡，而在我們自己的指尖。五分鐘、十分鐘，看似微如指間細沙，但正是這一顆顆被我們忽視的沙粒，日積月累築成了一個人的心靈城堡。學會善待並守護零碎時間，不是讓自己成為嚴苛緊繃的苦行僧，而是在碎片化的洪流中守住清醒的定力，讓稍縱即逝的微光，匯聚成照亮未來的星河。
+                            </p>
+                        </div>
+
+                        <!-- 問津趕行程解剖方塊 -->
+                        <div class="mt-6 p-4 md:p-5 bg-white rounded-xl border border-blue-200">
+                            <div class="text-xs font-bold text-blue-900 mb-3 flex items-center gap-1.5">
+                                <i class="fa-solid fa-microscope text-blue-600"></i>
+                                <span>【問津趕行程・段落深度解剖】（以範文一為例）</span>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-5 gap-3 text-xs">
+                                <div class="p-2.5 bg-blue-50/70 rounded-lg">
+                                    <div class="font-bold text-blue-900 mb-1">第 1 段 ‧ 問</div>
+                                    <p class="text-blue-950/80">引述圖表數據突破六成破題，以誠實鏡子設喻，點出專注力與演算法的無聲拔河。</p>
+                                </div>
+                                <div class="p-2.5 bg-emerald-50/70 rounded-lg">
+                                    <div class="font-bold text-emerald-900 mb-1">第 2 段 ‧ 津</div>
+                                    <p class="text-emerald-950/80">還原段考下課十分鐘情境，手指滑動、魔性音樂與上課鐘聲響起時講義未翻的真實挫折。</p>
+                                </div>
+                                <div class="p-2.5 bg-amber-50/70 rounded-lg">
+                                    <div class="font-bold text-amber-900 mb-1">第 3 段 ‧ 趕</div>
+                                    <p class="text-amber-950/80">由實入虛，反思黑掉螢幕中的疲倦雙眼，洞察逃避惰性與淪為提線木偶的危機。</p>
+                                </div>
+                                <div class="p-2.5 bg-purple-50/70 rounded-lg">
+                                    <div class="font-bold text-purple-900 mb-1">第 4 段 ‧ 行</div>
+                                    <p class="text-purple-950/80">具體生活革命：手機入袋、走廊遠眺深呼吸、口袋單字便籤，在微隙中重獲清澈通透。</p>
+                                </div>
+                                <div class="p-2.5 bg-rose-50/70 rounded-lg">
+                                    <div class="font-bold text-rose-900 mb-1">第 5 段 ‧ 程</div>
+                                    <p class="text-rose-950/80">昇華時間舵手哲理，首尾呼應：沙粒築成城堡，守住清醒定力，讓微光匯聚成星河。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 範文二：搖晃公車上的口袋書 -->
+                <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-xs">
+                    <button class="essay-btn w-full p-5 md:p-6 text-left flex justify-between items-center bg-white hover:bg-gray-50 transition" aria-expanded="false" onclick="toggleEssay('essay-2', this)">
+                        <div class="flex items-center gap-3">
+                            <span class="text-xl">🚌</span>
+                            <div>
+                                <h4 class="font-bold text-base md:text-lg text-ink">範文二：以「搖晃公車上的口袋書」為主題</h4>
+                                <p class="text-xs text-gray-400">微型學習 ‧ 聚沙成塔的複利智慧 ‧ 顛簸顛簸中的心靈豐盈</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs font-bold bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full border border-emerald-200">880 字</span>
+                            <i class="fa-solid fa-chevron-down text-gray-400 essay-icon"></i>
+                        </div>
+                    </button>
+                    <div id="essay-2" class="essay-content px-6 md:px-8 border-t border-gray-100 bg-paper">
+                        <div class="text-sm md:text-base text-gray-700 leading-loose space-y-4 font-normal">
+                            <p class="indent-8">
+                                在二○二四年針對青少年零碎時間運用的調查報告中，最令我深思的並非高居榜首的娛樂數據，而是僅有約兩成的學生選擇將片刻光陰用於「背單字或複習學業」，課外閱讀更是低至一成四。身處車水馬龍的都市節奏裡，我們每天總有大量時間耗費在等待公車、捷運換乘或課堂銜接的零碎隙縫中。多數人視其為食之無味的「垃圾時間」，任由指尖在螢幕上漫無目的地滑動；然而對我而言，搖晃公車上的十五分鐘，卻是我一天當中最沉靜而豐碩的精神綠洲。
+                            </p>
+                            <p class="indent-8">
+                                每天放學傍晚，當我拖著疲憊的步伐擠上回家的公車，車廂裡總是擠滿了面無表情的低頭族。螢幕反射出幽藍冷光，耳畔充斥著短影音嘈雜重複的配樂與車輪摩擦地面的隆隆聲。此時，我總習慣從制服側袋中抽出一本巴掌大小的經典文集或自製的英文字卡。一手緊握頭頂的拉環維持平衡，另一手翻開帶著墨香的薄紙。公車在下班車潮中起伏顛簸、走走停停，但我的思緒卻在字裡行間隨風翱翔。讀一首簡媜的散文，或是記住三個冷僻的生詞，外界的擁擠與躁動在這一刻奇蹟般地退居背景。五站的距離，看似稍縱即逝，卻足夠讓一個青澀的心靈在古今典籍中完成一次深度的呼吸。
+                            </p>
+                            <p class="indent-8">
+                                這種在顛簸中積累微小時光的習慣，帶給了我超乎想像的心靈回饋。宋代歐陽脩曾言，他平生得意之作多成於「馬上、枕上、廁上」三上之時；魯迅亦曾深刻地說：「時間就像海綿裡的水，只要願擠，總還是有的。」過去的我總以「課業繁重、沒有整塊時間」為由推託閱讀與學習，直到我看著手裡那本被翻得微捲的口袋書，才赫然領悟：決定一個人思想厚度的，往往不是擁有多少漫長的假期，而是如何在被切碎的時間隙縫裡守住一份專注。每天通勤的十五分鐘，一年累積下來便是將近一百個小時，足夠精讀十本厚重的巨著。
+                            </p>
+                            <p class="indent-8">
+                                這份微小的堅持，更轉化為我面對人生的處事定力。在國中這個充滿競逐與焦慮的階段，我們常常渴望一蹴可幾的成功，卻輕忽了日常涓滴的微小力量。當身旁同儕為了段考熬夜苦讀、精神渙散時，我卻能在每天課間、等車的小步快跑中，從容消化知識的重擔。我學會了不再把零碎時間當作無奈的消耗，而是將它視為生命賜予的「微型儲蓄」。每一張背熟的卡片、每一個讀透的段落，都像是一枚投進心靈存錢筒的硬幣，叮噹作響地累積著成長的底氣。
+                            </p>
+                            <p class="indent-8">
+                                公車緩緩靠站，廣播響起清脆的到站提醒。我將口袋書妥善收回胸前口袋，迎著暮色踏出車門。晚風拂面，夜空中已升起點點星光。零碎時間從不是殘缺的碎屑，而是等待我們巧手雕琢的璞玉。只要心中有方向，哪怕身處搖晃喧囂的車廂，我們也能在指尖的片刻翻飛中，聚沙成塔，抵達任何想去的遠方。
+                            </p>
+                        </div>
+
+                        <!-- 問津趕行程解剖方塊 -->
+                        <div class="mt-6 p-4 md:p-5 bg-white rounded-xl border border-emerald-200">
+                            <div class="text-xs font-bold text-emerald-900 mb-3 flex items-center gap-1.5">
+                                <i class="fa-solid fa-microscope text-emerald-600"></i>
+                                <span>【問津趕行程・段落深度解剖】（以範文二為例）</span>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-5 gap-3 text-xs">
+                                <div class="p-2.5 bg-blue-50/70 rounded-lg">
+                                    <div class="font-bold text-blue-900 mb-1">第 1 段 ‧ 問</div>
+                                    <p class="text-blue-950/80">聚焦圖表中僅兩成學習的稀缺性破題，對比垃圾時間觀點，提出公車是精神綠洲。</p>
+                                </div>
+                                <div class="p-2.5 bg-emerald-50/70 rounded-lg">
+                                    <div class="font-bold text-emerald-900 mb-1">第 2 段 ‧ 津</div>
+                                    <p class="text-emerald-950/80">還原車廂低頭族幽藍冷光與隆隆噪音，特寫拉環微晃中翻讀口袋書的極致專注。</p>
+                                </div>
+                                <div class="p-2.5 bg-amber-50/70 rounded-lg">
+                                    <div class="font-bold text-amber-900 mb-1">第 3 段 ‧ 趕</div>
+                                    <p class="text-amber-950/80">由實入虛，引用歐陽脩三上之說與魯迅名言，計算一年百小時的驚人複利力量。</p>
+                                </div>
+                                <div class="p-2.5 bg-purple-50/70 rounded-lg">
+                                    <div class="font-bold text-purple-900 mb-1">第 4 段 ‧ 行</div>
+                                    <p class="text-purple-950/80">化為生活微型儲蓄行動：拒絕熬夜臨時抱佛腳，以每日小步快跑積累從容底氣。</p>
+                                </div>
+                                <div class="p-2.5 bg-rose-50/70 rounded-lg">
+                                    <div class="font-bold text-rose-900 mb-1">第 5 段 ‧ 程</div>
+                                    <p class="text-rose-950/80">靠站收書呼應首段，昇華璞玉雕琢哲理：心懷方向，顛簸片刻亦能聚沙成塔。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 範文三：走廊盡頭的心靈留白 -->
+                <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-xs">
+                    <button class="essay-btn w-full p-5 md:p-6 text-left flex justify-between items-center bg-white hover:bg-gray-50 transition" aria-expanded="false" onclick="toggleEssay('essay-3', this)">
+                        <div class="flex items-center gap-3">
+                            <span class="text-xl">🌿</span>
+                            <div>
+                                <h4 class="font-bold text-base md:text-lg text-ink">範文三：以「走廊盡頭的心靈留白」為主題</h4>
+                                <p class="text-xs text-gray-400">身心調適 ‧ 拒絕資訊焦慮的留白哲學 ‧ 在課間深呼吸中重整節奏</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs font-bold bg-amber-100 text-amber-800 px-3 py-1 rounded-full border border-amber-200">840 字</span>
+                            <i class="fa-solid fa-chevron-down text-gray-400 essay-icon"></i>
+                        </div>
+                    </button>
+                    <div id="essay-3" class="essay-content px-6 md:px-8 border-t border-gray-100 bg-paper">
+                        <div class="text-sm md:text-base text-gray-700 leading-loose space-y-4 font-normal">
+                            <p class="indent-8">
+                                檢視二○二四年臺灣青少年零碎時間的調查數據，一項極具諷刺意味的結果躍然紙上：在各項活動中，「發呆放空」僅占兩成一，而「運動伸展」更是只有百分之七。這意味著在面臨升學競爭的重壓之下，多數青少年甚至連讓大腦徹底休息的權利都已主動繳械。五分鐘的課間、十分鐘的喘息，全被社群動態的即時更新與手遊戰局的聲光轟炸填得毫無縫隙。當生活被各類訊息塞得嚴嚴實實，我們看似充實，靈魂卻陷入了前所未有的窒息與麻木。
+                            </p>
+                            <p class="indent-8">
+                                曾經的我也是這支「時間填塞大軍」的一員。課間十分鐘，不是急著回覆通訊軟體上的閒聊，就是抓緊時間刷幾則搞笑短影片。然而，這樣高密度的感官刺激並沒有消除上一堂課帶來的倦意，反而讓緊繃的太陽穴隱隱作痛，眼眶乾澀發熱。直到八年級上學期的某個午後，在一場艱澀的數學模擬考後，我整個人精疲力竭地癱坐在位置上。望著四周同學低頭滑螢幕的麻木側臉，我突然感到一陣前所未有的窒息。我毅然起身走出吵雜的教室，穿過喧鬧的人群，逕直走向教學大樓四樓走廊盡頭的露台。
+                            </p>
+                            <p class="indent-8">
+                                趴在微涼的欄杆上，迎面吹來的是初秋清澈的微風。遠處陽明山的青翠山巒在雲霧中若隱若現，操場上綠草如茵，幾隻麻雀在榕樹枝頭跳躍鳴囀。我閉上沉重的雙眼，深吸一口夾雜著草木清香的空氣，讓微涼的氣流順著鼻腔沉入胸膛，再緩緩吐出胸中積壓的焦慮與濁氣。在那短短的五分鐘裡，沒有發光的螢幕、沒有跳動的紅點通知、沒有催促的倒數計時。時間彷彿在此刻放慢了腳步，世界只剩下樹葉被風拂過的沙沙聲與自己的心跳。當我再次睜開眼，原本混濁昏沉的視野奇蹟般地變得明朗澄澈，緊繃的神經彷彿經歷了一場無聲的洗禮。
+                            </p>
+                            <p class="indent-8">
+                                中國傳統國畫講究「留白」，唯有留出空白，方能顯出山水的遼闊與意境的深遠；人生的畫卷何嘗不是如此？如果我們把每一分、每一秒的零碎空檔都塞滿了雜訊，生命便只剩下擁擠與疲憊。學會給自己留白，不是消極的懈怠，而是一種更高級的蓄力智慧。正如古人所說「知止而後能定，定而後能靜」，在忙碌與緊湊的縫隙中主動選擇放空、伸展身心，能讓疲憊的大腦重置歸零，重新找回敏銳的感知力與前行的從容。
+                            </p>
+                            <p class="indent-8">
+                                上課鐘聲清脆地響起，我轉身步履輕盈地走回教室。窗外的微風依然輕撫著走廊的窗簾。零碎時間的價值，並不取決於我們往裡面塞進了多少資訊，而在於我們能否賦予它溫柔的質地。在未來的喧囂歲月裡，我依然會守護這份走廊盡頭的留白，在每一個微小的片刻裡深呼吸，讓心靈在風清雲淡中，綻放屬於自己的從容氣度。
+                            </p>
+                        </div>
+
+                        <!-- 問津趕行程解剖方塊 -->
+                        <div class="mt-6 p-4 md:p-5 bg-white rounded-xl border border-amber-200">
+                            <div class="text-xs font-bold text-amber-900 mb-3 flex items-center gap-1.5">
+                                <i class="fa-solid fa-microscope text-amber-600"></i>
+                                <span>【問津趕行程・段落深度解剖】（以範文三為例）</span>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-5 gap-3 text-xs">
+                                <div class="p-2.5 bg-blue-50/70 rounded-lg">
+                                    <div class="font-bold text-blue-900 mb-1">第 1 段 ‧ 問</div>
+                                    <p class="text-blue-950/80">從放空伸展不到兩成的諷刺數據破題，批判過度填塞資訊導致的集體心靈窒息。</p>
+                                </div>
+                                <div class="p-2.5 bg-emerald-50/70 rounded-lg">
+                                    <div class="font-bold text-emerald-900 mb-1">第 2 段 ‧ 津</div>
+                                    <p class="text-emerald-950/80">寫數學模擬考後走出教室，走向走廊盡頭露台，摹寫秋風、遠山、樹梢鳥囀五感。</p>
+                                </div>
+                                <div class="p-2.5 bg-amber-50/70 rounded-lg">
+                                    <div class="font-bold text-amber-900 mb-1">第 3 段 ‧ 趕</div>
+                                    <p class="text-amber-950/80">由實入虛，特寫五分鐘深呼吸與無螢幕狀態，體會濁氣消散後的澄澈與精神洗禮。</p>
+                                </div>
+                                <div class="p-2.5 bg-purple-50/70 rounded-lg">
+                                    <div class="font-bold text-purple-900 mb-1">第 4 段 ‧ 行</div>
+                                    <p class="text-purple-950/80">引用國畫「留白」與「知止後能定」哲理，說明適度放空是高級蓄力，重置大腦感知。</p>
+                                </div>
+                                <div class="p-2.5 bg-rose-50/70 rounded-lg">
+                                    <div class="font-bold text-rose-900 mb-1">第 5 段 ‧ 程</div>
+                                    <p class="text-rose-950/80">鐘響輕盈回座呼應首段，昇華心境：時間價值在於質地，守護留白綻放從容氣度。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 範文四：數據照見的數位迷途 -->
+                <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-xs">
+                    <button class="essay-btn w-full p-5 md:p-6 text-left flex justify-between items-center bg-white hover:bg-gray-50 transition" aria-expanded="false" onclick="toggleEssay('essay-4', this)">
+                        <div class="flex items-center gap-3">
+                            <span class="text-xl">📊</span>
+                            <div>
+                                <h4 class="font-bold text-base md:text-lg text-ink">範文四：以「數據照見的數位迷途」為主題</h4>
+                                <p class="text-xs text-gray-400">總分總圖表深度剖析 ‧ 歐陽脩三上之思 ‧ 成為時間的自主舵手</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs font-bold bg-rose-100 text-rose-800 px-3 py-1 rounded-full border border-rose-200">950 字</span>
+                            <i class="fa-solid fa-chevron-down text-gray-400 essay-icon"></i>
+                        </div>
+                    </button>
+                    <div id="essay-4" class="essay-content px-6 md:px-8 border-t border-gray-100 bg-paper">
+                        <div class="text-sm md:text-base text-gray-700 leading-loose space-y-4 font-normal">
+                            <p class="indent-8">
+                                根據二○二四年「臺灣青少年日常零碎時間運用現況」統計圖顯示，青少年在通勤、下課或睡前等五至十五分鐘的微小時光中，最常從事的前三名活動分別為：觀看短影音、瀏覽社群動態以及玩手機遊戲。其中，無論男生或女生，皆有超過六成五的受訪者選擇以短影音消磨片刻；而在性別偏好上，女生以高達七成二的比例壓倒性青睞「瀏覽社群動態」，男生則有超過六成熱衷於「手機遊戲快刷」。相較之下，將零碎時間用於「背單字或複習學業」的青少年僅占兩成左右，而「運動伸展」更跌至一成以下。這份數據鮮明地揭示：現代青少年的微型時間，幾乎已被「高度聲光刺激的被動式數位娛樂」全面攻占。
+                            </p>
+                            <p class="indent-8">
+                                「觀看短影音」是跨越性別、最受青少年喜愛的填空方式。我的同窗好友小傑便是典型的短影音愛好者。無論是等候公車進站的三分鐘，或是兩堂課之間匆匆流逝的十分鐘，只要手機螢幕一亮，他便熟練地上下滑動手指。那短短數十秒的幽默迷因、流行舞蹈與快節奏剪輯，宛如一劑劑廉價的多巴胺，瞬間填補了空虛。然而，短影音的演算法精密無比，往往讓人深陷「再看一部就好」的心理漩渦。好幾次，上課鐘聲早已響徹走廊，小傑仍目光呆滯地盯著跳動的畫面，甚至到了放學回程，他連窗外夕陽的餘暉都不曾抬頭看過一眼。短影音看似打發了無聊，實則如無形的鑿子，將我們完整的思維敲打得支離破碎，讓人漸漸失去了沉靜思考與深度閱讀的耐性。
+                            </p>
+                            <p class="indent-8">
+                                除了短影音之外，男生對「手機遊戲」的狂熱與女生對「社群動態」的依戀，同樣令人深省。在我們班上，下課鐘聲一落，男生們往往三五成群圍聚在一起，爭分奪秒地開啟手遊，在刺激的戰場中廝殺搶分。然而，十分鐘的微光轉瞬即逝，遊戲往往被迫中斷於最關鍵的時刻，留下的不是放鬆後的舒暢，而是未竟戰局的焦躁與手指緊繃的疲憊；另一邊，女生們則忙著刷新Threads或Instagram，焦急地追蹤朋友圈的即時貼文或打卡動向，生怕自己慢了一步便被同儕圈孤立。這種在微小空檔中尋求虛擬認同的行徑，反映出青少年在沉重升學壓力下，渴望宣洩與尋求陪伴，卻在不知不覺中成為演算法俘虜的矛盾處境。
+                            </p>
+                            <p class="indent-8">
+                                反觀圖表中僅占少數的「背單字與複習學業」，卻讓我看見了微時間的另一種可能。我們班上的語文小老師，口袋裡永遠裝著自製的小單字卡或錯題標籤。下課時，當喧鬧聲響起，他總會氣定神閒地抽出卡片，安靜地背上三、五個單字；搭捷運時，他戴著耳機聆聽英文廣播，嘴唇微動輕聲跟讀。宋代歐陽脩曾自敘其平生文章多得於「馬上、枕上、廁上」三上之時，古人能在奔波顛簸與生活細隙中構思千古名篇，正是因為他們懂得將破碎的光陰鍊石補天。語文小老師在短短一年內累積了驚人的字彙量，正是「聚沙成塔、滴水穿石」的最佳寫照。
+                            </p>
+                            <p class="indent-8">
+                                「尺璧非寶，寸陰是競。」零碎時間看似微不足道，五分鐘、十分鐘宛如散落指尖的細沙，但正是這些被我們輕易揮霍的片刻，默默拼貼出一個人生命的樣貌。圖表所揭示的，不僅是冷冰冰的百分比，更是這個時代對青少年的嚴肅叩問：在資訊碎片的狂潮中，我們是要隨波逐流、任由演算法蠶食注意力，還是要主動握緊時間的船舵，在受限的隙縫中提煉出生命的厚度？唯有學會在指尖的微光中找回自律的清醒，我們才能真正成為時間的主人，在飛逝的光陰中，刻下屬於自己的永恆印記。
+                            </p>
+                        </div>
+
+                        <!-- 問津趕行程解剖方塊 -->
+                        <div class="mt-6 p-4 md:p-5 bg-white rounded-xl border border-rose-200">
+                            <div class="text-xs font-bold text-rose-900 mb-3 flex items-center gap-1.5">
+                                <i class="fa-solid fa-microscope text-rose-600"></i>
+                                <span>【問津趕行程・段落深度解剖】（以範文四為例）</span>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-5 gap-3 text-xs">
+                                <div class="p-2.5 bg-blue-50/70 rounded-lg">
+                                    <div class="font-bold text-blue-900 mb-1">第 1 段 ‧ 問</div>
+                                    <p class="text-blue-950/80">精準引用前三名與性別分流數據，確立問題核心：被動數位娛樂全面攻占微時光。</p>
+                                </div>
+                                <div class="p-2.5 bg-emerald-50/70 rounded-lg">
+                                    <div class="font-bold text-emerald-900 mb-1">第 2 段 ‧ 津</div>
+                                    <p class="text-emerald-950/80">特寫好友小傑沉迷短影音，上課鐘響時講義未翻、忽略夕陽，剖析專注力破碎化。</p>
+                                </div>
+                                <div class="p-2.5 bg-amber-50/70 rounded-lg">
+                                    <div class="font-bold text-amber-900 mb-1">第 3 段 ‧ 趕</div>
+                                    <p class="text-amber-950/80">剖析男女生手遊廝殺與社群焦慮，由實入虛揭露同儕在升學壓力下的逃避與依賴。</p>
+                                </div>
+                                <div class="p-2.5 bg-purple-50/70 rounded-lg">
+                                    <div class="font-bold text-purple-900 mb-1">第 4 段 ‧ 行</div>
+                                    <p class="text-purple-950/80">對比語文小老師善用卡片，援引歐陽脩「三上」典故，展現聚沙成塔的自律模範。</p>
+                                </div>
+                                <div class="p-2.5 bg-rose-50/70 rounded-lg">
+                                    <div class="font-bold text-rose-900 mb-1">第 5 段 ‧ 程</div>
+                                    <p class="text-rose-950/80">引述「尺璧非寶」昇華哲理，首尾呼應叩問時代：主動握緊船舵，成為時間真正主人。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 詞彙庫與名言佳句 (Vocabulary & Quotes Section) -->
+        <section id="vocabulary-section" class="scroll-mt-20">
+            <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-200 space-y-8">
+                <div>
+                    <div class="text-xs font-bold text-blue-600 tracking-wider uppercase mb-1">RESOURCES ‧ LEXICON</div>
+                    <h3 class="serif text-2xl md:text-3xl font-bold text-ink">實戰成語庫與名言佳句錦囊</h3>
+                    <p class="text-xs md:text-sm text-gray-500 mt-1">
+                        點擊成語或名言卡片即可「一鍵複製」，隨選隨用豐富文章內涵：
+                    </p>
+                </div>
+
+                <!-- 四大成語庫 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="p-4 bg-paper rounded-xl border border-blue-100">
+                        <div class="text-xs font-bold text-blue-800 mb-2 flex items-center gap-1.5">
+                            <span>⏳</span> <span>時間流逝與緊湊類成語</span>
+                        </div>
+                        <div class="flex flex-wrap gap-1.5" id="vocab-sound"></div>
+                    </div>
+
+                    <div class="p-4 bg-paper rounded-xl border border-emerald-100">
+                        <div class="text-xs font-bold text-emerald-800 mb-2 flex items-center gap-1.5">
+                            <span>💡</span> <span>誘惑沉迷與省思類成語</span>
+                        </div>
+                        <div class="flex flex-wrap gap-1.5" id="vocab-calm"></div>
+                    </div>
+
+                    <div class="p-4 bg-paper rounded-xl border border-rose-100">
+                        <div class="text-xs font-bold text-rose-800 mb-2 flex items-center gap-1.5">
+                            <span>💎</span> <span>聚沙成塔與勤勉類成語</span>
+                        </div>
+                        <div class="flex flex-wrap gap-1.5" id="vocab-heat"></div>
+                    </div>
+
+                    <div class="p-4 bg-paper rounded-xl border border-amber-100">
+                        <div class="text-xs font-bold text-amber-800 mb-2 flex items-center gap-1.5">
+                            <span>🌿</span> <span>自律自省與境隨心轉類成語</span>
+                        </div>
+                        <div class="flex flex-wrap gap-1.5" id="vocab-grow"></div>
+                    </div>
+                </div>
+
+                <!-- 名言佳句卡片清單 -->
+                <div>
+                    <div class="text-sm font-bold text-gray-700 mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-quote-left text-blue-600"></i>
+                        <span>哲思名言錦囊（點擊卡片立即複製全句）</span>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="quotes-container"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 單元五：互動引導寫作工作坊 & AI 寫作教練 (Workshop Section) -->
+        <section id="workshop-section" class="scroll-mt-20">
+            <div class="border-b border-gray-200 pb-3 mb-6">
+                <span class="text-xs font-bold text-blue-600 tracking-widest uppercase">Unit 5 ‧ Workshop</span>
+                <h3 class="text-2xl font-black text-ink flex items-center gap-2">
+                    互動寫作工作坊 & AI 寫作教練
+                </h3>
+                <p class="text-xs text-gray-500 mt-1">在線即時實作練習，可快速填入靈感骨架句，並由 Gemini AI 寫作教練提供客製化深度點評。</p>
+            </div>
+
+            <!-- AI 教練精修專區 -->
+            <div class="bg-white p-5 md:p-6 rounded-2xl border border-blue-200 shadow-sm space-y-4 mb-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-blue-50 pb-3">
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xl">🤖</span>
+                        <div>
+                            <div class="font-bold text-base text-ink flex items-center gap-2">
+                                Gemini AI 寫作教練即時批閱診斷
+                                <span class="text-[11px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-semibold">gemini-2.5-flash</span>
+                            </div>
+                            <div class="text-xs text-gray-500">輸入你想寫的段落或句子（200 字內），教練將為你提供 6 級分昇華建議與寫作手法拆解！</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 快速試試範例 -->
+                <div class="bg-blue-50/60 p-3 rounded-xl border border-blue-100">
+                    <div class="text-xs font-bold text-blue-800 mb-2 flex items-center gap-1">
+                        <span>💡 沒靈感嗎？點擊試試以下範例：</span>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <button type="button" class="quick-draft-btn text-xs bg-white hover:bg-blue-100 text-blue-700 px-3 py-1.5 rounded-lg border border-blue-200 transition text-left" data-text="「只看五分鐘就好」，這句話常讓我掉入短影音黑洞，直到鐘聲響起才驚覺時間早已流逝。">
+                            「只看五分鐘就好」滑手機掉入時間黑洞
+                        </button>
+                        <button type="button" class="quick-draft-btn text-xs bg-white hover:bg-blue-100 text-blue-700 px-3 py-1.5 rounded-lg border border-blue-200 transition text-left" data-text="利用下課十分鐘背五個單字，或是閉目深呼吸整理思緒，微小的累積也能帶來巨大轉變。">
+                            課間微時間聚沙成塔，奪回注意力自主權
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 靈感工具列 -->
+                <div class="bg-amber-50/60 p-3 rounded-xl border border-amber-200/80">
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                        <div class="text-xs font-bold text-amber-900 flex items-center gap-1">
+                            <i class="fa-solid fa-lightbulb text-amber-500"></i>
+                            <span>靈感工具列：點擊標籤直接插入游標處</span>
+                        </div>
+                        <button type="button" id="btn-inspiration-dice" class="text-xs bg-amber-200/70 hover:bg-amber-300 text-amber-900 font-bold px-2.5 py-1 rounded-lg transition flex items-center gap-1 shadow-2xs">
+                            <i class="fa-solid fa-dice text-amber-700"></i>
+                            <span>🎲 微隙之光靈感句</span>
+                        </button>
+                    </div>
+                    <div class="flex flex-wrap gap-1.5">
+                        <button type="button" class="prompt-chip-btn text-[11px] bg-white hover:bg-amber-100 text-amber-900 px-2.5 py-1 rounded-md border border-amber-200 transition" data-prompt="手指在冰冷螢幕上無意識地滑動，短影音魔性節奏如潮水般淹沒了原本清晰的思緒，">
+                            ＋短影音潮水
+                        </button>
+                        <button type="button" class="prompt-chip-btn text-[11px] bg-white hover:bg-amber-100 text-amber-900 px-2.5 py-1 rounded-md border border-amber-200 transition" data-prompt="望著黑掉的手機螢幕倒映出渙散疲憊的雙眼，我赫然驚覺自己正在將專注力拱手讓給演算法，">
+                            ＋螢幕黑屏警醒
+                        </button>
+                        <button type="button" class="prompt-chip-btn text-[11px] bg-white hover:bg-amber-100 text-amber-900 px-2.5 py-1 rounded-md border border-amber-200 transition" data-prompt="走出喧囂的教室，在走廊欄杆旁遠眺操場綠意，讓微風吹散混沌，找回心靈的呼吸節奏，">
+                            ＋走廊遠眺定力
+                        </button>
+                        <button type="button" class="prompt-chip-btn text-[11px] bg-white hover:bg-amber-100 text-amber-900 px-2.5 py-1 rounded-md border border-amber-200 transition" data-prompt="尺璧非寶，寸陰是競。在稍縱即逝的微隙中，我學會了以微習慣聚沙成塔，主導自己的人生。">
+                            ＋寸陰聚沙成塔
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 學生輸入框 -->
+                <div class="space-y-1">
+                    <label for="student-input" class="text-xs font-bold text-gray-700 flex justify-between">
+                        <span>你的寫作初稿（200 字以內）：</span>
+                        <span id="char-warning" class="text-red-500 hidden">已達字數上限！</span>
+                    </label>
+                    <div class="relative">
+                        <textarea id="student-input" rows="4" maxlength="200" class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-gray-800 text-sm leading-relaxed resize-y" placeholder="例如：「只看五分鐘就好」，這句話常讓我掉入短影音黑洞，直到鐘聲響起才驚覺時間早已流逝..."></textarea>
+                        <div class="absolute bottom-2 right-3 text-[11px] text-gray-400 font-mono bg-white/80 px-1 rounded">
+                            <span id="char-count">0</span> / 200
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 自訂加強重點 -->
+                <div class="space-y-2">
+                    <span class="text-xs font-bold text-gray-700">🎯 自訂加強重點（AI 將依此重點進行深度點評）：</span>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                        <label class="flex items-center gap-2 p-2.5 rounded-lg border border-gray-200 hover:bg-blue-50/50 cursor-pointer transition">
+                            <input type="radio" name="focus" value="🎬 強化情境畫面感 (幫助我細緻描摹手指滑螢幕、刺耳鐘聲響起等時空五感衝突，讓場景更逼真)" class="text-blue-600 focus:ring-blue-500" checked>
+                            <span class="text-xs text-gray-700 font-medium">🎬 強化情境畫面感</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-2.5 rounded-lg border border-gray-200 hover:bg-blue-50/50 cursor-pointer transition">
+                            <input type="radio" name="focus" value="🧠 深化心靈反思 (幫助我剖析逃避課業惰性、拒當科技囚徒的心境轉折，增加反省層次)" class="text-blue-600 focus:ring-blue-500">
+                            <span class="text-xs text-gray-700 font-medium">🧠 深化心靈反思</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-2.5 rounded-lg border border-gray-200 hover:bg-blue-50/50 cursor-pointer transition">
+                            <input type="radio" name="focus" value="🚀 行動解方與昇華 (幫助我寫出課間微習慣的具體實踐，並將時間掌控權昇華為自我生命的主導力)" class="text-blue-600 focus:ring-blue-500">
+                            <span class="text-xs text-gray-700 font-medium">🚀 行動解方與昇華</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 控制列 -->
+                <div class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-2 pt-1">
+                    <button type="button" id="btn-toggle-config" class="text-xs text-gray-500 hover:text-blue-600 font-medium transition flex items-center gap-1">
+                        <i class="fa-solid fa-sliders"></i>
+                        <span>⚙️ 代理通道設定</span>
+                        <span id="channel-badge" class="text-[10px] bg-green-100 text-green-700 px-1.5 py-0.5 rounded ml-1 font-bold">Cloudflare 串流極速</span>
+                    </button>
+                    <button type="button" id="btn-ask-ai" class="bg-blue-600 hover:bg-blue-700 active:scale-98 text-white text-xs md:text-sm font-bold py-2.5 px-6 rounded-xl shadow-xs transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-wand-sparkles"></i>
+                        <span id="btn-ask-text">開始 AI 深度點評</span>
+                    </button>
+                </div>
+
+                <!-- 代理通道設定面板 (可折疊) -->
+                <div id="config-panel" class="hidden bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-3">
+                    <div class="text-xs font-bold text-gray-700 flex items-center gap-1.5 border-b border-gray-200 pb-2">
+                        <i class="fa-solid fa-server text-blue-600"></i>
+                        <span>AI 連線通道設定</span>
+                    </div>
+                    <div class="space-y-2">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-700 mb-1">通道選擇：</label>
+                            <select id="channel-mode" class="w-full text-xs p-2 rounded-lg border border-gray-300 bg-white">
+                                <option value="worker" selected>⚡ Cloudflare 極速串流（預設，免金鑰多 Key 輪流池）</option>
+                                <option value="gas">🐢 GAS 備援通道（需等待，全校共用防護）</option>
+                                <option value="custom">🔑 自備 Gemini API Key（直連 Google）</option>
+                            </select>
+                        </div>
+                        <div id="worker-url-group">
+                            <label class="block text-xs font-medium text-gray-700 mb-1">Cloudflare Worker 代理網址：</label>
+                            <input type="text" id="worker-url-input" class="w-full text-xs p-2 rounded-lg border border-gray-300 bg-white font-mono" value="https://gemini-stream-coach.oaoadna.workers.dev">
+                            <p class="text-[11px] text-gray-400 mt-1">此代理伺服器具備 SSE 串流打字效果與高頻率輪流池支援。</p>
+                        </div>
+                        <!-- 自備 Key 輸入區塊 -->
+                        <div id="custom-key-group" class="hidden p-3 bg-blue-50/70 rounded-lg border border-blue-200 space-y-2">
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="font-bold text-blue-900">自備 Google Gemini API Key（安全存放於本機 LocalStorage）</span>
+                                <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-blue-600 underline text-[11px]">前往 Google AI Studio 免費領取</a>
+                            </div>
+                            <div class="flex gap-2">
+                                <div class="relative flex-1">
+                                    <input type="password" id="custom-api-key" placeholder="貼上 AI Studio 取得的 API Key (AIzaSy...)" class="w-full text-xs font-mono border border-gray-300 rounded-lg px-3 py-2 pr-8 bg-white focus:ring-2 focus:ring-blue-500">
+                                    <button type="button" id="toggle-key-visibility" class="absolute right-2.5 top-2.5 text-gray-400 hover:text-gray-600 text-xs">
+                                        <i class="fa-regular fa-eye"></i>
+                                    </button>
+                                </div>
+                                <button type="button" id="btn-save-custom-key" class="text-xs bg-blue-600 hover:bg-blue-700 text-white font-medium px-3 py-1.5 rounded-lg transition shrink-0 cursor-pointer">
+                                    保存金鑰
+                                </button>
+                            </div>
+                        </div>
+                        <div id="connection-status" class="text-xs py-1.5 px-2.5 rounded-lg bg-gray-100 text-gray-600 flex items-center gap-1.5">
+                            <span class="inline-block w-2 h-2 rounded-full bg-gray-400"></span>
+                            <span id="status-text">尚未測試連線</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-end gap-2 pt-2 border-t border-gray-200">
+                        <button type="button" id="btn-reset-config" class="text-xs text-gray-500 hover:text-gray-700 px-3 py-1.5 rounded-lg border border-gray-300 hover:bg-gray-100">恢復預設值</button>
+                        <button type="button" id="btn-save-config" class="text-xs bg-blue-600 text-white font-bold px-4 py-1.5 rounded-lg hover:bg-blue-700">儲存並測試</button>
+                    </div>
+                </div>
+
+                <!-- Loading 狀態 -->
+                <div id="ai-loading" class="hidden py-6 text-center space-y-2">
+                    <div class="inline-block dot-flashing"></div>
+                    <div class="text-xs text-blue-700 font-bold">教練正在細細品味你的文字，構思 6 級分昇華建議……</div>
+                </div>
+
+                <!-- AI 輸出區 -->
+                <div id="ai-output-container" class="hidden space-y-4">
+                    <!-- 串流輸出卡片 -->
+                    <div class="bg-paper p-4 rounded-xl border border-blue-200 space-y-2">
+                        <div class="flex justify-between items-center pb-2 border-b border-blue-100">
+                            <div class="font-bold text-xs text-blue-900 flex items-center gap-1.5">
+                                <i class="fa-solid fa-graduation-cap text-blue-600"></i>
+                                <span>AI 寫作教練點評與昇華示範</span>
+                            </div>
+                            <span id="stream-badge" class="text-[10px] bg-blue-100 text-blue-700 font-semibold px-2 py-0.5 rounded-full animate-pulse">正在生成中...</span>
+                        </div>
+                        <!-- 即時串流打字容器 -->
+                        <div id="ai-stream-box" class="text-xs md:text-sm text-gray-800 leading-relaxed font-serif-tc min-h-[60px] space-y-2">
+                            <div id="ai-output" class="whitespace-pre-wrap"></div>
+                        </div>
+                    </div>
+
+                    <!-- 教練點評專屬卡片 -->
+                    <div id="coach-review-card" class="hidden bg-blue-50/60 p-4 rounded-xl border border-blue-200 space-y-2">
+                        <div class="font-bold text-xs text-blue-900 flex items-center gap-1.5 border-b border-blue-100 pb-1.5">
+                            <i class="fa-solid fa-comment-dots text-blue-600"></i>
+                            <span>教練點評與指導</span>
+                        </div>
+                        <div id="coach-review-content" class="text-xs md:text-sm text-gray-700 leading-relaxed"></div>
+                    </div>
+
+                    <!-- Before / After 雙欄對照卡片 -->
+                    <div id="before-after-container" class="hidden grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
+                        <!-- Before 卡片 -->
+                        <div class="bg-gray-50 p-3.5 rounded-xl border border-gray-200 space-y-1.5 flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-center pb-1 border-b border-gray-200">
+                                    <span class="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Before ‧ 學生原始輸入</span>
+                                    <span id="badge-before-count" class="text-[10px] bg-gray-200 text-gray-600 px-1.5 py-0.2 rounded font-mono">0 字</span>
+                                </div>
+                                <div id="card-before-text" class="text-xs text-gray-700 leading-relaxed font-serif-tc pt-1.5"></div>
+                            </div>
+                            <div class="text-[10px] text-gray-400 pt-2 border-t border-dashed border-gray-200 flex items-center gap-1">
+                                <i class="fa-solid fa-arrow-turn-down-right"></i>
+                                <span>原汁原味的靈感胚胎</span>
+                            </div>
+                        </div>
+
+                        <!-- After 卡片 -->
+                        <div class="bg-amber-50/50 p-3.5 rounded-xl border border-amber-300 space-y-1.5 flex flex-col justify-between shadow-2xs">
+                            <div>
+                                <div class="flex justify-between items-center pb-1 border-b border-amber-200">
+                                    <span class="text-[11px] font-bold text-amber-800 flex items-center gap-1">
+                                        <span>✨ After ‧ 6 級分昇華版本</span>
+                                    </span>
+                                    <span id="badge-after-count" class="text-[10px] bg-amber-200/80 text-amber-900 px-1.5 py-0.2 rounded font-mono font-bold">0 字</span>
+                                </div>
+                                <!-- 純淨 6 級分昇華美句 -->
+                                <div id="card-after-pure-text" class="text-xs text-gray-900 leading-relaxed font-serif-tc font-medium pt-1.5 selection:bg-amber-200"></div>
+                                <!-- 寫作手法拆解彩標區 (純供觀摩，不入作文) -->
+                                <div id="card-after-breakdown" class="hidden mt-2 pt-2 border-t border-amber-200/60">
+                                    <div class="text-[10px] font-bold text-amber-700 mb-1 flex items-center gap-1">
+                                        <i class="fa-solid fa-layer-group text-[9px]"></i>
+                                        <span>寫作手法拆解（供觀摩，不入作文）：</span>
+                                    </div>
+                                    <div id="card-after-breakdown-list" class="flex flex-wrap gap-1"></div>
+                                </div>
+                            </div>
+                            <!-- 雙功能按鈕列 -->
+                            <div class="flex gap-2 pt-2 border-t border-amber-200/60">
+                                <button type="button" id="btn-adopt-ai" class="flex-1 bg-amber-500 hover:bg-amber-600 active:scale-98 text-white font-bold text-xs py-1.5 px-3 rounded-lg shadow-2xs transition flex items-center justify-center gap-1">
+                                    <i class="fa-solid fa-share text-xs"></i>
+                                    <span>🚀 一鍵採納至累積區</span>
+                                </button>
+                                <button type="button" id="btn-copy-ai" class="bg-white hover:bg-amber-100 active:scale-98 text-amber-800 border border-amber-300 font-bold text-xs py-1.5 px-3 rounded-lg transition flex items-center justify-center gap-1">
+                                    <i class="fa-regular fa-copy text-xs"></i>
+                                    <span>📋 複製潤飾</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 錯誤訊息 -->
+                <div id="ai-error" class="hidden p-3 rounded-xl bg-red-50 border border-red-200 text-xs text-red-700 flex items-start gap-2">
+                    <i class="fa-solid fa-circle-exclamation mt-0.5 flex-shrink-0"></i>
+                    <div id="ai-error-text">發生錯誤，請稍後重試。</div>
+                </div>
+            </div>
+
+            <!-- 骨架快捷填入按鈕列 -->
+            <div class="mb-3">
+                <div class="text-xs font-bold text-gray-600 mb-2 flex items-center gap-1.5">
+                    <i class="fa-solid fa-wand-magic-sparkles text-amber-500"></i>
+                    <span>篇章骨架引導句（點擊直接填入下方文章累積區）：</span>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <button type="button" class="scaffold-btn text-xs bg-blue-50 hover:bg-blue-100 text-blue-800 font-medium px-3 py-1.5 rounded-lg border border-blue-200 transition text-left" data-text="根據二○二四年青少年日常零碎時間運用的調查統計，短影音與社群動態高居前兩名。這份數據像是一面誠實的鏡子，照見了……">
+                        ➕ 【問】圖表數據破題句
+                    </button>
+                    <button type="button" class="scaffold-btn text-xs bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-medium px-3 py-1.5 rounded-lg border border-emerald-200 transition text-left" data-text="「只看五分鐘就好。」這句輕忽的安慰，曾無數次將我拖入時間黑洞。手指在冰冷螢幕上輕輕一滑，數十秒魔性音樂麻痺了神經，直到刺耳鐘聲響起……">
+                        ➕ 【津】情境五感掙扎句
+                    </button>
+                    <button type="button" class="scaffold-btn text-xs bg-amber-50 hover:bg-amber-100 text-amber-800 font-medium px-3 py-1.5 rounded-lg border border-amber-200 transition text-left" data-text="望著暗掉的螢幕，倒映出渙散疲憊的眼神。我赫然驚覺，短影音滿足的從來不是求知欲，而是逃避課業的惰性；我們自以為在消磨時間，實則是將注意力拱手讓給了演算法……">
+                        ➕ 【趕】由實入虛反思句
+                    </button>
+                    <button type="button" class="scaffold-btn text-xs bg-purple-50 hover:bg-purple-100 text-purple-800 font-medium px-3 py-1.5 rounded-lg border border-purple-200 transition text-left" data-text="為了奪回微時間的自主權，我發起一場自律革命：在課間走出教室遠眺綠意，或從口袋抽出單字卡記誦三個單字，在微隙中聚沙成塔……">
+                        ➕ 【行】微習慣自律解方句
+                    </button>
+                    <button type="button" class="scaffold-btn text-xs bg-rose-50 hover:bg-rose-100 text-rose-800 font-medium px-3 py-1.5 rounded-lg border border-rose-200 transition text-left" data-text="尺璧非寶，寸陰是競。時間的舵從來不在演算法的伺服器裡，而在我們自己的指尖。只要守住清醒的定力，稍縱即逝的微光，終能匯聚成照亮未來的星河。">
+                        ➕ 【程】首尾呼應昇華句
+                    </button>
+                </div>
+            </div>
+
+            <!-- 我的文章累積區 -->
+            <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-xs space-y-3">
+                <div class="flex justify-between items-center pb-2 border-b border-gray-100">
+                    <div class="flex items-center gap-2">
+                        <span class="text-sm font-bold text-gray-800">📝 我的文章累積區</span>
+                        <span class="text-xs text-gray-400">（可在這裡自由拼貼、編輯各段落精修文句）</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span id="accumulated-char-count" class="text-xs bg-slate-100 text-slate-700 px-2.5 py-1 rounded-md font-mono font-semibold">0 / 900 字</span>
+                        <button type="button" id="btn-copy-essay" class="text-xs text-gray-600 hover:text-blue-600 px-2.5 py-1 rounded hover:bg-slate-100 transition flex items-center gap-1">
+                            <i class="fa-regular fa-copy"></i>
+                            <span>複製全文</span>
+                        </button>
+                        <button type="button" id="btn-clear-essay" class="text-xs text-gray-400 hover:text-red-600 px-2.5 py-1 rounded hover:bg-red-50 transition flex items-center gap-1">
+                            <i class="fa-regular fa-trash-can"></i>
+                            <span>清空重寫</span>
+                        </button>
+                    </div>
+                </div>
+                <textarea id="accumulated-draft" rows="12" class="w-full p-4 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-gray-800 manuscript-grid font-serif-tc text-base leading-relaxed resize-y transition-all duration-300" placeholder="點擊上方「骨架引導句」或 AI 教練點評卡片中的「🚀 一鍵採納至累積區」，將精彩文句逐步組裝成完整篇章..."></textarea>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 頁尾標準製作資訊 (依規範) -->
+    <footer class="text-center pb-12 mt-16 leading-relaxed">
+        <div class="text-2xl md:text-3xl font-black text-amber-500 mb-4 tracking-widest drop-shadow-sm">
+            只要有心，人人都是作文神！
+        </div>
+        <div class="text-ink font-medium text-xs md:text-sm opacity-80">
+            𖤐 本網頁由 Gemini 生成，龍門國中黃于珊老師、王斐亭老師製作 𖤐
+        </div>
+    </footer>
+
+    <!-- ============================================================ -->
+    <!-- MODAL 1: 如何取得 API Key 指引視窗 (API Key Guide Modal) -->
+    <!-- ============================================================ -->
+    <div id="apikey-guide-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 md:p-8 shadow-2xl space-y-5 border border-gray-200 animate-in fade-in zoom-in duration-200">
+            <div class="flex justify-between items-center pb-3 border-b border-gray-100">
+                <div class="flex items-center gap-2 text-ink font-bold text-lg">
+                    <span class="text-blue-600"><i class="fa-solid fa-key"></i></span>
+                    <span>如何取得免費自備 Gemini API Key？</span>
+                </div>
+                <button id="btn-close-apikey-guide" class="text-gray-400 hover:text-gray-600 transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div class="space-y-4 text-xs md:text-sm text-gray-600 leading-relaxed">
+                <div class="p-3 bg-blue-50 rounded-xl border border-blue-100 text-blue-900 text-xs">
+                    🎉 <strong>完全免費、免信用卡！</strong> Google AI Studio 提供每位個人開發者每日高額免費額度（每分鐘最高 15 次請求），教學使用綽綽有餘。
+                </div>
+
+                <div class="space-y-3">
+                    <div class="flex items-start gap-2.5">
+                        <span class="w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">1</span>
+                        <div>
+                            前往 Google AI Studio 官方網站：<br>
+                            <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline font-bold break-all flex items-center gap-1 mt-0.5">
+                                <span>https://aistudio.google.com/app/apikey</span>
+                                <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-2.5">
+                        <span class="w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">2</span>
+                        <div>
+                            以個人的 Google 帳號登入後，點擊藍色按鈕 <strong>「Create API key」</strong>（建立 API 金鑰）。
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-2.5">
+                        <span class="w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">3</span>
+                        <div>
+                            選擇預設專案或建立新專案，系統將立即產生一串以 <code>AIzaSy...</code> 開頭的金鑰，點擊 <strong>「Copy」</strong>（複製）。
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-2.5">
+                        <span class="w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">4</span>
+                        <div>
+                            回到本網頁，將金鑰貼入輸入框中，即可終生免費在個人電腦上享受即時 AI 作文批閱服務！
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-3 bg-gray-50 rounded-xl text-gray-500 text-[11px] flex items-center gap-2">
+                    <i class="fa-solid fa-lock text-gray-400"></i>
+                    <span>安全承諾：金鑰僅存於您的瀏覽器 LocalStorage，不會傳送給任何第三方伺服器，安全無虞。</span>
+                </div>
+            </div>
+
+            <div class="pt-3 border-t border-gray-100 text-right">
+                <button id="btn-confirm-apikey-guide" class="bg-blue-600 hover:bg-blue-700 text-white text-xs md:text-sm font-bold px-5 py-2 rounded-xl transition shadow-xs">
+                    我明白了，前往填入金鑰
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- MODAL 2: 教師專區 Modal (符合全域 SHA-256 密碼遮罩規範) -->
+    <!-- ============================================================ -->
+    <div id="teacher-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-xl w-full p-6 md:p-8 shadow-2xl space-y-6 border border-gray-200 animate-in fade-in zoom-in duration-200">
+            <div class="flex justify-between items-center pb-3 border-b border-gray-100">
+                <div class="flex items-center gap-2 text-ink font-bold text-lg">
+                    <span class="text-slate-700"><i class="fa-solid fa-chalkboard-user"></i></span>
+                    <span>教師專用後台管理專區</span>
+                </div>
+                <button id="btn-close-modal" class="text-gray-400 hover:text-gray-600 transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- 尚未解鎖：遮罩密碼輸入介面 -->
+            <div id="teacher-auth-section" class="space-y-4">
+                <p class="text-xs md:text-sm text-gray-600 leading-relaxed">
+                    本專區提供教師備課指引、會考評分規準、教學投影片下載與雲端 GAS 批閱端點設定。請輸入教師管理通行碼以解鎖：
+                </p>
+
+                <div class="space-y-2">
+                    <label for="teacher-pwd-input" class="text-xs font-bold text-gray-700">管理通行碼：</label>
+                    <input type="password" id="teacher-pwd-input" class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-xl focus:ring-2 focus:ring-slate-700 outline-none" placeholder="請輸入通行密碼（安全遮罩保護中）">
+                    <p id="pwd-error" class="hidden text-xs text-red-600 font-bold flex items-center gap-1">
+                        <i class="fa-solid fa-circle-exclamation"></i> 通行碼不正確，請重新確認！
+                    </p>
+                </div>
+
+                <div class="pt-2 text-right">
+                    <button id="btn-verify-pwd" class="bg-slate-800 hover:bg-slate-700 text-white text-xs md:text-sm font-bold px-6 py-2.5 rounded-xl transition shadow-xs">
+                        驗證解鎖
+                    </button>
+                </div>
+            </div>
+
+            <!-- 驗證通過：解鎖展示教學資源 -->
+            <div id="teacher-config-section" class="hidden space-y-5">
+                <div class="p-3.5 bg-emerald-50 rounded-xl border border-emerald-200 text-emerald-800 text-xs font-bold flex items-center gap-2">
+                    <i class="fa-solid fa-circle-check text-emerald-600"></i>
+                    <span>通行密碼驗證成功！已解鎖教師專屬教學資源。</span>
+                </div>
+
+                <div class="space-y-3">
+                    <h5 class="text-xs font-bold text-gray-700 uppercase tracking-wider">備課核心提示與引導心法：</h5>
+                    <ul class="text-xs text-gray-600 space-y-1.5 list-disc list-inside leading-relaxed bg-paper p-3.5 rounded-xl border border-gray-200">
+                        <li><strong>圖表解讀必須帶著「問題意識」：</strong>八年級學生常將圖表數據流水帳抄寫一遍。教學時應引導學生指出數據背後的「社會現象與心理成因」（如演算法收割、同儕即時認同、專注力破碎化）。</li>
+                        <li><strong>由實入虛避免空泛批判科技：</strong>手機與短影音是當代青少年的真實日常，切勿流於「大人式的道德說教」。應引導學生描繪自己深陷其中的心理拉扯，進而提煉出自主調適的定力。</li>
+                        <li><strong>善用「問津趕行程」檢查自評：</strong>指導學生確認文章配速是否符合 5:10:10:10:5，確保圖表分析、個人見聞、內在反思與自律行動層次分明。</li>
+                    </ul>
+                </div>
+
+                <!-- 會考寫作測驗四維度規準自評表 -->
+                <div class="space-y-2">
+                    <h5 class="text-xs font-bold text-gray-700 uppercase tracking-wider">會考作文 6 級分檢核指標：</h5>
+                    <div class="grid grid-cols-2 gap-2 text-xs">
+                        <div class="p-2.5 bg-gray-50 rounded-lg border border-gray-200">
+                            <div class="font-bold text-gray-800 mb-0.5">1. 立意取材</div>
+                            <div class="text-gray-500 text-[11px]">精準解讀「青少年零碎時間運用」圖表數據，取材深刻真實，能由數位娛樂反思時間自主權。</div>
+                        </div>
+                        <div class="p-2.5 bg-gray-50 rounded-lg border border-gray-200">
+                            <div class="font-bold text-gray-800 mb-0.5">2. 結構組織</div>
+                            <div class="text-gray-500 text-[11px]">五段層次分明，問津趕行程由圖表現象到個人見聞再到自律實踐，首尾呼應且配速勻稱。</div>
+                        </div>
+                        <div class="p-2.5 bg-gray-50 rounded-lg border border-gray-200">
+                            <div class="font-bold text-gray-800 mb-0.5">3. 文詞表達</div>
+                            <div class="text-gray-500 text-[11px]">善用精準成語與視覺、心理摹寫，譬喻生動貼切（如時間黑洞、提線木偶），筆調流暢深刻。</div>
+                        </div>
+                        <div class="p-2.5 bg-gray-50 rounded-lg border border-gray-200">
+                            <div class="font-bold text-gray-800 mb-0.5">4. 標點錯字</div>
+                            <div class="text-gray-500 text-[11px]">字體工整清晰，標點符號運用得宜，無錯別字，格式合乎規範。</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 自訂 GAS API 部署端點設定 -->
+                <div class="space-y-2 pt-2 border-t border-gray-100">
+                    <label for="custom-gas-url" class="text-xs font-bold text-gray-700">自訂全校 Google Apps Script 批閱端點（選填）：</label>
+                    <div class="flex gap-2">
+                        <input type="url" id="custom-gas-url" class="flex-1 px-3 py-1.5 text-xs border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-700 outline-none" placeholder="https://script.google.com/macros/s/.../exec">
+                        <button id="btn-save-teacher-gas" class="bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold px-4 py-1.5 rounded-lg transition shadow-xs">
+                            儲存端點
+                        </button>
+                    </div>
+                    <p class="text-[11px] text-gray-400">若有部署校內專用 GAS Web App，儲存後全班可共用後端金鑰，免除學生個別輸入 API Key。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- JAVASCRIPT 核心邏輯 -->
+    <!-- ============================================================ -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // ==========================================
+            // 0. 原生 Canvas 備援繪圖引擎 (當 CDN 斷線或未載入 Chart.js 時保證 100% 正常繪製)
+            // ==========================================
+            let currentSurveyMode = 'gender';
+            function drawNativeSurvey(canvas, mode) {
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                const w = canvas.parentElement.clientWidth || 600;
+                const h = canvas.parentElement.clientHeight || 260;
+                canvas.width = w;
+                canvas.height = h;
+
+                ctx.clearRect(0, 0, w, h);
+                const padding = { top: 25, right: 20, bottom: 45, left: 40 };
+                const chartW = w - padding.left - padding.right;
+                const chartH = h - padding.top - padding.bottom;
+                const maxVal = 80;
+
+                ctx.strokeStyle = '#F1F5F9';
+                ctx.lineWidth = 1;
+                ctx.fillStyle = '#94A3B8';
+                ctx.font = '10px sans-serif';
+                ctx.textAlign = 'right';
+                for (let v = 0; v <= maxVal; v += 20) {
+                    const y = padding.top + chartH - (v / maxVal) * chartH;
+                    ctx.beginPath();
+                    ctx.moveTo(padding.left, y);
+                    ctx.lineTo(w - padding.right, y);
+                    ctx.stroke();
+                    ctx.fillText(v + '%', padding.left - 5, y + 3);
+                }
+
+                const categories = ['短影音', '社群', '手遊', '通訊', '音樂', '背單字', '發呆', '實體交流', '課外閱讀', '運動'];
+                const count = categories.length;
+                const colW = chartW / count;
+
+                if (mode === 'total') {
+                    const avg = [66.8, 64.6, 43.4, 43.4, 43.1, 22.4, 21.4, 18.2, 14.0, 7.3];
+                    const barW = Math.min(colW - 8, 28);
+                    avg.forEach((val, i) => {
+                        const x = padding.left + i * colW + (colW - barW) / 2;
+                        const bH = (val / maxVal) * chartH;
+                        const y = padding.top + chartH - bH;
+                        ctx.fillStyle = '#6366F1';
+                        ctx.fillRect(x, y, barW, bH);
+                        ctx.fillStyle = '#1E293B';
+                        ctx.font = 'bold 9px sans-serif';
+                        ctx.textAlign = 'center';
+                        ctx.fillText(val + '%', x + barW / 2, y - 4);
+                        ctx.fillStyle = '#64748B';
+                        ctx.font = '10px "Noto Sans TC"';
+                        ctx.fillText(categories[i], x + barW / 2, h - padding.bottom + 14);
+                    });
+                } else {
+                    const male = [68.2, 56.8, 62.5, 38.2, 41.0, 18.3, 22.1, 16.8, 12.4, 9.5];
+                    const female = [65.5, 72.4, 24.3, 48.6, 45.2, 26.5, 20.8, 19.5, 15.6, 5.2];
+                    const barW = Math.min((colW - 6) / 2, 14);
+                    for (let i = 0; i < count; i++) {
+                        const xBase = padding.left + i * colW + (colW - barW * 2 - 2) / 2;
+                        const mH = (male[i] / maxVal) * chartH;
+                        const mY = padding.top + chartH - mH;
+                        ctx.fillStyle = '#3B82F6';
+                        ctx.fillRect(xBase, mY, barW, mH);
+
+                        const fH = (female[i] / maxVal) * chartH;
+                        const fY = padding.top + chartH - fH;
+                        ctx.fillStyle = '#EC4899';
+                        ctx.fillRect(xBase + barW + 2, fY, barW, fH);
+
+                        ctx.fillStyle = '#64748B';
+                        ctx.font = '10px "Noto Sans TC"';
+                        ctx.textAlign = 'center';
+                        ctx.fillText(categories[i], xBase + barW + 1, h - padding.bottom + 14);
+                    }
+                }
+            }
+
+            function drawNativeRadar(canvas) {
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                const w = canvas.parentElement.clientWidth || 320;
+                const h = canvas.parentElement.clientHeight || 280;
+                canvas.width = w;
+                canvas.height = h;
+
+                const cx = w / 2;
+                const cy = h / 2 - 12;
+                const radius = Math.min(cx, cy) - 40;
+                const sides = 6;
+                const labels = ['演算法誘惑\n(短影音)', '微型學習\n(口袋書)', '心靈留白\n(深呼吸)', '虛擬對抗\n(手遊)', '五感描摹\n張力', '哲理反思\n深度'];
+
+                ctx.strokeStyle = 'rgba(0, 0, 0, 0.08)';
+                ctx.lineWidth = 1;
+                for (let r = 0.25; r <= 1.0; r += 0.25) {
+                    ctx.beginPath();
+                    for (let i = 0; i < sides; i++) {
+                        const angle = (Math.PI * 2 / sides) * i - Math.PI / 2;
+                        const x = cx + Math.cos(angle) * (radius * r);
+                        const y = cy + Math.sin(angle) * (radius * r);
+                        if (i === 0) ctx.moveTo(x, y);
+                        else ctx.lineTo(x, y);
+                    }
+                    ctx.closePath();
+                    ctx.stroke();
+                }
+
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.font = '11px "Noto Sans TC", sans-serif';
+                ctx.fillStyle = '#475569';
+                for (let i = 0; i < sides; i++) {
+                    const angle = (Math.PI * 2 / sides) * i - Math.PI / 2;
+                    ctx.beginPath();
+                    ctx.moveTo(cx, cy);
+                    ctx.lineTo(cx + Math.cos(angle) * radius, cy + Math.sin(angle) * radius);
+                    ctx.stroke();
+
+                    const tx = cx + Math.cos(angle) * (radius + 24);
+                    const ty = cy + Math.sin(angle) * (radius + 24);
+                    const lines = labels[i].split('\n');
+                    if (lines.length > 1) {
+                        ctx.fillText(lines[0], tx, ty - 6);
+                        ctx.fillText(lines[1], tx, ty + 7);
+                    } else {
+                        ctx.fillText(labels[i], tx, ty);
+                    }
+                }
+
+                function drawPolygon(values, fill, stroke) {
+                    ctx.beginPath();
+                    for (let i = 0; i < sides; i++) {
+                        const angle = (Math.PI * 2 / sides) * i - Math.PI / 2;
+                        const r = radius * (values[i] / 100);
+                        const x = cx + Math.cos(angle) * r;
+                        const y = cy + Math.sin(angle) * r;
+                        if (i === 0) ctx.moveTo(x, y);
+                        else ctx.lineTo(x, y);
+                    }
+                    ctx.closePath();
+                    ctx.fillStyle = fill;
+                    ctx.fill();
+                    ctx.strokeStyle = stroke;
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                }
+
+                drawPolygon([98, 45, 60, 85, 95, 92], 'rgba(37, 99, 235, 0.25)', 'rgba(37, 99, 235, 0.9)');
+                drawPolygon([40, 95, 75, 40, 90, 95], 'rgba(5, 150, 105, 0.25)', 'rgba(5, 150, 105, 0.9)');
+                drawPolygon([35, 60, 98, 30, 92, 90], 'rgba(217, 119, 6, 0.25)', 'rgba(217, 119, 6, 0.9)');
+            }
+
+            function drawNativeGrowth(canvas, currentStep, sentenceData) {
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                const w = canvas.parentElement.clientWidth || 260;
+                const h = canvas.parentElement.clientHeight || 200;
+                canvas.width = w;
+                canvas.height = h;
+
+                ctx.clearRect(0, 0, w, h);
+                const padding = { top: 25, right: 15, bottom: 35, left: 35 };
+                const chartW = w - padding.left - padding.right;
+                const chartH = h - padding.top - padding.bottom;
+                const maxVal = 150;
+
+                ctx.strokeStyle = '#F1F5F9';
+                ctx.lineWidth = 1;
+                ctx.fillStyle = '#94A3B8';
+                ctx.font = '10px sans-serif';
+                ctx.textAlign = 'right';
+                for (let v = 0; v <= maxVal; v += 30) {
+                    const y = padding.top + chartH - (v / maxVal) * chartH;
+                    ctx.beginPath();
+                    ctx.moveTo(padding.left, y);
+                    ctx.lineTo(w - padding.right, y);
+                    ctx.stroke();
+                    ctx.fillText(v, padding.left - 5, y + 3);
+                }
+
+                const barWidth = Math.min(chartW / 4 - 10, 36);
+                const colors = ['#DBEAFE', '#3B82F6', '#10B981', '#F59E0B'];
+                const stepLabels = ['基礎', '加情境', '加五感', '加哲理'];
+
+                for (let i = 0; i < 4; i++) {
+                    const x = padding.left + (chartW / 4) * i + (chartW / 4 - barWidth) / 2;
+                    const val = (i <= currentStep) ? (sentenceData[i] ? sentenceData[i].words : 0) : 0;
+                    const barH = (val / maxVal) * chartH;
+                    const y = padding.top + chartH - barH;
+
+                    if (val > 0) {
+                        ctx.fillStyle = colors[i];
+                        ctx.beginPath();
+                        if (ctx.roundRect) ctx.roundRect(x, y, barWidth, barH, [4, 4, 0, 0]);
+                        else ctx.rect(x, y, barWidth, barH);
+                        ctx.fill();
+
+                        ctx.fillStyle = '#1E293B';
+                        ctx.font = 'bold 10px sans-serif';
+                        ctx.textAlign = 'center';
+                        ctx.fillText(val + '字', x + barWidth / 2, y - 5);
+                    }
+
+                    ctx.fillStyle = '#64748B';
+                    ctx.font = '10px "Noto Sans TC", sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(stepLabels[i], x + barWidth / 2, h - padding.bottom + 16);
+                }
+            }
+
+            function drawNativePacing(canvas) {
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                const w = canvas.parentElement.clientWidth || 600;
+                const h = canvas.parentElement.clientHeight || 90;
+                canvas.width = w;
+                canvas.height = h;
+
+                ctx.clearRect(0, 0, w, h);
+                const padding = { top: 12, right: 20, bottom: 32, left: 20 };
+                const chartW = w - padding.left - padding.right;
+                const barH = 26;
+                const y = padding.top;
+                const totalLines = 42;
+
+                const segments = [
+                    { label: '第一段：問 (6行)', lines: 6, color: '#2563EB' },
+                    { label: '第二段：津 (10行)', lines: 10, color: '#059669' },
+                    { label: '第三段：趕 (10行)', lines: 10, color: '#D97706' },
+                    { label: '第四段：行 (10行)', lines: 10, color: '#7C3AED' },
+                    { label: '第五段：程 (6行)', lines: 6, color: '#E11D48' }
+                ];
+
+                let curX = padding.left;
+                segments.forEach(seg => {
+                    const segW = (seg.lines / totalLines) * chartW;
+                    ctx.fillStyle = seg.color;
+                    ctx.fillRect(curX, y, segW, barH);
+
+                    if (segW > 35) {
+                        ctx.fillStyle = '#FFFFFF';
+                        ctx.font = 'bold 11px "Noto Sans TC", sans-serif';
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillText(seg.lines + '行', curX + segW / 2, y + barH / 2);
+                    }
+                    curX += segW;
+                });
+
+                const legendY = y + barH + 16;
+                ctx.textBaseline = 'middle';
+                ctx.font = '10px "Noto Sans TC", sans-serif';
+                const spacing = chartW / segments.length;
+
+                segments.forEach((seg, idx) => {
+                    const itemX = padding.left + idx * spacing;
+                    ctx.fillStyle = seg.color;
+                    ctx.fillRect(itemX, legendY - 4, 8, 8);
+                    ctx.fillStyle = '#475569';
+                    ctx.textAlign = 'left';
+                    ctx.fillText(seg.label, itemX + 12, legendY);
+                });
+            }
+
+            // ==========================================
+            // 0. 試題統計圖表 (surveyChart - 互動切換)
+            // ==========================================
+            const canvasSurvey = document.getElementById('surveyChart');
+            const surveyCategories = [
+                '觀看短影音', '瀏覽社群動態', '玩手機遊戲', '即時通訊聊天', 
+                '聽音樂/Podcast', '背單字/學業', '發呆放空', '實體交流', '課外閱讀', '運動伸展'
+            ];
+            const maleData = [68.2, 56.8, 62.5, 38.2, 41.0, 18.3, 22.1, 16.8, 12.4, 9.5];
+            const femaleData = [65.5, 72.4, 24.3, 48.6, 45.2, 26.5, 20.8, 19.5, 15.6, 5.2];
+            const avgData = [66.8, 64.6, 43.4, 43.4, 43.1, 22.4, 21.4, 18.2, 14.0, 7.3];
+
+            let surveyChart = null;
+            if (typeof Chart !== 'undefined' && canvasSurvey) {
+                try {
+                    const ctxSurvey = canvasSurvey.getContext('2d');
+                    surveyChart = new Chart(ctxSurvey, {
+                        type: 'bar',
+                        data: {
+                            labels: surveyCategories,
+                            datasets: [
+                                {
+                                    label: '男生 (%)',
+                                    data: maleData,
+                                    backgroundColor: '#3B82F6',
+                                    borderRadius: 4
+                                },
+                                {
+                                    label: '女生 (%)',
+                                    data: femaleData,
+                                    backgroundColor: '#EC4899',
+                                    borderRadius: 4
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    max: 80,
+                                    grid: { color: '#F1F5F9' },
+                                    ticks: { callback: v => v + '%' }
+                                },
+                                x: {
+                                    grid: { display: false },
+                                    ticks: { font: { size: 10, family: '"Noto Sans TC"' } }
+                                }
+                            },
+                            plugins: {
+                                legend: { position: 'top', labels: { boxWidth: 12, font: { size: 11, family: '"Noto Sans TC"' } } },
+                                tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.raw}%` } }
+                            }
+                        }
+                    });
+                } catch(e) {
+                    console.warn('Chart.js survey init error, fallback to native:', e);
+                }
+            }
+            if (!surveyChart && canvasSurvey) {
+                drawNativeSurvey(canvasSurvey, currentSurveyMode);
+            }
+
+            const btnGender = document.getElementById('btn-chart-gender');
+            const btnTotal = document.getElementById('btn-chart-total');
+
+            btnGender.addEventListener('click', () => {
+                currentSurveyMode = 'gender';
+                if (surveyChart) {
+                    surveyChart.data.datasets = [
+                        { label: '男生 (%)', data: maleData, backgroundColor: '#3B82F6', borderRadius: 4 },
+                        { label: '女生 (%)', data: femaleData, backgroundColor: '#EC4899', borderRadius: 4 }
+                    ];
+                    surveyChart.update();
+                } else if (canvasSurvey) {
+                    drawNativeSurvey(canvasSurvey, 'gender');
+                }
+                btnGender.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-blue-600 text-white transition shadow-xs";
+                btnTotal.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200 transition";
+            });
+
+            btnTotal.addEventListener('click', () => {
+                currentSurveyMode = 'total';
+                if (surveyChart) {
+                    surveyChart.data.datasets = [
+                        { label: '總體平均佔比 (%)', data: avgData, backgroundColor: '#6366F1', borderRadius: 4 }
+                    ];
+                    surveyChart.update();
+                } else if (canvasSurvey) {
+                    drawNativeSurvey(canvasSurvey, 'total');
+                }
+                btnTotal.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-blue-600 text-white transition shadow-xs";
+                btnGender.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200 transition";
+            });
+
+            // ==========================================
+            // 1. 萬用例轉移雷達圖 (portableChart)
+            // ==========================================
+            const canvasPortable = document.getElementById('portableChart');
+            let portableChart = null;
+            if (typeof Chart !== 'undefined' && canvasPortable) {
+                try {
+                    const ctxPortable = canvasPortable.getContext('2d');
+                    portableChart = new Chart(ctxPortable, {
+                        type: 'radar',
+                        data: {
+                            labels: ['演算法誘惑 (短影音)', '微型學習 (口袋書)', '心靈留白 (深呼吸)', '虛擬對抗 (手遊)', '五感描摹張力', '哲理反思深度'],
+                            datasets: [
+                                {
+                                    label: '【短影音】誘惑與反思',
+                                    data: [98, 45, 60, 85, 95, 92],
+                                    backgroundColor: 'rgba(37, 99, 235, 0.2)',
+                                    borderColor: 'rgba(37, 99, 235, 0.9)',
+                                    borderWidth: 2,
+                                    pointBackgroundColor: 'rgba(37, 99, 235, 1)'
+                                },
+                                {
+                                    label: '【口袋書】微型學習',
+                                    data: [40, 95, 75, 40, 90, 95],
+                                    backgroundColor: 'rgba(5, 150, 105, 0.2)',
+                                    borderColor: 'rgba(5, 150, 105, 0.9)',
+                                    borderWidth: 2,
+                                    pointBackgroundColor: 'rgba(5, 150, 105, 1)'
+                                },
+                                {
+                                    label: '【深呼吸】心靈留白',
+                                    data: [35, 60, 98, 30, 92, 90],
+                                    backgroundColor: 'rgba(217, 119, 6, 0.2)',
+                                    borderColor: 'rgba(217, 119, 6, 0.9)',
+                                    borderWidth: 2,
+                                    pointBackgroundColor: 'rgba(217, 119, 6, 1)'
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                r: {
+                                    angleLines: { color: 'rgba(0, 0, 0, 0.08)' },
+                                    grid: { color: 'rgba(0, 0, 0, 0.08)' },
+                                    suggestedMin: 20,
+                                    suggestedMax: 100,
+                                    ticks: { display: false }
+                                }
+                            },
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                    labels: { boxWidth: 12, font: { size: 11, family: '"Noto Sans TC"' } }
+                                }
+                            }
+                        }
+                    });
+                } catch(e) {
+                    console.warn('Chart.js radar init error, fallback to native:', e);
+                }
+            }
+            if (!portableChart && canvasPortable) {
+                drawNativeRadar(canvasPortable);
+            }
+
+            // ==========================================
+            // 1.5 句子長大術 (Expansion Tool) 與 growthChart
+            // ==========================================
+            const sentenceData = [
+                { 
+                    label: "步驟 1：基礎敘述", 
+                    text: "下課時，我常常拿手機出來滑社群動態，一下子時間就過去了。", 
+                    words: 26, 
+                    btnText: "➕ 加上「具體情境與衝突」",
+                    hint: "💡 <strong>教練指引：</strong>「不要只說『時間一下子就過去了』，試著把下課鐘聲、拿出手機時的心理藉口與時間被瞬間吸乾的情境衝突描寫出來！」"
+                },
+                { 
+                    label: "步驟 2：情境擴寫", 
+                    text: "下課鐘聲剛響，我便迫不及待地從書包掏出手機。原本只想隨手滑一下社群動態，沒想到螢幕刷了幾下，上課鐘聲就刺耳地響起了。", 
+                    words: 56, 
+                    btnText: "➕ 加上「五感摹寫與魔性細節」",
+                    hint: "💡 <strong>教練指引：</strong>「很好！有了借口與鐘響的對比。現在加入『螢幕冷光、手指滑動、短影音魔性配樂與老師走進教室』的細膩五感！」"
+                },
+                { 
+                    label: "步驟 3：修辭擴寫", 
+                    text: "下課鐘聲剛落，桌角的手機螢幕驟然亮起誘人的微光。手指在冰涼的玻璃面板上飛速滑動，演算法如魔術師般奉上一則則色彩斑斕的短影音；數十秒的喧囂魔性音樂麻痺了神經，直到刺耳的上課鈴聲劃破死寂，我才猛然驚醒。", 
+                    words: 90, 
+                    btnText: "➕ 加上「一體兩面與哲理昇華」",
+                    hint: "💡 <strong>教練指引：</strong>「太有畫面感與誘惑張力了！最後一步加入『一體兩面反思』與『哲理昇華』，把指尖滑動昇華為奪回時間自主權的清醒自律！」"
+                },
+                { 
+                    label: "步驟 4：反思擴寫 (滿分 6 級分)", 
+                    text: "五分鐘的微光誘惑，吞噬了原本該有的深思與喘息。我猛然驚覺，這看似無害的指尖滑動，正在無聲蠶食我的專注力。零碎時間是生命的微型切片，放任它被演算法填滿，便成了科技的囚徒；唯有主動收起螢幕，將散落的片刻聚沙成塔，我們才能奪回人生的主導權，成為時間的真正主人。", 
+                    words: 128, 
+                    btnText: "🎉 完成 6 級分擴寫",
+                    hint: "🏆 <strong>教練點評：</strong>「太精采了！從『下課滑手機的無奈』到『短影音魔性五感』，再昇華為『拒當科技囚徒、聚沙成塔奪回主導權』，層次分明、意蘊深遠，完美展現【問津趕行程】之美！」"
+                }
+            ];
+
+            const canvasGrowth = document.getElementById('growthChart');
+            let growthChart = null;
+            if (typeof Chart !== 'undefined' && canvasGrowth) {
+                try {
+                    const ctxGrowth = canvasGrowth.getContext('2d');
+                    growthChart = new Chart(ctxGrowth, {
+                        type: 'bar',
+                        data: {
+                            labels: ['基礎敘述', '加情境', '加五感行動', '加反思哲理'],
+                            datasets: [{
+                                label: '字數',
+                                data: [26, 0, 0, 0],
+                                backgroundColor: ['#DBEAFE', '#3B82F6', '#10B981', '#F59E0B'],
+                                borderRadius: 6
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: { beginAtZero: true, max: 150, grid: { color: '#F1F5F9' } },
+                                x: { grid: { display: false } }
+                            },
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: { callbacks: { label: ctx => ctx.raw + ' 字' } }
+                            }
+                        }
+                    });
+                } catch(e) {
+                    console.warn('Chart.js growth init error, fallback to native:', e);
+                }
+            }
+            if (!growthChart && canvasGrowth) {
+                drawNativeGrowth(canvasGrowth, 0, sentenceData);
+            }
+
+            let currentStep = 0;
+            const elLabel = document.getElementById('sentence-label');
+            const elStepIndicator = document.getElementById('sentence-step-indicator');
+            const elText = document.getElementById('sentence-text');
+            const elBadge = document.getElementById('word-count-badge');
+            const elHint = document.getElementById('teacher-hint-text');
+            const btnNext = document.getElementById('btn-next-step');
+            const btnReset = document.getElementById('btn-step-1');
+
+            btnNext.addEventListener('click', () => {
+                if (currentStep < 3) {
+                    currentStep++;
+                    updateSentenceUI();
+                }
+            });
+
+            btnReset.addEventListener('click', () => {
+                currentStep = 0;
+                updateSentenceUI();
+            });
+
+            function updateSentenceUI() {
+                const data = sentenceData[currentStep];
+                elText.style.opacity = 0;
+                
+                setTimeout(() => {
+                    elLabel.textContent = data.label;
+                    elStepIndicator.textContent = `步驟 ${currentStep + 1} / 4`;
+                    elText.innerHTML = data.text;
+                    elBadge.textContent = data.words + ' 字';
+                    elHint.innerHTML = data.hint;
+                    elText.style.opacity = 1;
+                }, 180);
+
+                if (currentStep === 3) {
+                    btnNext.style.display = 'none';
+                    btnReset.style.display = 'block';
+                } else {
+                    btnNext.style.display = 'block';
+                    btnNext.textContent = data.btnText;
+                    btnReset.style.display = 'none';
+                }
+
+                const newData = [26, 0, 0, 0];
+                for (let i = 0; i <= currentStep; i++) {
+                    newData[i] = sentenceData[i].words;
+                }
+                if (growthChart) {
+                    growthChart.data.datasets[0].data = newData;
+                    growthChart.update();
+                } else if (canvasGrowth) {
+                    drawNativeGrowth(canvasGrowth, currentStep, sentenceData);
+                }
+            }
+
+            // ==========================================
+            // 2. 問津趕行程五段骨架 Tab 與配速圖表資料
+            // ==========================================
+            const paragraphData = [
+                {
+                    id: 'p1', title: "第一段：【問】問題意識", wordsStr: "約 110-150 字 (5-7 行)", weight: 130, color: '#2563EB', icon: "❓",
+                    task: "以調查數據破題。簡述 2024 年統計圖表中短影音與社群動態高達六成以上的驚人現象，點出青少年在短短 5 至 15 分鐘的微隙中，普遍依賴被動式數位娛樂填補空虛，揭露專注力正被演算法無聲收割的時代困境。",
+                    prompts: ["圖表中最令你震撼的數據是哪一項？它反映了同儕生活怎樣的集體縮影？", "當我們習慣在微小時光中拿出手機時，我們是在「享受放鬆」還是在「被動消耗」？"],
+                    materials: "精確引用 1~2 項代表性數據（如短影音突破六成五），以「數據如同一面鏡子」設喻，迅速切入核心問題意識。",
+                    hint: "「根據二○二四年青少年日常零碎時間運用的調查統計，在下課、通勤等短短數分鐘的微隙中，短影音與社群動態高居榜首。這份數據像是一面誠實的鏡子，照見了……」"
+                },
+                {
+                    id: 'p2', title: "第二段：【津】經驗見聞", wordsStr: "約 210-250 字 (9-12 行)", weight: 230, color: '#059669', icon: "🌊",
+                    task: "萬用例登場！重現個人在下課十分鐘、公車通勤或睡前被手機吸引的具體情境。透過細膩的五感摹寫（指尖滑動的冰冷、螢幕幽藍微光、魔性配樂、周遭同學集體低頭），刻畫出「只想看五分鐘」卻深陷其中的真實拉扯。",
+                    prompts: ["在什麼具體時間、地點，你曾被手機裡的短影音或社群深深吸引？當時周遭的環境氛圍如何？", "你原本打算做什麼？但指尖滑動之後，發生了什麼令人懊惱的轉折？"],
+                    materials: "細膩刻畫「心理藉口」與「時間飛逝」的劇烈衝突，例如以上課鐘聲驟然劃破走廊對比歷史講義連一頁都未曾翻動。",
+                    hint: "「『只看五分鐘就好。』這句輕忽的自我安慰，曾無數次將我拖入時間黑洞。八年級段考前夕的下課十分鐘裡……」"
+                },
+                {
+                    id: 'p3', title: "第三段：【趕】感受想法", wordsStr: "約 210-250 字 (9-12 行)", weight: 230, color: '#D97706', icon: "💡",
+                    task: "由實入虛！文章拿高分的關鍵轉折。望著暗掉的螢幕中自己渙散疲憊的眼神，深入剖析內心湧現的空虛與焦慮。批判短影音滿足的從來不是求知欲，而是逃避課業壓力的惰性；反思我們自以為在消磨時間，實則淪為演算法的提線木偶。",
+                    prompts: ["當熱鬧喧囂的短影音結束時，留給你的是滿足還是空虛？為什麼？", "這種碎片化的聲光刺激，如何無情地侵蝕了我們深層思考與深度閱讀的耐性？"],
+                    materials: "展現思想深度，破除「打發時間無傷大雅」的迷思，點出碎片化娛樂對專注力的鈍刀慢剮。",
+                    hint: "「望著黑掉的螢幕，倒映出自己渙散而疲憊的眼神，一股強烈的懊悔湧上心頭。我這才驚覺，短影音滿足的從來不是求知欲，而是……」"
+                },
+                {
+                    id: 'p4', title: "第四段：【行】行動解方", wordsStr: "約 210-250 字 (9-12 行)", weight: 230, color: '#7C3AED', icon: "🚀",
+                    task: "化體悟為具體生活實踐！展現主動奪回微時間自主權的行動力。提出個人的「自律革命」（如上課日手機入包、課間走到走廊深呼吸遠眺、隨身攜帶口袋單字卡或閱讀口袋書），在微隙中聚沙成塔。",
+                    prompts: ["為了不被演算法牽著鼻子走，你採取了哪些具體有效的「微時間自律策略」？", "當你在微小的零碎空檔中選擇深呼吸或讀一頁好書時，你的心境獲得了什麼樣的清澈轉變？"],
+                    materials: "條理化列出生活實踐的具體做法，對比圖表中稀少但可貴的「微型學習與心靈留白」，展現從容的行動力。",
+                    hint: "「為了奪回微時間的自主權，我發起了一場指尖的自律革命：在課間走出教室遠眺綠意，或從口袋抽出單字便籤記誦三個單字……」"
+                },
+                {
+                    id: 'p5', title: "第五段：【程】成長體悟", wordsStr: "約 110-150 字 (5-7 行)", weight: 130, color: '#E11D48', icon: "🌄",
+                    task: "昇華生命哲理，首尾呼應！總結全文，引述名言（如歐陽脩三上之說、魯迅時間海綿、尺璧寸陰），將零碎時間提煉為生命的微型雕琢——時間的舵在我們自己的指尖，守住自律定力，讓微光匯聚成星河。",
+                    prompts: ["回顧這場與科技的拔河，你對『時間的質地』有了什麼超越同儕的體會？", "在碎片化的浪潮中，你將如何以自律的姿態，成為自己生命時間的真正主人？"],
+                    materials: "以富含哲理與詩意的文句收尾，呼應首段的圖表問題意識，留下餘音繞梁的深遠啟發。",
+                    hint: "「『尺璧非寶，寸陰是競。』時間的舵從來不在演算法的伺服器裡，而在我們自己的指尖……只要守住清醒的定力，稍縱即逝的微光，終能匯聚成照亮未來的星河。」"
+                }
+            ];
+
+            // pacingChart (水平配速堆疊長條圖)
+            const canvasPacing = document.getElementById('pacingChart');
+            let pacingChart = null;
+            if (typeof Chart !== 'undefined' && canvasPacing) {
+                try {
+                    const ctxPacing = canvasPacing.getContext('2d');
+                    pacingChart = new Chart(ctxPacing, {
+                        type: 'bar',
+                        data: {
+                            labels: ['稿紙配速計畫 (行數)'],
+                            datasets: [
+                                { label: '第一段：問 (6行)', data: [6], backgroundColor: '#2563EB', borderRadius: { topLeft: 6, bottomLeft: 6 } },
+                                { label: '第二段：津 (10行)', data: [10], backgroundColor: '#059669' },
+                                { label: '第三段：趕 (10行)', data: [10], backgroundColor: '#D97706' },
+                                { label: '第四段：行 (10行)', data: [10], backgroundColor: '#7C3AED' },
+                                { label: '第五段：程 (6行)', data: [6], backgroundColor: '#E11D48', borderRadius: { topRight: 6, bottomRight: 6 } }
+                            ]
+                        },
+                        options: {
+                            indexAxis: 'y',
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                x: { stacked: true, max: 42, grid: { color: '#F1F5F9' }, ticks: { callback: v => v + ' 行' } },
+                                y: { stacked: true, grid: { display: false } }
+                            },
+                            plugins: {
+                                legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10, family: '"Noto Sans TC"' } } },
+                                tooltip: { callbacks: { label: ctx => `${ctx.dataset.label} 建議字數約 ${paragraphData[ctx.datasetIndex].weight} 字` } }
+                            }
+                        }
+                    });
+                } catch(e) {
+                    console.warn('Chart.js pacing init error, fallback to native:', e);
+                }
+            }
+            if (!pacingChart && canvasPacing) {
+                drawNativePacing(canvasPacing);
+            }
+
+            window.addEventListener('resize', () => {
+                if (!surveyChart && canvasSurvey) drawNativeSurvey(canvasSurvey, currentSurveyMode);
+                if (!portableChart && canvasPortable) drawNativeRadar(canvasPortable);
+                if (!growthChart && canvasGrowth) drawNativeGrowth(canvasGrowth, currentStep, sentenceData);
+                if (!pacingChart && canvasPacing) drawNativePacing(canvasPacing);
+            });
+
+            // Tab 切換事件綁定
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabTitle = document.getElementById('tab-title');
+            const tabWords = document.getElementById('tab-words');
+            const tabTask = document.getElementById('tab-task');
+            const tabPrompts = document.getElementById('tab-prompts');
+            const tabMaterials = document.getElementById('tab-materials');
+            const tabHint = document.getElementById('tab-hint');
+
+            tabButtons.forEach((btn, idx) => {
+                btn.addEventListener('click', () => {
+                    tabButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    updateTabContent(idx);
+                });
+            });
+
+            function updateTabContent(index) {
+                const data = paragraphData[index];
+                tabTitle.innerHTML = `<span class="mr-2">${data.icon}</span> ${data.title}`;
+                tabWords.textContent = data.wordsStr;
+                tabTask.textContent = data.task;
+                tabPrompts.innerHTML = data.prompts.map(p => `<li>${p}</li>`).join('');
+                tabMaterials.textContent = data.materials;
+                tabHint.textContent = data.hint;
+            }
+
+            // ==========================================
+            // 3. 成語資料與渲染
+            // ==========================================
+            const vocabData = {
+                sound: ['稍縱即逝', '白駒過隙', '尺璧寸陰', '光陰似箭', '日月如梭', '韶華易逝', '流光易逝', '分秒必爭', '時不我待', '歲月不居', '爭分奪秒', '風馳電掣', '一刻千金', '日積月累', '寸陰可惜'],
+                calm: ['玩物喪志', '虛擲光陰', '浮光掠影', '走馬看花', '囫圇吞棗', '淺嘗輒止', '提線木偶', '迷途知返', '如夢初醒', '幡然醒悟', '當頭棒喝', '自欺欺人', '沉溺不拔', '盲目跟風', '得過且過'],
+                heat: ['聚沙成塔', '積少成多', '集腋成裘', '滴水穿石', '繩鋸木斷', '厚積薄發', '行遠自邇', '登高自卑', '業精於勤', '孜孜不倦', '見縫插針', '勤學苦練', '持之以恆', '磨礪以須', '篤行不怠'],
+                grow: ['心靈留白', '心無旁騖', '澄懷觀道', '虛室生白', '自律自強', '專心致志', '境隨心轉', '泰然自若', '返璞歸真', '獨善其身', '從容不迫', '寧靜致遠', '知止後定', '修己安人', '安之若素']
+            };
+
+            function renderVocab(containerId, list, colorClass) {
+                const container = document.getElementById(containerId);
+                list.forEach(item => {
+                    const btn = document.createElement('button');
+                    btn.className = `text-xs bg-white border border-gray-200 hover:border-blue-500 hover:text-blue-600 px-2.5 py-1 rounded-md transition font-medium cursor-pointer shadow-2xs ${colorClass}`;
+                    btn.textContent = item;
+                    btn.title = "點擊複製成語";
+                    btn.addEventListener('click', () => {
+                        navigator.clipboard.writeText(item);
+                        const orig = btn.textContent;
+                        btn.textContent = "✓ 已複製";
+                        btn.classList.add('bg-blue-600', 'text-white');
+                        setTimeout(() => {
+                            btn.textContent = orig;
+                            btn.classList.remove('bg-blue-600', 'text-white');
+                        }, 1200);
+                    });
+                    container.appendChild(btn);
+                });
+            }
+
+            renderVocab('vocab-sound', vocabData.sound, 'text-blue-800');
+            renderVocab('vocab-calm', vocabData.calm, 'text-emerald-800');
+            renderVocab('vocab-heat', vocabData.heat, 'text-rose-800');
+            renderVocab('vocab-grow', vocabData.grow, 'text-amber-800');
+
+            // ==========================================
+            // 4. 名言佳句資料與渲染
+            // ==========================================
+            const quotesList = [
+                { quote: "時間就像海綿裡的水，只要願擠，總還是有的。", author: "魯迅" },
+                { quote: "余平生所作文章，多在「三上」，乃馬上、枕上、廁上也。", author: "歐陽脩《歸田錄》" },
+                { quote: "你熱愛生命嗎？那麼別浪費時間，因為時間是組成生命的材料。", author: "富蘭克林" },
+                { quote: "零星的時間，如果能敏銳地加以利用，可成為巨大的力量。", author: "達爾文" },
+                { quote: "尺璧非寶，寸陰是競。", author: "《千字文》" },
+                { quote: "莫等閒，白了少年頭，空悲切。", author: "岳飛《滿江紅》" },
+                { quote: "盛年不重來，一日難再晨。及時當勉勵，歲月不待人。", author: "陶淵明" },
+                { quote: "知止而後有定，定而後能靜，靜而後能安，安而後能慮，慮而後能得。", author: "《大學》" }
+            ];
+
+            const quotesContainer = document.getElementById('quotes-container');
+            quotesList.forEach(q => {
+                const card = document.createElement('div');
+                card.className = "p-3 bg-paper rounded-xl border border-gray-200 hover:border-blue-500 transition cursor-pointer flex justify-between items-center group shadow-2xs";
+                card.innerHTML = `
+                    <span class="text-xs md:text-sm text-gray-800 font-medium group-hover:text-blue-700 transition leading-snug">
+                        ‧「${q.quote}」<span class="text-gray-500 text-xs font-normal">──${q.author}</span>
+                    </span>
+                    <span class="text-xs text-gray-400 group-hover:text-blue-600 font-bold ml-2 shrink-0">複製</span>
+                `;
+                card.title = "點擊複製名言";
+                card.addEventListener('click', () => {
+                    navigator.clipboard.writeText(`「${q.quote}」──${q.author}`);
+                    const badge = card.querySelector('span:last-child');
+                    badge.textContent = "✓ 已複製";
+                    badge.classList.add('text-blue-600');
+                    setTimeout(() => {
+                        badge.textContent = "複製";
+                        badge.classList.remove('text-blue-600');
+                    }, 1200);
+                });
+                quotesContainer.appendChild(card);
+            });
+
+            // ==========================================
+            // AI 寫作教練 (Cloudflare 串流極速通道 + GAS 備援)
+            // ==========================================
+            const DEFAULT_WORKER_URL = 'https://gemini-stream-coach.oaoadna.workers.dev';
+            const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbwTX1R33gA3Sz_gPOJ-FXRRK5buWGHZvybTsNUKAD57y48sSJVdjAiaRMzbuxqRJoUtLA/exec';
+
+            // DOM 元素
+            const studentInput = document.getElementById('student-input');
+            const charCount = document.getElementById('char-count');
+            const charWarning = document.getElementById('char-warning');
+            const btnAskAI = document.getElementById('btn-ask-ai');
+            const btnAskText = document.getElementById('btn-ask-text');
+            const aiLoading = document.getElementById('ai-loading');
+            const aiOutputContainer = document.getElementById('ai-output-container');
+            const streamBadge = document.getElementById('stream-badge');
+            const aiStreamBox = document.getElementById('ai-stream-box');
+            const aiOutput = document.getElementById('ai-output');
+            const coachReviewCard = document.getElementById('coach-review-card');
+            const coachReviewContent = document.getElementById('coach-review-content');
+            const beforeAfterContainer = document.getElementById('before-after-container');
+            const cardBeforeText = document.getElementById('card-before-text');
+            const badgeBeforeCount = document.getElementById('badge-before-count');
+            const cardAfterPureText = document.getElementById('card-after-pure-text');
+            const badgeAfterCount = document.getElementById('badge-after-count');
+            const cardAfterBreakdown = document.getElementById('card-after-breakdown');
+            const cardAfterBreakdownList = document.getElementById('card-after-breakdown-list');
+            const btnAdoptAi = document.getElementById('btn-adopt-ai');
+            const btnCopyAi = document.getElementById('btn-copy-ai');
+            const aiError = document.getElementById('ai-error');
+            const aiErrorText = document.getElementById('ai-error-text');
+
+            // 累積區元素
+            const accumulatedDraft = document.getElementById('accumulated-draft');
+            const accumulatedCharCount = document.getElementById('accumulated-char-count');
+            const btnCopyEssay = document.getElementById('btn-copy-essay');
+            const btnClearEssay = document.getElementById('btn-clear-essay');
+
+            // 通道設定元素
+            const btnToggleConfig = document.getElementById('btn-toggle-config');
+            const configPanel = document.getElementById('config-panel');
+            const channelMode = document.getElementById('channel-mode');
+            const workerUrlGroup = document.getElementById('worker-url-group');
+            const workerUrlInput = document.getElementById('worker-url-input');
+            const customKeyGroup = document.getElementById('custom-key-group');
+            const customApiKeyInput = document.getElementById('custom-api-key');
+            const toggleKeyVisibility = document.getElementById('toggle-key-visibility');
+            const btnSaveCustomKey = document.getElementById('btn-save-custom-key');
+            const channelBadge = document.getElementById('channel-badge');
+            const btnResetConfig = document.getElementById('btn-reset-config');
+            const btnSaveConfig = document.getElementById('btn-save-config');
+            const connectionStatus = document.getElementById('connection-status');
+            const statusText = document.getElementById('status-text');
+
+            // 靈感工具列元素
+            const btnInspirationDice = document.getElementById('btn-inspiration-dice');
+            const promptChipBtns = document.querySelectorAll('.prompt-chip-btn');
+
+            // 靈感句子庫
+            const inspirationQuotes = [
+                "「只看五分鐘就好」，這句話常讓我掉入短影音黑洞，直到鐘聲響起才驚覺時間早已流逝。",
+                "利用下課十分鐘背五個單字，或是閉目深呼吸整理思緒，微小的累積也能帶來巨大轉變。",
+                "手指在冰冷螢幕上無意識地滑動，短影音魔性節奏如潮水般淹沒了原本清晰的思緒。",
+                "尺璧非寶，寸陰是競。時間的舵從來不在演算法的伺服器裡，而在我們自己的指尖。"
+            ];
+
+            // 游標位置插入文字輔助函數
+            function insertAtCursor(myField, myValue) {
+                if (document.selection) {
+                    myField.focus();
+                    const sel = document.selection.createRange();
+                    sel.text = myValue;
+                } else if (myField.selectionStart || myField.selectionStart === 0) {
+                    const startPos = myField.selectionStart;
+                    const endPos = myField.selectionEnd;
+                    myField.value = myField.value.substring(0, startPos)
+                        + myValue
+                        + myField.value.substring(endPos, myField.value.length);
+                    myField.focus();
+                    myField.selectionStart = startPos + myValue.length;
+                    myField.selectionEnd = startPos + myValue.length;
+                } else {
+                    myField.value += myValue;
+                    myField.focus();
+                }
+                updateCharCount();
+            }
+
+            // 靈感骰子事件
+            if (btnInspirationDice) {
+                btnInspirationDice.addEventListener('click', () => {
+                    const randomQuote = inspirationQuotes[Math.floor(Math.random() * inspirationQuotes.length)];
+                    studentInput.value = randomQuote;
+                    updateCharCount();
+                    showToast('🎲 已為你抽出微隙之光靈感句！');
+                    studentInput.focus();
+                });
+            }
+
+            // 提示詞標籤點擊（無縫插入游標處）
+            promptChipBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const promptText = btn.getAttribute('data-prompt');
+                    if (promptText) {
+                        insertAtCursor(studentInput, promptText);
+                        showToast('✨ 已在游標處插入提示詞！');
+                    }
+                });
+            });
+
+            // 快速試試範例點擊
+            document.querySelectorAll('.quick-draft-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    studentInput.value = btn.getAttribute('data-text');
+                    updateCharCount();
+                    studentInput.focus();
+                });
+            });
+
+            // 字數即時監聽
+            function updateCharCount() {
+                const len = studentInput.value.length;
+                charCount.textContent = len;
+                if (len >= 200) {
+                    charCount.classList.add('text-red-500', 'font-bold');
+                    charWarning.classList.remove('hidden');
+                } else {
+                    charCount.classList.remove('text-red-500', 'font-bold');
+                    charWarning.classList.add('hidden');
+                }
+            }
+            studentInput.addEventListener('input', updateCharCount);
+
+            // 代理設定折疊
+            btnToggleConfig.addEventListener('click', () => {
+                configPanel.classList.toggle('hidden');
+            });
+
+            channelMode.addEventListener('change', () => {
+                if (channelMode.value === 'worker') {
+                    workerUrlGroup.classList.remove('hidden');
+                    if (customKeyGroup) customKeyGroup.classList.add('hidden');
+                    channelBadge.textContent = 'Cloudflare 串流極速';
+                    channelBadge.className = 'text-[10px] bg-green-100 text-green-700 px-1.5 py-0.5 rounded ml-1 font-bold';
+                } else if (channelMode.value === 'custom') {
+                    workerUrlGroup.classList.add('hidden');
+                    if (customKeyGroup) customKeyGroup.classList.remove('hidden');
+                    channelBadge.textContent = '自備 Gemini Key';
+                    channelBadge.className = 'text-[10px] bg-purple-100 text-purple-700 px-1.5 py-0.5 rounded ml-1 font-bold';
+                } else {
+                    workerUrlGroup.classList.add('hidden');
+                    if (customKeyGroup) customKeyGroup.classList.add('hidden');
+                    channelBadge.textContent = 'GAS 備援通道';
+                    channelBadge.className = 'text-[10px] bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded ml-1 font-bold';
+                }
+            });
+
+            btnResetConfig.addEventListener('click', () => {
+                channelMode.value = 'worker';
+                workerUrlInput.value = DEFAULT_WORKER_URL;
+                workerUrlGroup.classList.remove('hidden');
+                if (customKeyGroup) customKeyGroup.classList.add('hidden');
+                channelBadge.textContent = 'Cloudflare 串流極速';
+                channelBadge.className = 'text-[10px] bg-green-100 text-green-700 px-1.5 py-0.5 rounded ml-1 font-bold';
+                localStorage.removeItem('zuowen_channel_mode');
+                localStorage.removeItem('zuowen_worker_url');
+                showToast('已恢復預設通道設定');
+            });
+
+            if (toggleKeyVisibility && customApiKeyInput) {
+                toggleKeyVisibility.addEventListener('click', () => {
+                    const isPass = customApiKeyInput.type === 'password';
+                    customApiKeyInput.type = isPass ? 'text' : 'password';
+                    toggleKeyVisibility.innerHTML = isPass ? '<i class="fa-regular fa-eye-slash"></i>' : '<i class="fa-regular fa-eye"></i>';
+                });
+            }
+
+            if (btnSaveCustomKey && customApiKeyInput) {
+                btnSaveCustomKey.addEventListener('click', () => {
+                    const keyVal = customApiKeyInput.value.trim();
+                    localStorage.setItem('gemini_zuowen_key', keyVal);
+                    showToast(keyVal ? '🔑 自備金鑰已儲存！' : '⚠️ 已清除金鑰');
+                });
+            }
+
+            if (customApiKeyInput) {
+                customApiKeyInput.value = localStorage.getItem('gemini_zuowen_key') || '';
+            }
+
+            btnSaveConfig.addEventListener('click', async () => {
+                const mode = channelMode.value;
+                const workerUrl = workerUrlInput.value.trim();
+                localStorage.setItem('zuowen_channel_mode', mode);
+                localStorage.setItem('zuowen_worker_url', workerUrl);
+                if (customApiKeyInput) {
+                    localStorage.setItem('gemini_zuowen_key', customApiKeyInput.value.trim());
+                }
+
+                statusText.textContent = '正在測試連線...';
+                connectionStatus.className = 'text-xs py-1.5 px-2.5 rounded-lg bg-blue-50 text-blue-700 flex items-center gap-1.5';
+
+                try {
+                    if (mode === 'worker') {
+                        const res = await fetch(workerUrl, { method: 'OPTIONS' });
+                        if (res.ok || res.status === 204) {
+                            statusText.textContent = '✓ Cloudflare Worker 連線正常！支援 SSE 串流';
+                            connectionStatus.className = 'text-xs py-1.5 px-2.5 rounded-lg bg-green-50 text-green-700 flex items-center gap-1.5';
+                        } else {
+                            throw new Error('狀態碼：' + res.status);
+                        }
+                    } else if (mode === 'custom') {
+                        const key = (customApiKeyInput ? customApiKeyInput.value.trim() : '') || localStorage.getItem('gemini_zuowen_key') || '';
+                        if (!key) throw new Error('尚未輸入金鑰');
+                        statusText.textContent = '✓ 自備 Gemini Key 已就緒 (直連 Google)';
+                        connectionStatus.className = 'text-xs py-1.5 px-2.5 rounded-lg bg-green-50 text-green-700 flex items-center gap-1.5';
+                    } else {
+                        statusText.textContent = '✓ GAS 通道設定完成（免測直接就緒）';
+                        connectionStatus.className = 'text-xs py-1.5 px-2.5 rounded-lg bg-green-50 text-green-700 flex items-center gap-1.5';
+                    }
+                    showToast('設定已儲存！');
+                } catch (e) {
+                    statusText.textContent = '✕ 連線失敗：' + e.message;
+                    connectionStatus.className = 'text-xs py-1.5 px-2.5 rounded-lg bg-red-50 text-red-700 flex items-center gap-1.5';
+                }
+            });
+
+            // 讀取儲存的通道設定
+            const savedChannelMode = localStorage.getItem('zuowen_channel_mode');
+            const savedWorkerUrl = localStorage.getItem('zuowen_worker_url');
+            if (savedChannelMode) {
+                channelMode.value = savedChannelMode;
+                channelMode.dispatchEvent(new Event('change'));
+            }
+            if (savedWorkerUrl) {
+                workerUrlInput.value = savedWorkerUrl;
+            }
+
+            // 智慧分離純美句與技巧拆解標籤
+            
+            // 輔助安全取值（相容舊版平板瀏覽器無可選鏈 ?. 語法）
+            function getCandidateText(obj) {
+                if (obj && obj.candidates && obj.candidates[0] && obj.candidates[0].content && obj.candidates[0].content.parts && obj.candidates[0].content.parts[0]) {
+                    return obj.candidates[0].content.parts[0].text || '';
+                }
+                return '';
+            }
+
+            function separateProseAndBreakdown(rawText) {
+                if (!rawText) return { pureProse: '', techniques: [] };
+                let pureProse = rawText;
+                const techniques = [];
+
+                const bracketRegex = /[\(（【\[]([^\)）】\]]{2,20})[\)）】\]]/g;
+                let match;
+                while ((match = bracketRegex.exec(rawText)) !== null) {
+                    const tag = match[1].trim();
+                    if (tag.length >= 2 && !tag.includes('http')) {
+                        techniques.push(tag);
+                    }
+                }
+
+                pureProse = pureProse.replace(/[\(（【\[][^\)）】\]]{2,20}[\)）】\]]/g, '').trim();
+                pureProse = pureProse.replace(/^[「『"“\s]+|[」』"”\s]+$/g, '').trim();
+                return { pureProse, techniques };
+            }
+
+            // 複製 AI 潤飾純美句
+            if (btnCopyAi) {
+                btnCopyAi.addEventListener('click', () => {
+                    const textToCopy = cardAfterPureText.textContent.trim();
+                    if (!textToCopy) {
+                        showToast('尚未有潤飾美句可複製！');
+                        return;
+                    }
+                    copyToClipboard(textToCopy, '✓ 已複製純淨 6 級分昇華美句（不含說明文字）！');
+                });
+            }
+
+            // 一鍵採納至累積區
+            if (btnAdoptAi) {
+                btnAdoptAi.addEventListener('click', () => {
+                    const pureText = cardAfterPureText.textContent.trim();
+                    if (!pureText) {
+                        showToast('尚未有潤飾美句可採納！');
+                        return;
+                    }
+
+                    if (accumulatedDraft.value.trim().length > 0) {
+                        accumulatedDraft.value += '\n\n' + pureText;
+                    } else {
+                        accumulatedDraft.value = pureText;
+                    }
+
+                    const len = accumulatedDraft.value.replace(/\s/g, '').length;
+                    accumulatedCharCount.textContent = `${len} / 900 字`;
+
+                    accumulatedDraft.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    accumulatedDraft.classList.add('ring-4', 'ring-amber-400', 'bg-amber-50/70');
+                    setTimeout(() => {
+                        accumulatedDraft.classList.remove('ring-4', 'ring-amber-400', 'bg-amber-50/70');
+                    }, 1500);
+
+                    showToast('🚀 已成功採納純淨美句至下方文章累積區！');
+                });
+            }
+
+            // 格式化 AI 輸出文字
+            function formatAiText(text) {
+                return text
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                    .replace(/\n\n/g, '</p><p class="mt-2">')
+                    .replace(/\n/g, '<br>');
+            }
+
+            // 渲染 Before / After 卡片
+            function renderBeforeAfterCards(originalInput, fullAiText) {
+                cardBeforeText.textContent = originalInput;
+                badgeBeforeCount.textContent = `${originalInput.replace(/\s/g, '').length} 字`;
+
+                let rawAfter = '';
+                let reviewPart = '';
+
+                if (fullAiText.includes('【潤飾示範與拆解】')) {
+                    const parts = fullAiText.split('【潤飾示範與拆解】');
+                    reviewPart = parts[0]
+                        .replace(/【教練的肯定】/g, '<strong class="text-blue-900 block font-bold mt-1">【教練的肯定】</strong>')
+                        .replace(/【具體建議】/g, '<strong class="text-blue-900 block font-bold mt-2">【具體建議】</strong>');
+                    rawAfter = parts[1] || '';
+                } else if (fullAiText.includes('【潤飾示範】')) {
+                    const parts = fullAiText.split('【潤飾示範】');
+                    reviewPart = parts[0];
+                    rawAfter = parts[1] || '';
+                } else {
+                    const third = Math.floor(fullAiText.length * 0.6);
+                    reviewPart = fullAiText.slice(0, third);
+                    rawAfter = fullAiText.slice(third);
+                }
+
+                if (reviewPart.trim()) {
+                    coachReviewContent.innerHTML = reviewPart;
+                    coachReviewCard.classList.remove('hidden');
+                } else {
+                    coachReviewCard.classList.add('hidden');
+                }
+
+                const { pureProse, techniques } = separateProseAndBreakdown(rawAfter);
+                cardAfterPureText.textContent = pureProse || rawAfter;
+                badgeAfterCount.textContent = `${(pureProse || rawAfter).replace(/\s/g, '').length} 字`;
+
+                cardAfterBreakdownList.innerHTML = '';
+                if (techniques.length > 0) {
+                    const badgeStyles = [
+                        'bg-amber-100 text-amber-800 border-amber-300',
+                        'bg-blue-100 text-blue-800 border-blue-300',
+                        'bg-emerald-100 text-emerald-800 border-emerald-300',
+                        'bg-purple-100 text-purple-800 border-purple-300',
+                        'bg-rose-100 text-rose-800 border-rose-300'
+                    ];
+                    techniques.forEach((tech, idx) => {
+                        const span = document.createElement('span');
+                        const styleClass = badgeStyles[idx % badgeStyles.length];
+                        span.className = `text-[10px] px-2 py-0.5 rounded-full border font-medium ${styleClass}`;
+                        span.textContent = tech;
+                        cardAfterBreakdownList.appendChild(span);
+                    });
+                    cardAfterBreakdown.classList.remove('hidden');
+                } else {
+                    cardAfterBreakdown.classList.add('hidden');
+                }
+
+                beforeAfterContainer.classList.remove('hidden');
+            }
+
+            // Cloudflare Worker SSE 串流發送
+            async function streamFromWorker(workerUrl, payload, onChunk) {
+                const response = await fetch(workerUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const errData = await response.json().catch(() => ({}));
+                    throw new Error(errData.error || `HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                let accumulated = '';
+                let buffer = '';
+
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+
+                    buffer += decoder.decode(value, { stream: true });
+                    const lines = buffer.split('\n');
+                    buffer = lines.pop();
+
+                    for (const line of lines) {
+                        if (line.startsWith('data: ')) {
+                            const data = line.slice(6).trim();
+                            if (data === '[DONE]') continue;
+                            try {
+                                const parsed = JSON.parse(data);
+                                if (parsed.text) {
+                                    accumulated += parsed.text;
+                                    onChunk(accumulated, parsed.text);
+                                }
+                            } catch (e) {
+                                if (data) {
+                                    accumulated += data;
+                                    onChunk(accumulated, data);
+                                }
+                            }
+                        }
+                    }
+                }
+                return accumulated;
+            }
+
+            // GAS 通道重試機制
+            async function fetchWithRetry(url, options, maxRetries = 2, delayMs = 1500) {
+                let lastError;
+                for (let attempt = 0; attempt <= maxRetries; attempt++) {
+                    try {
+                        const response = await fetch(url, options);
+                        if (response.ok) return response;
+                        const errText = await response.text().catch(() => '');
+                        throw new Error(`伺服器回應 ${response.status}: ${errText.slice(0, 100)}`);
+                    } catch (err) {
+                        lastError = err;
+                        if (attempt < maxRetries) {
+                            await new Promise(res => setTimeout(res, delayMs * Math.pow(1.5, attempt)));
+                        }
+                    }
+                }
+                throw lastError;
+            }
+
+            // 啟動 AI 批閱診斷
+            btnAskAI.addEventListener('click', async () => {
+                const text = studentInput.value.trim();
+                if (!text) {
+                    showToast('請先輸入你想寫的內容！');
+                    studentInput.focus();
+                    return;
+                }
+
+                const selectedFocus = (document.querySelector('input[name=\"focus\"]:checked') ? document.querySelector('input[name=\"focus\"]:checked').value : '') || '🎬 強化情境畫面感';
+
+                const systemPrompt = `你是一位專業且敏銳的國中寫作教練，正在指導學生寫「青少年零碎時間運用」的會考記敘議論/記敘抒情文。
+主題涵蓋：圖表數據解讀、手機短影音誘惑、時間黑洞掙扎、微習慣自律實踐、專注力自主掌控等。
+請根據學生輸入的草稿給予回饋。
+
+【特別任務】學生希望這次能特別加強：**${selectedFocus}**。請在給予建議時，特別針對這點進行指導。
+
+回饋必須使用繁體中文，格式請嚴格遵守以下三個段落（請直接使用簡單的 HTML 標籤如 <p>, <b>, <ul>, <li> 進行排版，不要使用 Markdown 星號）：
+
+<p><b>【教練的肯定】</b><br>簡短稱讚學生的取材立意、情境細節描摹或自省深度，給予鼓勵。</p>
+<p><b>【具體建議】</b><br>針對學生選擇的加強重點給出具體的修改方向。用語要像是親切的對話，引導他們深入剖析科技依賴或深化自律實踐。</p>
+<p><b>【潤飾示範與拆解】</b><br>給出一段改寫後的美句示範（符合國中生 6 級分程度），並在句子後面用括號標註你使用了什麼寫作技巧（如：五感摹寫、動態捕捉、心理轉折、哲理對比等）。</p>`;
+
+                const payload = {
+                    contents: [
+                        { role: 'user', parts: [{ text: `${systemPrompt}\n\n學生輸入的段落：\n"${text}"` }] }
+                    ],
+                    generationConfig: {
+                        temperature: 0.7,
+                        maxOutputTokens: 1000
+                    }
+                };
+
+                btnAskAI.disabled = true;
+                btnAskText.textContent = '教練正在構思點評...';
+                aiLoading.classList.remove('hidden');
+                aiOutputContainer.classList.add('hidden');
+                aiError.classList.add('hidden');
+                coachReviewCard.classList.add('hidden');
+                beforeAfterContainer.classList.add('hidden');
+                aiOutput.innerHTML = '';
+                streamBadge.textContent = '正在生成中...';
+                streamBadge.className = 'text-[10px] bg-blue-100 text-blue-700 font-semibold px-2 py-0.5 rounded-full animate-pulse';
+
+                const mode = channelMode.value;
+                const workerUrl = (workerUrlInput.value.trim() || DEFAULT_WORKER_URL);
+
+                try {
+                    let fullAiText = '';
+
+                    if (mode === 'worker') {
+                        aiLoading.classList.add('hidden');
+                        aiOutputContainer.classList.remove('hidden');
+                        aiStreamBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+                        fullAiText = await streamFromWorker(workerUrl, payload, (accumulated, chunk) => {
+                            aiOutput.innerHTML = accumulated;
+                        });
+
+                        streamBadge.textContent = '✓ 生成完成 (極速串流)';
+                        streamBadge.className = 'text-[10px] bg-green-100 text-green-700 font-semibold px-2 py-0.5 rounded-full';
+                    } else if (mode === 'custom') {
+                        const userKey = (customApiKeyInput ? customApiKeyInput.value.trim() : '') || localStorage.getItem('gemini_zuowen_key') || '';
+                        if (!userKey) throw new Error("請先在下方自備金鑰欄位填入您的 Gemini API Key！");
+
+                        aiLoading.classList.remove('hidden');
+                        aiOutputContainer.classList.remove('hidden');
+                        streamBadge.textContent = '⚡ 直連 Google API 生成中...';
+                        streamBadge.className = 'text-[10px] bg-purple-100 text-purple-700 font-semibold px-2 py-0.5 rounded-full';
+
+                        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${userKey}`;
+                        const promptPayload = systemPrompt + "\n\n學生作文：\n" + text;
+                        const res = await fetch(url, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                contents: [{ role: 'user', parts: [{ text: promptPayload }] }]
+                            })
+                        });
+                        if (!res.ok) {
+                            const errJson = await res.json().catch(() => ({}));
+                            throw new Error(`Google API 呼叫失敗 (${res.status}): ` + ((errJson.error && errJson.error.message ? errJson.error.message : "") || res.statusText));
+                        }
+                        const json = await res.json();
+                        if (json && json.candidates && json.candidates[0] && json.candidates[0].content && json.candidates[0].content.parts && json.candidates[0].content.parts[0]) {
+                            fullAiText = json.candidates[0].content.parts[0].text || "";
+                        } else {
+                            fullAiText = "";
+                        }
+                        if (!fullAiText) throw new Error("Google API 未回傳有效文字");
+
+                        aiLoading.classList.add('hidden');
+                        aiOutputContainer.classList.remove('hidden');
+                        aiOutput.innerHTML = fullAiText;
+                        streamBadge.textContent = '✓ 生成完成 (自備 Key 直連)';
+                        streamBadge.className = 'text-[10px] bg-green-100 text-green-700 font-semibold px-2 py-0.5 rounded-full';
+                    } else {
+                        const response = await fetchWithRetry(DEFAULT_GAS_URL, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'text/plain' },
+                            body: JSON.stringify(payload)
+                        }, 2, 1500);
+
+                        const result = await response.json();
+                        if (result.error) throw new Error(result.error);
+
+                        fullAiText = getCandidateText(result)
+                            || result.text
+                            || (typeof result === 'string' ? result : JSON.stringify(result));
+
+                        aiLoading.classList.add('hidden');
+                        aiOutputContainer.classList.remove('hidden');
+                        aiOutput.innerHTML = fullAiText;
+                        streamBadge.textContent = '✓ 點評完成 (GAS 通道)';
+                        streamBadge.className = 'text-[10px] bg-blue-100 text-blue-700 font-semibold px-2 py-0.5 rounded-full';
+                    }
+
+                    renderBeforeAfterCards(text, fullAiText);
+                    showToast('🎉 AI 教練點評完成！');
+                } catch (err) {
+                    aiLoading.classList.add('hidden');
+                    aiError.classList.remove('hidden');
+                    aiErrorText.textContent = `點評失敗：${err.message}。建議切換通道或稍後重試。`;
+                    console.error('AI Coaching Error:', err);
+                } finally {
+                    btnAskAI.disabled = false;
+                    btnAskText.textContent = '開始 AI 深度點評';
+                }
+            });
+
+            // 累積區字數統計
+            accumulatedDraft.addEventListener('input', () => {
+                const len = accumulatedDraft.value.replace(/\s/g, '').length;
+                accumulatedCharCount.textContent = `${len} / 900 字`;
+            });
+
+            // 複製累積區全文
+            btnCopyEssay.addEventListener('click', () => {
+                const text = accumulatedDraft.value.trim();
+                if (!text) {
+                    showToast('文章累積區尚無內容！');
+                    return;
+                }
+                copyToClipboard(text, '✓ 文章全文已複製到剪貼簿！');
+            });
+
+            // 清空累積區
+            btnClearEssay.addEventListener('click', () => {
+                if (confirm('確定要清空文章累積區的所有內容嗎？')) {
+                    accumulatedDraft.value = '';
+                    accumulatedCharCount.textContent = '0 / 900 字';
+                    showToast('已清空累積區');
+                }
+            });
+
+            // 骨架引導句填入累積區
+            document.querySelectorAll('.scaffold-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const text = btn.getAttribute('data-text');
+                    if (accumulatedDraft.value.trim().length > 0) {
+                        accumulatedDraft.value += '\n\n' + text;
+                    } else {
+                        accumulatedDraft.value = text;
+                    }
+                    const len = accumulatedDraft.value.replace(/\s/g, '').length;
+                    accumulatedCharCount.textContent = `${len} / 900 字`;
+                    accumulatedDraft.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    accumulatedDraft.focus();
+                    showToast('已插入骨架引導句！');
+                });
+            });
+
+            // ==========================================
+            // 7. 教師專區 Modal & 密碼 SHA-256 驗證 (嚴格遵循全域密碼防護準則)
+            // ==========================================
+            const modal = document.getElementById('teacher-modal');
+            const btnOpenModal = document.getElementById('btn-open-teacher-modal');
+            const btnCloseModal = document.getElementById('btn-close-modal');
+            const btnVerifyPwd = document.getElementById('btn-verify-pwd');
+            const pwdInput = document.getElementById('teacher-pwd-input');
+            const pwdError = document.getElementById('pwd-error');
+            const authSection = document.getElementById('teacher-auth-section');
+            const configSection = document.getElementById('teacher-config-section');
+            const btnSaveTeacherGas = document.getElementById('btn-save-teacher-gas');
+            const customGasUrlInput = document.getElementById('custom-gas-url');
+
+            // 教師管理通行碼之 SHA-256 雜湊特徵清單 (原始碼絕無明文密碼，不可逆單向雜湊)
+            const AUTHORIZED_HASHES = [
+                "88cf986449b61aeba90a4baedfaeba95cc12e8d04dedfebe53b78dd29fc0a4ac", // SHA-256 特徵 1
+                "996b48fd3814ad825c594e692903a8bf5bb17018ed3214576c487426f425504a", // SHA-256 特徵 2
+                "7bb3615c6fffb5c6aa3c9a16bf2217dd103ee3b5af80048b183e2d705467c7ef"  // SHA-256 特徵 3
+            ];
+
+            async function computeSHA256(str) {
+                const msgBuffer = new TextEncoder().encode(str);
+                const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+                const hashArray = Array.from(new Uint8Array(hashBuffer));
+                return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            }
+
+            btnOpenModal.addEventListener('click', () => {
+                modal.classList.remove('hidden');
+                pwdInput.value = '';
+                pwdError.classList.add('hidden');
+                authSection.classList.remove('hidden');
+                configSection.classList.add('hidden');
+                setTimeout(() => pwdInput.focus(), 100);
+            });
+
+            btnCloseModal.addEventListener('click', () => modal.classList.add('hidden'));
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) modal.classList.add('hidden');
+            });
+
+            btnVerifyPwd.addEventListener('click', async () => {
+                const val = pwdInput.value.trim();
+                if (!val) return;
+                const hash = await computeSHA256(val);
+                if (AUTHORIZED_HASHES.includes(hash)) {
+                    authSection.classList.add('hidden');
+                    configSection.classList.remove('hidden');
+                } else {
+                    pwdError.classList.remove('hidden');
+                    pwdInput.select();
+                }
+            });
+
+            pwdInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') btnVerifyPwd.click();
+            });
+
+            if (btnSaveTeacherGas) {
+                btnSaveTeacherGas.addEventListener('click', () => {
+                    const url = customGasUrlInput.value.trim();
+                    if (url) {
+                        localStorage.setItem('custom_gas_api_url', url);
+                        alert("✅ 教師專屬 GAS 端點已儲存！");
+                    }
+                });
+            }
+
+            const savedGasUrl = localStorage.getItem('custom_gas_api_url');
+            if (savedGasUrl) customGasUrlInput.value = savedGasUrl;
+        });
+
+        // 範文手風琴展開/收合
+        function toggleEssay(id, btn) {
+            const content = document.getElementById(id);
+            const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+
+            if (isExpanded) {
+                content.classList.remove('open');
+                btn.setAttribute('aria-expanded', 'false');
+            } else {
+                content.classList.add('open');
+                btn.setAttribute('aria-expanded', 'true');
+            }
+        }
+    </script>
+</body>
+</html>
