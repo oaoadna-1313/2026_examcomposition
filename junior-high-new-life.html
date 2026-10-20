@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎒 國中新生活｜會考寫作錦囊【萬用例可帶 × 問津趕行程】GAS版</title>
+    <title>🎒 國中新生活｜寫作錦囊【萬用例可帶 × 問津趕行程】GAS版</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <script>
@@ -178,7 +178,7 @@
                 <div>
                     <h1 class="font-black text-lg md:text-xl text-ink tracking-tight flex items-center gap-2">
                         國中新生活
-                        <span class="text-xs bg-blue-100 text-blue-800 font-bold px-2 py-0.5 rounded-full border border-blue-200">會考寫作錦囊</span>
+                        <span class="text-xs bg-blue-100 text-blue-800 font-bold px-2 py-0.5 rounded-full border border-blue-200">寫作錦囊</span>
                     </h1>
                     <p class="text-xs text-gray-500 font-medium hidden sm:block">生活情境感悟 × 萬用例轉移 × 問津趕行程五結構</p>
                 </div>
@@ -190,10 +190,6 @@
                 <a href="#structure-blueprint" class="text-xs text-gray-600 hover:text-blue-600 px-2 py-1 rounded transition hidden md:inline-block">五段骨架</a>
                 <a href="#essays-section" class="text-xs text-gray-600 hover:text-blue-600 px-2 py-1 rounded transition hidden md:inline-block">高分範文</a>
                 <a href="#workshop-section" class="text-xs text-gray-600 hover:text-blue-600 px-2 py-1 rounded transition hidden md:inline-block">AI教練</a>
-                <button id="btn-open-teacher-modal" class="text-xs bg-slate-800 hover:bg-slate-700 text-white font-medium px-3 py-1.5 rounded-lg shadow-xs transition flex items-center gap-1.5">
-                    <i class="fa-solid fa-lock text-[11px]"></i>
-                    <span>教師專區</span>
-                </button>
             </div>
         </div>
     </header>
@@ -2616,7 +2612,7 @@
                 return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
             }
 
-            btnOpenModal.addEventListener('click', () => {
+            if (btnOpenModal) btnOpenModal.addEventListener('click', () => {
                 modal.classList.remove('hidden');
                 pwdInput.value = '';
                 pwdError.classList.add('hidden');
