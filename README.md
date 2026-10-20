@@ -16,6 +16,7 @@
 | 項次 | 作文主題名稱 | 分類向度 | 英文標準檔名 | GitHub Pages 線上瀏覽網址 | 寫作核心焦點與心法 |
 | :---: | :--- | :---: | :--- | :--- | :--- |
 | **00** | **會考寫作錦囊 總目錄導覽首頁** | 總覽入口 | `index.html` | [點此前往首頁](https://oaoadna-1313.github.io/2026_examcomposition/index.html) | 整合 7 大寫作單元、即時搜尋、分類篩選與心法指南 |
+| **導引** | **萬用例可帶 × 問津趕行程** | 核心心法 | `writing-guide.html` | [點此前往學習](https://oaoadna-1313.github.io/2026_examcomposition/writing-guide.html) | 《青春第二課》人物縮寫心法 × 最強五段骨架 × AI 寫作教練 |
 | **01** | **國中新生活** | 生活與成長 | `junior-high-new-life.html` | [點此前往學習](https://oaoadna-1313.github.io/2026_examcomposition/junior-high-new-life.html) | 環境轉變 × 心態調適 × 自我期許，由迷惘至篤定 |
 | **02** | **我從《論語》學到的事** | 經典與思辨 | `lessons-from-the-analects.html` | [點此前往學習](https://oaoadna-1313.github.io/2026_examcomposition/lessons-from-the-analects.html) | 聖賢之智結合生活印證，化解困頓，展現學思並重 |
 | **03** | **最能代表我的一個字** | 自我探索 | `one-word-that-represents-me.html` | [點此前往學習](https://oaoadna-1313.github.io/2026_examcomposition/one-word-that-represents-me.html) | 借字喻人，剖析字形字義，凝鍊個人生命特質與處世哲理 |
