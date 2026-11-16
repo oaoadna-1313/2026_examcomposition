@@ -1,0 +1,2058 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🦅 在框架與探索之間｜寫作錦囊【萬用例可帶 × 問津趕行程】GAS版</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN with multiple fallbacks -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        if (!window.Chart) {
+            document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"><\/script>');
+        }
+    </script>
+    <!-- FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        paper: '#FDFBF7',
+                        ink: '#2C3E50',
+                        primary: '#2563EB',
+                        secondary: '#059669',
+                        tertiary: '#D97706',
+                        crimson: '#DC2626',
+                        highlight: '#EFF6FF',
+                        danger: '#EF4444',
+                        teacher: '#334155',
+                        'teacher-light': '#475569'
+                    },
+                    fontFamily: {
+                        sans: ['"Noto Sans TC"', 'sans-serif'],
+                        serif: ['"Noto Serif TC"', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@600;700;900&display=swap');
+        
+        body {
+            background-color: #FDFBF7;
+            color: #2C3E50;
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        h1, h2, h3, h4, .serif {
+            font-family: 'Noto Serif TC', serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 380px;
+        }
+        .step-transition {
+            transition: all 0.3s ease-in-out;
+        }
+        .tab-btn {
+            transition: all 0.2s ease;
+        }
+        .tab-btn:not(.active):hover {
+            background-color: #EFF6FF;
+        }
+        /* Tab 選中狀態強制溫潤淺鵝黃色高對比 */
+        .tab-btn.active {
+            background-color: #FEF9C3 !important;
+            border-color: #FDE047 !important;
+            border-left-width: 5px !important;
+            border-left-style: solid !important;
+            box-shadow: 0 4px 12px -2px rgba(234, 179, 8, 0.25) !important;
+        }
+        .tab-btn.active[data-id="p1"] { border-left-color: #2563EB !important; }
+        .tab-btn.active[data-id="p2"] { border-left-color: #059669 !important; }
+        .tab-btn.active[data-id="p3"] { border-left-color: #D97706 !important; }
+        .tab-btn.active[data-id="p4"] { border-left-color: #7C3AED !important; }
+        .tab-btn.active[data-id="p5"] { border-left-color: #E11D48 !important; }
+
+        .tab-btn.active .text-gray-800 { color: #0F172A !important; }
+        .tab-btn.active .text-gray-400 { color: #475569 !important; }
+
+        .checklist-item {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .checklist-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.12);
+        }
+        
+        .essay-content {
+            transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        .essay-content.open {
+            max-height: 5000px;
+            opacity: 1;
+        }
+        .rotate-arrow {
+            transition: transform 0.3s ease;
+        }
+        button[aria-expanded="true"] .rotate-arrow {
+            transform: rotate(180deg);
+        }
+
+        /* 金色光環成就感動畫 */
+        .golden-glow {
+            animation: goldenGlow 1.5s ease-out;
+        }
+        @keyframes goldenGlow {
+            0% {
+                box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7);
+                background-color: rgba(254, 243, 199, 0.9);
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(245, 158, 11, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
+                background-color: transparent;
+            }
+        }
+
+        /* AI 內容樣式 */
+        .ai-content b { color: #2563EB; font-weight: 700; }
+        .ai-content ul { list-style-type: disc; margin-left: 1.5rem; margin-top: 0.5rem; margin-bottom: 0.5rem; }
+        .ai-content li { margin-bottom: 0.25rem; }
+        .ai-content p { margin-bottom: 0.75rem; }
+    </style>
+</head>
+<body class="bg-paper text-ink min-h-screen">
+
+    <!-- 頂端固定半透明導覽條（Sticky Header） -->
+    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-gray-200 px-4 py-3 shadow-xs">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <span class="text-2xl">🦅</span>
+                <div>
+                    <h1 class="font-black text-lg md:text-xl text-ink tracking-tight flex items-center gap-2">
+                        在框架與探索之間
+                        <span class="text-xs bg-blue-100 text-blue-800 font-bold px-2 py-0.5 rounded-full border border-blue-200">寫作錦囊</span>
+                    </h1>
+                    <p class="text-xs text-gray-500 font-medium hidden sm:block">生活情境思辨 × 萬用例轉移 × 問津趕行程五結構</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2">
+                <a href="#prompt-section" class="text-xs text-gray-600 hover:text-blue-600 px-2 py-1 rounded transition hidden md:inline-block">題目卷</a>
+                <a href="#portable-example" class="text-xs text-gray-600 hover:text-blue-600 px-2 py-1 rounded transition hidden md:inline-block">萬用例轉移</a>
+                <a href="#expansion-tool" class="text-xs text-gray-600 hover:text-blue-600 px-2 py-1 rounded transition hidden md:inline-block">擴寫術</a>
+                <a href="#structure-blueprint" class="text-xs text-gray-600 hover:text-blue-600 px-2 py-1 rounded transition hidden md:inline-block">五段骨架</a>
+                <a href="#essays-section" class="text-xs text-gray-600 hover:text-blue-600 px-2 py-1 rounded transition hidden md:inline-block">高分範文</a>
+                <a href="#vocabulary-section" class="text-xs text-gray-600 hover:text-blue-600 px-2 py-1 rounded transition hidden md:inline-block">實戰詞庫</a>
+                <a href="#workshop-section" class="text-xs text-gray-600 hover:text-blue-600 px-2 py-1 rounded transition hidden md:inline-block">AI教練</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主內容區 -->
+    <main class="max-w-6xl mx-auto px-4 py-8 space-y-16">
+
+        <!-- ==========================================
+             單元一：題目與試題引導卡片 (#prompt-section)
+             ========================================== -->
+        <section id="prompt-section" class="scroll-mt-20">
+            <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border-2 border-[#E5DFD3] relative overflow-hidden">
+                <!-- 任務導引文字 -->
+                <div class="mt-6 mb-4 flex items-center justify-between">
+                    <span class="text-xs font-black uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-200">
+                        Task Guideline ‧ 請先閱讀以下資訊，並按題意要求完成一篇文章
+                    </span>
+                    <span class="text-xs text-gray-500 hidden sm:inline">文體要求：論說文</span>
+                </div>
+
+                <!-- 題目情境對照圖卡 -->
+                <div class="my-4 text-center">
+                    <img src="prompt_comparison_card.jpg" 
+                         onerror="this.onerror=null; this.src='籠裡的鳥VS天空的鳥.jpg';" 
+                         alt="籠中鳥 vs 天際鳥・舒適框架 vs 自主探索" 
+                         class="w-full max-w-4xl mx-auto rounded-xl shadow-sm border border-slate-200 object-cover">
+                </div>
+
+                <!-- 引導短文區 -->
+                <div class="bg-paper p-5 md:p-7 rounded-xl border border-gray-200 text-gray-800 space-y-3 leading-relaxed">
+                    <p class="indent-8 text-base md:text-lg">
+                        籠裡的鳥，每日有水有食、不受風吹雨打，卻失去了天空與生氣；<br class="hidden md:inline">
+                        天空的鳥，必須自己覓食、隨時面對天敵與暴雨，卻擁有展翅翱翔的無限快意。
+                    </p>
+                    <p class="indent-8 text-base md:text-lg">
+                        在成長過程中，我們往往渴望被保護的安穩（由父母師長安排好的生活），卻又嚮往自主的自由（自己做決定、承擔挑戰）。面對「舒適安全的框架」與「充滿未知但自主的探索」，你有什麼思考？
+                    </p>
+                    <p class="indent-8 text-base md:text-lg font-bold text-ink">
+                        請提出你的核心論點，結合生活經驗、校園觀察或閱讀體悟，進行深入論證。你可以選擇支持其中一種生活樣態，也可以探討兩者之間的權衡、過渡與折衷，闡述你的核心主張與具體理由。
+                    </p>
+                </div>
+
+                <!-- 四大思維面向卡片 -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+                    <!-- 面向一 -->
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center space-x-2 mb-2">
+                                <span class="text-xl">🏰</span>
+                                <h4 class="font-bold text-slate-800 text-sm">【安穩庇護 ‧ 秩序滋養】</h4>
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                享受規律的生活軌道，在秩序中打磨基本功。未經鍛鍊的放縱並非自由，框架提供了蓄積實力的搖籃。
+                            </p>
+                        </div>
+                        <div class="mt-3 pt-2 border-t border-slate-200 text-xs font-bold text-slate-500">
+                            關鍵意象：堅固鳥巢 ‧ 厚實甲板
+                        </div>
+                    </div>
+
+                    <!-- 面向二 -->
+                    <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center space-x-2 mb-2">
+                                <span class="text-xl">🦅</span>
+                                <h4 class="font-bold text-blue-900 text-sm">【自主探索 ‧ 搏擊風霜】</h4>
+                            </div>
+                            <p class="text-xs text-blue-800 leading-relaxed">
+                                勇於掙脫過度保護，跨出舒適圈。即使面對未知的失敗與狂風暴雨，唯有搏擊才能活出生命的野性與尊嚴。
+                            </p>
+                        </div>
+                        <div class="mt-3 pt-2 border-t border-blue-200 text-xs font-bold text-blue-600">
+                            關鍵意象：傲骨飛鳥 ‧ 凌雲展翅
+                        </div>
+                    </div>
+
+                    <!-- 面向三 -->
+                    <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-4 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center space-x-2 mb-2">
+                                <span class="text-xl">⚖️</span>
+                                <h4 class="font-bold text-emerald-900 text-sm">【蓄力振翅 ‧ 辯證兼融】</h4>
+                            </div>
+                            <p class="text-xs text-emerald-800 leading-relaxed">
+                                框架與探索非零和對立。在自律框架中淬鍊羽翼，在自主長空中實踐理想。因框架而厚實，因探索而偉大。
+                            </p>
+                        </div>
+                        <div class="mt-3 pt-2 border-t border-emerald-200 text-xs font-bold text-emerald-700">
+                            關鍵意象：厚積薄發 ‧ 蓮之挺拔
+                        </div>
+                    </div>
+
+                    <!-- 面向四 -->
+                    <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center space-x-2 mb-2">
+                                <span class="text-xl">🧭</span>
+                                <h4 class="font-bold text-amber-900 text-sm">【生命自省 ‧ 責任承擔】</h4>
+                            </div>
+                            <p class="text-xs text-amber-800 leading-relaxed">
+                                探索不是叛逆，自由必須自負盈虧。看清安逸的代價與自主的重量，成為真正能夠為自己人生負責的掌舵者。
+                            </p>
+                        </div>
+                        <div class="mt-3 pt-2 border-t border-amber-200 text-xs font-bold text-amber-700">
+                            關鍵意象：破繭成蝶 ‧ 獨當一面
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 會考作答檢核點便籤卡 -->
+                <div class="bg-amber-50 border-l-4 border-amber-400 p-4 rounded-r-xl mt-6 flex flex-col md:flex-row justify-between items-start md:items-center text-xs md:text-sm text-amber-900 gap-2">
+                    <div class="space-y-1">
+                        <p class="font-bold flex items-center gap-1">
+                            <i class="fa-solid fa-triangle-exclamation text-amber-500"></i> 會考作答規範提醒：
+                        </p>
+                        <p>※ 不必訂題（若自訂題目請寫於第一行） ‧ ※ 文體限用「論說文」，請提出明確主張並舉例論證 ‧ ※ 黑色墨水筆書寫 ‧ ※ 勿洩漏私人身分 ‧ ※ 不得使用詩歌體</p>
+                    </div>
+                    <div class="shrink-0 bg-white px-3 py-1.5 rounded-lg border border-amber-200 font-bold text-amber-800">
+                        建議字數：750 ~ 950 字（40行配速）
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             單元三：萬用例轉移指南 (#portable-example)
+             ========================================== -->
+        <section id="portable-example" class="scroll-mt-20">
+            <div class="flex items-center justify-between mb-4">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">
+                        Unit 3 ‧ Strategy
+                    </span>
+                    <h3 class="text-2xl font-black text-ink mt-1 serif">萬用例轉移指南：平時素材無縫移植</h3>
+                </div>
+                <span class="text-xs text-gray-500 hidden md:inline">角度一轉 ‧ 處處皆是論證利器</span>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <!-- 左側：多維度特質雷達圖 -->
+                <div class="lg:col-span-5 bg-white p-6 rounded-2xl border border-gray-200 shadow-xs flex flex-col items-center">
+                    <div class="w-full flex justify-between items-center mb-2">
+                        <h4 class="font-bold text-ink text-sm flex items-center gap-1.5">
+                            <i class="fa-solid fa-chart-pie text-emerald-600"></i> 框架與探索思辨雷達
+                        </h4>
+                        <span class="text-xs text-gray-400">雙向度評量</span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="portableChart"></canvas>
+                    </div>
+                    <p class="text-xs text-gray-500 text-center mt-3 leading-relaxed">
+                        💡 高分論說文講究「論點明確」與「辯證張力」。無論偏向安穩或探索，關鍵在於能透視背後的<b>「自律」</b>與<b>「責任」</b>。
+                    </p>
+                </div>
+
+                <!-- 右側：4 組萬用例轉移卡片 -->
+                <div class="lg:col-span-7 space-y-4">
+                    <!-- 卡片 1 -->
+                    <div class="bg-white p-4 md:p-5 rounded-xl border-l-4 border-blue-500 border-y border-r border-gray-200 shadow-xs">
+                        <div class="flex items-center justify-between mb-1.5">
+                            <span class="font-bold text-blue-900 text-sm flex items-center gap-2">
+                                <span class="w-5 h-5 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-black">1</span>
+                                萬用例：樂器演奏 / 技藝練習
+                            </span>
+                            <span class="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded font-medium">框架蓄力型</span>
+                        </div>
+                        <p class="text-xs text-gray-600 leading-relaxed mb-2">
+                            <b>平時素材：</b>練習鋼琴或小提琴，前期枯燥的音階、節拍器冰冷的滴答聲，曾讓人感到窒息與束縛。<br>
+                            <b>移植切入：</b>將音階規律比喻為「鳥籠框架」。唯有前期耐住枯燥在框架中淬鍊扎實指力，後期才能在即興演奏中隨心所欲展現海闊天空的自由！
+                        </p>
+                        <div class="text-xs text-blue-800 bg-blue-50/80 p-2 rounded font-medium">
+                            🎯 金句提煉：「沒有前期嚴苛框架的磨礪，就絕不可能有後期指尖游刃有餘的絕對自由。」
+                        </div>
+                    </div>
+
+                    <!-- 卡片 2 -->
+                    <div class="bg-white p-4 md:p-5 rounded-xl border-l-4 border-rose-500 border-y border-r border-gray-200 shadow-xs">
+                        <div class="flex items-center justify-between mb-1.5">
+                            <span class="font-bold text-rose-900 text-sm flex items-center gap-2">
+                                <span class="w-5 h-5 rounded-full bg-rose-100 text-rose-700 flex items-center justify-center text-xs font-black">2</span>
+                                萬用例：科學探究 / 專題競賽
+                            </span>
+                            <span class="text-xs bg-rose-50 text-rose-700 px-2 py-0.5 rounded font-medium">自主探索型</span>
+                        </div>
+                        <p class="text-xs text-gray-600 leading-relaxed mb-2">
+                            <b>平時素材：</b>習慣照著實驗手冊的標準步驟操作，雖然保證得分，卻毫無樂趣與驚喜。<br>
+                            <b>移植切入：</b>打破課本劃線的「安全框架」，自主發想無人涉足的題目。經歷無數次實驗失敗與焦慮，最終在獨立解決問題中體會到搏擊未知長空的極致快意。
+                        </p>
+                        <div class="text-xs text-rose-800 bg-rose-50/80 p-2 rounded font-medium">
+                            🎯 金句提煉：「生命的尊嚴，不在於照本宣科的平順，而在於親自探勘未知邊界的勇氣。」
+                        </div>
+                    </div>
+
+                    <!-- 卡片 3 -->
+                    <div class="bg-white p-4 md:p-5 rounded-xl border-l-4 border-emerald-500 border-y border-r border-gray-200 shadow-xs">
+                        <div class="flex items-center justify-between mb-1.5">
+                            <span class="font-bold text-emerald-900 text-sm flex items-center gap-2">
+                                <span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-black">3</span>
+                                萬用例：體育長跑 / 團隊球隊
+                            </span>
+                            <span class="text-xs bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded font-medium">辯證融合型</span>
+                        </div>
+                        <p class="text-xs text-gray-600 leading-relaxed mb-2">
+                            <b>平時素材：</b>清晨教練安排的高強度固定課表，看似死板；但在關鍵賽事瞬息萬變的戰局中，卻能臨場隨機應變。<br>
+                            <b>移植切入：</b>框架不是扼殺創意的監獄，而是鍛造筋骨的鐵砧。在規範中磨出抗壓底氣，才能在未知的戰場上展現靈活的身手。
+                        </p>
+                        <div class="text-xs text-emerald-800 bg-emerald-50/80 p-2 rounded font-medium">
+                            🎯 金句提煉：「自律即是力量。唯有被嚴格秩序鍛造過的筋骨，方能在風暴中自由翱翔。」
+                        </div>
+                    </div>
+
+                    <!-- 卡片 4 -->
+                    <div class="bg-white p-4 md:p-5 rounded-xl border-l-4 border-amber-500 border-y border-r border-gray-200 shadow-xs">
+                        <div class="flex items-center justify-between mb-1.5">
+                            <span class="font-bold text-amber-900 text-sm flex items-center gap-2">
+                                <span class="w-5 h-5 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center text-xs font-black">4</span>
+                                萬用例：社團自治 / 班級服務
+                            </span>
+                            <span class="text-xs bg-amber-50 text-amber-700 px-2 py-0.5 rounded font-medium">責任擔當型</span>
+                        </div>
+                        <p class="text-xs text-gray-600 leading-relaxed mb-2">
+                            <b>平時素材：</b>從小習慣父母規劃好一切行程，直到國中接任社長，必須自己承擔活動盈虧與同儕磨擦。<br>
+                            <b>移植切入：</b>走出家庭被庇護的溫室框架，學會獨當一面。自由不是為所欲為，而是擁有直面結果、承擔試錯代價的勇氣。
+                        </p>
+                        <div class="text-xs text-amber-800 bg-amber-50/80 p-2 rounded font-medium">
+                            🎯 金句提煉：「真正的成長，是從期待他人給予庇護，轉變為能夠張開雙翼為自己的選擇負責。」
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             單元二：作戰心法・問津趕行程五結構思維與擴寫術
+             ========================================== -->
+        <!-- 第一步：句子長大術 (#expansion-tool) -->
+        <section id="expansion-tool" class="scroll-mt-20">
+            <div class="flex items-center justify-between mb-4">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-2.5 py-1 rounded-md border border-blue-200">
+                        Unit 2 ‧ Step 1
+                    </span>
+                    <h3 class="text-2xl font-black text-ink mt-1 serif">句子長大術：從平淡敘述到 6 級分意境</h3>
+                </div>
+                <span class="text-xs text-gray-500 hidden md:inline">層層推導 ‧ 由實入虛 ‧ 點石成金</span>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-white p-6 md:p-8 rounded-2xl border border-gray-200 shadow-xs">
+                <!-- 左側 8 欄：4 步驟切換卡 -->
+                <div class="lg:col-span-8 space-y-4">
+                    <div class="flex space-x-2 border-b border-gray-100 pb-3">
+                        <button id="step-btn-1" class="step-btn active px-3 py-1.5 text-xs font-bold rounded-lg bg-blue-600 text-white transition">第 1 階：骨架句</button>
+                        <button id="step-btn-2" class="step-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition">第 2 階：添情境</button>
+                        <button id="step-btn-3" class="step-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition">第 3 階：加細節</button>
+                        <button id="step-btn-4" class="step-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition">第 4 階：昇華哲理</button>
+                    </div>
+
+                    <div id="sentence-display" class="bg-paper p-5 rounded-xl border border-gray-200 min-h-[140px] flex flex-col justify-between">
+                        <p id="sentence-text" class="text-ink text-base md:text-lg leading-relaxed font-medium">
+                            鳥籠很安全，但鳥更喜歡在外面飛。
+                        </p>
+                        <div id="sentence-badge" class="mt-4 flex items-center justify-between text-xs text-gray-500 pt-3 border-t border-gray-200">
+                            <span class="font-bold text-blue-600"><i class="fa-solid fa-seedling"></i> 基礎骨架：平淡直白，缺乏感染力</span>
+                            <span id="sentence-word-count">字數：15 字</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 右側 4 欄：字數與意境成長柱狀圖 -->
+                <div class="lg:col-span-4 flex flex-col items-center">
+                    <div class="chart-container" style="height: 220px;">
+                        <canvas id="growthChart"></canvas>
+                    </div>
+                    <span class="text-xs text-gray-400 mt-2">字數與論證深度四段倍增</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 第二步：問津趕行程五段骨架與配速計畫 (#structure-blueprint) -->
+        <section id="structure-blueprint" class="scroll-mt-20">
+            <div class="flex items-center justify-between mb-4">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-purple-600 bg-purple-50 px-2.5 py-1 rounded-md border border-purple-200">
+                        Unit 2 ‧ Step 2
+                    </span>
+                    <h3 class="text-2xl font-black text-ink mt-1 serif">「問津趕行程」最強五段骨架與 40 行配速計畫</h3>
+                </div>
+                <span class="text-xs text-gray-500 hidden md:inline">會考閱卷老師最讚賞的黃金結構</span>
+            </div>
+
+            <!-- 橫向配速圖 -->
+            <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-xs mb-6">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-xs font-bold text-gray-700"><i class="fa-solid fa-ruler-horizontal text-purple-600"></i> 會考兩面稿紙 40 行極速配速計畫</span>
+                    <span class="text-xs text-gray-400">總行數：40 行 ‧ 建議字數：800~900 字</span>
+                </div>
+                <div class="chart-container" style="height: 90px; max-height: 100px;">
+                    <canvas id="pacingChart"></canvas>
+                </div>
+            </div>
+
+            <!-- 橫向動態 Tab 按鈕列（置於正上方，溫潤淺鵝黃色高對比選中態） -->
+            <div id="tab-container" class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-4">
+                <button class="tab-btn active p-3 rounded-xl border border-gray-200 text-left flex flex-col justify-between" data-id="p1">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-black uppercase text-blue-600 tracking-wider">問 ‧ 破題</span>
+                        <span class="text-[10px] bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded font-bold">第 1 段</span>
+                    </div>
+                    <div class="font-black text-gray-800 text-sm mt-1">問題意識</div>
+                    <div class="text-[11px] text-gray-400 mt-0.5">5 行 (約 120 字)</div>
+                </button>
+
+                <button class="tab-btn p-3 rounded-xl border border-gray-200 text-left flex flex-col justify-between" data-id="p2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-black uppercase text-emerald-600 tracking-wider">津 ‧ 剖析</span>
+                        <span class="text-[10px] bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-bold">第 2 段</span>
+                    </div>
+                    <div class="font-black text-gray-800 text-sm mt-1">透視本質</div>
+                    <div class="text-[11px] text-gray-400 mt-0.5">9 行 (約 200 字)</div>
+                </button>
+
+                <button class="tab-btn p-3 rounded-xl border border-gray-200 text-left flex flex-col justify-between" data-id="p3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-black uppercase text-amber-600 tracking-wider">趕 ‧ 見聞</span>
+                        <span class="text-[10px] bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-bold">第 3 段</span>
+                    </div>
+                    <div class="font-black text-gray-800 text-sm mt-1">實例論證</div>
+                    <div class="text-[11px] text-gray-400 mt-0.5">11 行 (約 250 字)</div>
+                </button>
+
+                <button class="tab-btn p-3 rounded-xl border border-gray-200 text-left flex flex-col justify-between" data-id="p4">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-black uppercase text-purple-600 tracking-wider">行 ‧ 轉折</span>
+                        <span class="text-[10px] bg-purple-100 text-purple-800 px-1.5 py-0.5 rounded font-bold">第 4 段</span>
+                    </div>
+                    <div class="font-black text-gray-800 text-sm mt-1">思辨昇華</div>
+                    <div class="text-[11px] text-gray-400 mt-0.5">10 行 (約 220 字)</div>
+                </button>
+
+                <button class="tab-btn p-3 rounded-xl border border-gray-200 text-left flex flex-col justify-between" data-id="p5">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-black uppercase text-rose-600 tracking-wider">程 ‧ 合題</span>
+                        <span class="text-[10px] bg-rose-100 text-rose-800 px-1.5 py-0.5 rounded font-bold">第 5 段</span>
+                    </div>
+                    <div class="font-black text-gray-800 text-sm mt-1">生命期許</div>
+                    <div class="text-[11px] text-gray-400 mt-0.5">5 行 (約 110 字)</div>
+                </button>
+            </div>
+
+            <!-- 段落任務詳細指引卡片 -->
+            <div id="tab-content-card" class="bg-white p-6 md:p-8 rounded-2xl border border-gray-200 shadow-sm space-y-5">
+                <!-- 動態注入內容 -->
+            </div>
+        </section>
+
+        <!-- ==========================================
+             單元四：四篇 6 級分範文手風琴 (#essays-section)
+             ========================================== -->
+        <section id="essays-section" class="scroll-mt-20">
+            <div class="flex items-center justify-between mb-4">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-rose-600 bg-rose-50 px-2.5 py-1 rounded-md border border-rose-200">
+                        Unit 4 ‧ Exemplars
+                    </span>
+                    <h3 class="text-2xl font-black text-ink mt-1 serif">四篇 6 級分範文手風琴與深度賞析</h3>
+                </div>
+                <span class="text-xs text-gray-500 hidden md:inline">純淨段落閱讀 ‧ 文末五欄解剖</span>
+            </div>
+
+            <div class="space-y-4">
+                <!-- 範文一 -->
+                <div class="bg-white rounded-2xl border border-gray-200 shadow-xs overflow-hidden">
+                    <button class="essay-toggle-btn w-full p-5 text-left flex justify-between items-center hover:bg-slate-50 transition" aria-expanded="true" data-target="essay-1">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-xl">⚖️</span>
+                            <div>
+                                <h4 class="font-black text-base md:text-lg text-ink">範文一（辯證兼融型）：在框架中蓄力，於長空中振翅</h4>
+                                <p class="text-xs text-blue-700 mt-0.5">立意最高：框架是厚植羽翼的搖籃，探索是生命實踐的戰場 ‧ 約 760 字</p>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-down text-gray-400 rotate-arrow"></i>
+                    </button>
+                    <div id="essay-1" class="essay-content open px-6 pb-6 pt-2 border-t border-gray-100 space-y-4 text-gray-700 leading-relaxed text-base">
+                        <p class="indent-8">
+                            籠中之鳥，在雕欄玉食中享有一世無憂的安穩，卻在風平浪靜中磨鈍了搏擊風雲的羽翼；天際之鳥，在風暴雷電中面臨存亡未卜的兇險，卻在海闊天空中活出了生命最野性舒展的姿態。這兩幅對比鮮明的圖景，宛如投射在我們成長路上的雙面鏡——我們既貪戀父母師長為我們構築的安全港灣，又無時無刻不渴望衝破常規、揚帆遠航。然而我認為，人生的成熟不在於安穩與自由的零和對立，而是在於明白：唯有先在框架中扎實蓄力，方能在天際中展翅高翔。
+                        </p>
+                        <p class="indent-8">
+                            不可否認，舒適安全的框架為初生無知的羽翼提供了不可或缺的庇護。國中時期的作息規律、學科規範乃至師長的訓誡，表面上看似一具具冰冷的柵欄，限制了任性妄為的可能；實質上，這些框架正是為我們抵禦外界風雨的防護網。在心智尚未成熟、羽毛猶未豐滿之際，若輕率地將所有秩序視為枷鎖而全盤拋棄，盲目追求未經鍛鍊的「自由」，往往只會像羽翼未豐的雛鳥跌落草叢，遭現實的狂風暴雨無情摧折。框架的存在，是為了讓我們在安全無虞的環境中專注成長、吸納養分，奠定生命的基石。
+                        </p>
+                        <p class="indent-8">
+                            然而，若沉溺於安穩的餵養而終生不願展翅，生命終將走向梁實秋筆下「苦悶蜷伏、生氣全無」的悲劇。我曾有一段時間極度依賴母親為我安排的作息表，何時讀書、何時補習、乃至於閱讀何種書籍皆按部就班。那段日子固然省心順遂，我卻漸漸感到靈魂的窒息與被動。直到國二那年，我主動爭取加入科學探究競賽，從主題發想、實驗受挫到深夜分析數據，沒有現成的標準答案，每一步都充滿了失敗的風險與焦慮。然而，當我克服一次次卡關、在發表會上侃侃而談那一刻，我真切體會到展翅翱翔的壯烈快意——那種由自己決定航道並全力以赴的生命尊嚴，是任何現成餵養都無法給予的珍寶。
+                        </p>
+                        <p class="indent-8">
+                            生命的最佳姿態，絕非永遠躲在籠中作一隻受庇護的寵鳥，亦非毫無準備地在暴風雨中盲目撞擊。智慧的成長者，懂得在安全框架中淬鍊出堅韌的筋骨與品格，待狂風吹拂之際，便能從容振翅，迎向海闊天空的浩瀚未知。我們因框架而厚實，因探索而偉大。
+                        </p>
+
+                        <!-- 問津趕行程 5 欄彩色解剖 -->
+                        <div class="grid grid-cols-1 sm:grid-cols-5 gap-2 pt-4 border-t border-gray-100 text-xs">
+                            <div class="bg-blue-50 p-2.5 rounded-lg border border-blue-200">
+                                <b class="text-blue-700 block mb-1">【問 ‧ 破題】</b>
+                                引述籠鳥與飛鳥之辨，亮出「先在框架蓄力，方能展翅高翔」之核心辯證。
+                            </div>
+                            <div class="bg-emerald-50 p-2.5 rounded-lg border border-emerald-200">
+                                <b class="text-emerald-700 block mb-1">【津 ‧ 剖析】</b>
+                                理性分析規範與秩序的防護價值，打破把框架視為枷鎖的淺薄偏見。
+                            </div>
+                            <div class="bg-amber-50 p-2.5 rounded-lg border border-amber-200">
+                                <b class="text-amber-700 block mb-1">【趕 ‧ 見聞】</b>
+                                結合切身經驗：由依賴作息表的窒息，到自主參與科學競賽的展翅快意。
+                            </div>
+                            <div class="bg-purple-50 p-2.5 rounded-lg border border-purple-200">
+                                <b class="text-purple-700 block mb-1">【行 ‧ 轉折】</b>
+                                昇華自由的真諦：生命尊嚴源自於承擔未知與自負責任，而非現成餵養。
+                            </div>
+                            <div class="bg-rose-50 p-2.5 rounded-lg border border-rose-200">
+                                <b class="text-rose-700 block mb-1">【程 ‧ 合題】</b>
+                                「因框架而厚實，因探索而偉大」，對句鏗鏘有力，完美收束。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 範文二 -->
+                <div class="bg-white rounded-2xl border border-gray-200 shadow-xs overflow-hidden">
+                    <button class="essay-toggle-btn w-full p-5 text-left flex justify-between items-center hover:bg-slate-50 transition" aria-expanded="false" data-target="essay-2">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-xl">🦅</span>
+                            <div>
+                                <h4 class="font-black text-base md:text-lg text-ink">範文二（勇於探索型）：寧為風雨搏擊的飛鳥</h4>
+                                <p class="text-xs text-rose-700 mt-0.5">銳利朝氣：拒絕溫室裡的精緻委靡，勇於在碰撞中長出厚繭 ‧ 約 720 字</p>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-down text-gray-400 rotate-arrow"></i>
+                    </button>
+                    <div id="essay-2" class="essay-content px-6 pb-6 pt-2 border-t border-gray-100 space-y-4 text-gray-700 leading-relaxed text-base">
+                        <p class="indent-8">
+                            古人云：「養怡之福，可得永年。」然而，若這份安怡必須以囚禁靈魂、剪去羽翼為代價，這樣的生命究竟是幸福，還是一種精緻的委靡？籠中的鳥兒享受著免於飢渴的安逸，卻也永遠告別了穿雲破霧的壯闊；天際的鳥兒固然常與飢餓暴雨搏鬥，但那一身光潤的羽毛與啼鳴時的宏亮，方是生命昂揚的本相。在成長的十字路口，我堅信：人寧可冒著風雨去未知中探索，也不願在舒適安全的框架裡消磨銳氣。
+                        </p>
+                        <p class="indent-8">
+                            過度安全的框架，往往是扼殺創造力與生命韌性的溫柔陷阱。在父母師長細密織就的保護網下，我們習慣了衣來伸手、按部就班，漸漸失去了做決定的勇氣與面對挫折的免疫力。正如梁實秋先生筆下的籠鳥，久居欄內，終致「不知飛翔之樂」。倘若青少年的每一步都被規畫得天衣無縫，我們何時才能學會在泥濘中站起？何時才能培養出獨當一面的智慧？唯有勇敢跨出框架，生命才會在真實的碰撞中長出堅韌的厚繭。
+                        </p>
+                        <p class="indent-8">
+                            我曾在國一時深陷於安穩的泥淖中。那時我只讀課本劃線的重點，只做老師指定的題庫，生活猶如一條筆直卻單調的軌道。直到升上國二，我決定打破這層框架，報名參加難度極高的全縣英語演講比賽。備賽期間，我必須自己蒐集時事、反覆修改講稿，更在初次模擬時緊張得語無倫次。那段日子充滿了未知的焦慮與自我懷疑，但也正是那次「自討苦吃」的歷程，逼得我學會自我糾錯、掌控全場節奏。當我最終站在聚光燈下自信開口時，我體會到了前所未有的生命快感——那是衝破牢籠後，首次觸摸到藍天的寬廣。
+                        </p>
+                        <p class="indent-8">
+                            生命的價值，從不在於一帆風順的長度，而在於振翅高飛的高度。溫室裡的牡丹固然嬌貴，卻永遠無法體會懸崖邊青松搏擊風雪的豪邁。讓我們拒絕成為那一隻羽毛華麗卻步履蹣跚的籠中鳥，昂首振翅，飛向充滿無限可能的長天萬里！
+                        </p>
+
+                        <!-- 問津趕行程 5 欄彩色解剖 -->
+                        <div class="grid grid-cols-1 sm:grid-cols-5 gap-2 pt-4 border-t border-gray-100 text-xs">
+                            <div class="bg-blue-50 p-2.5 rounded-lg border border-blue-200">
+                                <b class="text-blue-700 block mb-1">【問 ‧ 破題】</b>
+                                反詰開篇，確立「寧冒風雨探索，不願安逸消磨銳氣」之強烈主體意志。
+                            </div>
+                            <div class="bg-emerald-50 p-2.5 rounded-lg border border-emerald-200">
+                                <b class="text-emerald-700 block mb-1">【津 ‧ 剖析】</b>
+                                直指過度安全是扼殺韌性的溫柔陷阱，援引〈鳥〉之籠鳥苦悶為反面鏡鑑。
+                            </div>
+                            <div class="bg-amber-50 p-2.5 rounded-lg border border-amber-200">
+                                <b class="text-amber-700 block mb-1">【趕 ‧ 見聞】</b>
+                                詳述參加英語演講賽突破單調軌道的自拔歷程，細節生動真切。
+                            </div>
+                            <div class="bg-purple-50 p-2.5 rounded-lg border border-purple-200">
+                                <b class="text-purple-700 block mb-1">【行 ‧ 轉折】</b>
+                                「生命的價值不在一帆風順的長度，而在振翅高飛的高度」，提煉深層洞察。
+                            </div>
+                            <div class="bg-rose-50 p-2.5 rounded-lg border border-rose-200">
+                                <b class="text-rose-700 block mb-1">【程 ‧ 合題】</b>
+                                牡丹與青松對照，號召拒絕當籠中雀，奔向長天萬里，激情動人。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 範文三 -->
+                <div class="bg-white rounded-2xl border border-gray-200 shadow-xs overflow-hidden">
+                    <button class="essay-toggle-btn w-full p-5 text-left flex justify-between items-center hover:bg-slate-50 transition" aria-expanded="false" data-target="essay-3">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-xl">🏰</span>
+                            <div>
+                                <h4 class="font-black text-base md:text-lg text-ink">範文三（穩健蓄力型）：框架非枷鎖，而是飛翔的基石</h4>
+                                <p class="text-xs text-emerald-700 mt-0.5">理性深刻：真正的自由建立在高度自律之上，框架是涵養品格的窄門 ‧ 約 700 字</p>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-down text-gray-400 rotate-arrow"></i>
+                    </button>
+                    <div id="essay-3" class="essay-content px-6 pb-6 pt-2 border-t border-gray-100 space-y-4 text-gray-700 leading-relaxed text-base">
+                        <p class="indent-8">
+                            在崇尚個性張揚與自由自主的當下，人們往往對「框架」避之唯恐不及，將其視為囚禁靈魂的鳥籠；相對地，對「自主探索」則冠以浪漫的光環。然而，靜心沉思：沒有規矩，何以成方圓？沒有堅固的巢穴抵禦初春的料峭，弱小的雛鳥何以安然長成？我認為，青年時期的框架絕非剝奪自由的枷鎖，而是為未來遠航奠定根基的堅實甲板。
+                        </p>
+                        <p class="indent-8">
+                            真正的自由，絕非脫韁野馬般的任性放縱，而是建立在高度自律與扎實能力之上的從容選擇。如果一隻幼鳥在尚未學會滑翔、辨識風向之前便急於離巢，等待它的往往不是海闊天空，而是粉身碎骨的危險。同理，國中階段各項看似嚴格的規訓——課堂專注、作息規律、日常修為的規範，實則是幫助我們在混亂的世界中建立內在秩序。這正如周敦頤在〈愛蓮說〉中讚賞蓮花「中通外直，不蔓不枝」，正因為蓮花有其內在挺拔的規範與自持，才能在污濁泥淖中屹立不搖、香遠益清。
+                        </p>
+                        <p class="indent-8">
+                            回想我練習鋼琴的歷程，初期那枯燥乏味的音階、節拍器冰冷的滴答聲，曾讓我痛苦得幾欲放棄，甚至抱怨古典音樂的嚴苛框架扼殺了我的靈感。然而，當我耐著性子在指法框架中日復一日磨礪，打下扎實的指力與節奏感後，我驚喜地發現，自己竟能在即興演奏中隨心所欲地傾注情感。那一刻我徹底領悟：若無前期嚴苛框架的束縛與淬鍊，就絕不可能有後期指尖游刃有餘的絕對自由。框架不是終點，而是通往自由唯一的窄門。
+                        </p>
+                        <p class="indent-8">
+                            毋須怨尤頭頂的屋簷，亦毋須急於斬斷腳下的立足點。在生命的春天，且讓我們珍惜框架中的涵養與雕琢；當我們在規律中把羽翼鍛鍊得如鋼似鐵，天空，自會向我們敞開無盡的浩瀚。
+                        </p>
+
+                        <!-- 問津趕行程 5 欄彩色解剖 -->
+                        <div class="grid grid-cols-1 sm:grid-cols-5 gap-2 pt-4 border-t border-gray-100 text-xs">
+                            <div class="bg-blue-50 p-2.5 rounded-lg border border-blue-200">
+                                <b class="text-blue-700 block mb-1">【問 ‧ 破題】</b>
+                                逆向思考反撥流行觀點，立論「框架非枷鎖，而是遠航的堅實甲板」。
+                            </div>
+                            <div class="bg-emerald-50 p-2.5 rounded-lg border border-emerald-200">
+                                <b class="text-emerald-700 block mb-1">【津 ‧ 剖析】</b>
+                                引〈愛蓮說〉「中通外直，不蔓不枝」，闡釋秩序與自持之美。
+                            </div>
+                            <div class="bg-amber-50 p-2.5 rounded-lg border border-amber-200">
+                                <b class="text-amber-700 block mb-1">【趕 ‧ 見聞】</b>
+                                以練琴音階的枯燥與即興演奏的自由為例，事理論證密合無間。
+                            </div>
+                            <div class="bg-purple-50 p-2.5 rounded-lg border border-purple-200">
+                                <b class="text-purple-700 block mb-1">【行 ‧ 轉折】</b>
+                                點破「框架是通往自由的窄門」，自由是自律的副產品。
+                            </div>
+                            <div class="bg-rose-50 p-2.5 rounded-lg border border-rose-200">
+                                <b class="text-rose-700 block mb-1">【程 ‧ 合題】</b>
+                                「在規律中羽翼如鋼似鐵，天空自會敞開浩瀚」，意境深遠典雅。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 範文四 -->
+                <div class="bg-white rounded-2xl border border-gray-200 shadow-xs overflow-hidden">
+                    <button class="essay-toggle-btn w-full p-5 text-left flex justify-between items-center hover:bg-slate-50 transition" aria-expanded="false" data-target="essay-4">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-xl">🕊️</span>
+                            <div>
+                                <h4 class="font-black text-base md:text-lg text-ink">範文四（生活實踐型）：走出屋簷下的青鳥</h4>
+                                <p class="text-xs text-amber-700 mt-0.5">真摯體悟：從習慣被呵護到學會自立，生活細微處的成長蛻變 ‧ 約 730 字</p>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-down text-gray-400 rotate-arrow"></i>
+                    </button>
+                    <div id="essay-4" class="essay-content px-6 pb-6 pt-2 border-t border-gray-100 space-y-4 text-gray-700 leading-relaxed text-base">
+                        <p class="indent-8">
+                            小時候讀童話，總羨慕那些在屋簷下受盡寵愛、被精緻鳥籠呵護的青鳥；長大後才讀懂梁實秋筆下籠鳥那一雙憂鬱呆滯的眼睛。在成長的旅途上，我們每個人何嘗不曾是一隻習慣躲在父母屋簷下的雛鳥？定時的飯菜、整理好的書包、被安排妥當的升學藍圖，構築起一座看似完美卻無比狹隘的「安全城堡」。然而，當我們的心靈逐漸滋長出獨立的渴望，一個嚴肅的課題便橫亙眼前：我們究竟是要安於這片遮風蔽雨的小天地，還是要勇敢飛向真實的世界？
+                        </p>
+                        <p class="indent-8">
+                            不可否認，待在屋簷下是省心而舒適的。那裡沒有挫折的寒風，沒有人際摩擦的暴雨，每一步都有長輩的經驗為我們墊底。然而，長期的過度安穩，往往在不知不覺中剝奪了一個人生命最可貴的「自我效能感」。若任由時間在無知無覺的安逸中流逝，我們便永遠無法體察每一顆時間碎珠在自我奮鬥中所折射出的燦爛光芒。依賴他人所構築的安全，本質上是一種脆弱的假象。
+                        </p>
+                        <p class="indent-8">
+                            升上八年級後，我第一次嘗試向父母提出「自主管理時間與手機」的請求。起初，沒有了母親在耳邊的催促與督促，我曾因自制力不足而熬夜滑手機、導致隔天小考失常。在懊惱與挫敗的淚水中，我真切感受到了「自主的代價」——原來自己做主，意味著必須自己承擔所有的後果。但我沒有退回被管教的舒適圈，而是主動制定番茄鐘工作法，學會拒絕誘惑。當我在第二次段考靠著自己的規劃重回正軌時，父母眼中的欣慰與我自己內心的踏實，是我成長以來收穫最珍貴的勳章。
+                        </p>
+                        <p class="indent-8">
+                            真正的成熟，不是魯莽地砸碎鳥籠宣告叛逆，而是懷抱著感恩的心走出庇護的屋簷，用自己的雙翼去丈量天地。當我們敢於承擔探索未知的風雨，每一隻渴望自由的青鳥，終將在長空中找到屬於自己的座標。
+                        </p>
+
+                        <!-- 問津趕行程 5 欄彩色解剖 -->
+                        <div class="grid grid-cols-1 sm:grid-cols-5 gap-2 pt-4 border-t border-gray-100 text-xs">
+                            <div class="bg-blue-50 p-2.5 rounded-lg border border-blue-200">
+                                <b class="text-blue-700 block mb-1">【問 ‧ 破題】</b>
+                                由童話青鳥與梁實秋籠鳥對照，反思家庭過度保護的安全城堡。
+                            </div>
+                            <div class="bg-emerald-50 p-2.5 rounded-lg border border-emerald-200">
+                                <b class="text-emerald-700 block mb-1">【津 ‧ 剖析】</b>
+                                引〈生命中的碎珠〉警惕安逸蹉跎，點明依賴是脆弱假象。
+                            </div>
+                            <div class="bg-amber-50 p-2.5 rounded-lg border border-amber-200">
+                                <b class="text-amber-700 block mb-1">【趕 ‧ 見聞】</b>
+                                自主管理手機受挫後建立番茄鐘自律，親身經歷生動且極具共鳴。
+                            </div>
+                            <div class="bg-purple-50 p-2.5 rounded-lg border border-purple-200">
+                                <b class="text-purple-700 block mb-1">【行 ‧ 轉折】</b>
+                                體認「自主的代價即是責任」，在試錯中淬鍊出真實的踏實感。
+                            </div>
+                            <div class="bg-rose-50 p-2.5 rounded-lg border border-rose-200">
+                                <b class="text-rose-700 block mb-1">【程 ‧ 合題】</b>
+                                感恩屋簷、勇敢飛翔，以丈量天地、定位座標為結，立意圓滿。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             實戰成語庫與名言佳句錦囊 (#vocabulary-section)
+             ========================================== -->
+        <section id="vocabulary-section" class="scroll-mt-20">
+            <div class="flex items-center justify-between mb-4">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-amber-600 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-200">
+                        Resources ‧ Lexicon
+                    </span>
+                    <h3 class="text-2xl font-black text-ink mt-1 serif">實戰成語庫與名言佳句錦囊</h3>
+                </div>
+                <span class="text-xs text-gray-500 hidden md:inline">點擊標籤或卡片 ‧ 一鍵複製</span>
+            </div>
+
+            <!-- 四大成語分類庫 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <!-- 分類 1 -->
+                <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-xs">
+                    <h4 class="font-bold text-slate-800 text-sm mb-3 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-slate-500"></span> 舒適圈與安逸代價（反思類）
+                    </h4>
+                    <div class="flex flex-wrap gap-2" id="vocab-group-1">
+                        <!-- JS 渲染標籤 -->
+                    </div>
+                </div>
+
+                <!-- 分類 2 -->
+                <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-xs">
+                    <h4 class="font-bold text-emerald-800 text-sm mb-3 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> 秩序規律與蓄力厚積（積累類）
+                    </h4>
+                    <div class="flex flex-wrap gap-2" id="vocab-group-2">
+                        <!-- JS 渲染標籤 -->
+                    </div>
+                </div>
+
+                <!-- 分類 3 -->
+                <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-xs">
+                    <h4 class="font-bold text-blue-800 text-sm mb-3 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span> 勇於探索與搏擊風雨（行動類）
+                    </h4>
+                    <div class="flex flex-wrap gap-2" id="vocab-group-3">
+                        <!-- JS 渲染標籤 -->
+                    </div>
+                </div>
+
+                <!-- 分類 4 -->
+                <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-xs">
+                    <h4 class="font-bold text-purple-800 text-sm mb-3 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-purple-500"></span> 責任擔當與成熟超拔（哲思類）
+                    </h4>
+                    <div class="flex flex-wrap gap-2" id="vocab-group-4">
+                        <!-- JS 渲染標籤 -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 名言佳句錦囊卡片 -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="quotes-container">
+                <!-- JS 渲染名句卡片 -->
+            </div>
+        </section>
+
+        <!-- ==========================================
+             單元五：互動寫作工作坊 & AI 寫作教練 (#workshop-section)
+             ========================================== -->
+        <section id="workshop-section" class="scroll-mt-20">
+            <div class="flex items-center justify-between mb-4">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-2.5 py-1 rounded-md border border-blue-200">
+                        Unit 5 ‧ Workshop
+                    </span>
+                    <h3 class="text-2xl font-black text-ink mt-1 serif">互動寫作工作坊 & AI 寫作教練</h3>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span id="stream-status-badge" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        Cloudflare 串流極速通道 (免Key免排隊)
+                    </span>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl border-2 border-blue-200 p-6 md:p-8 shadow-sm space-y-6">
+                <!-- 通道選擇與設定抽屜按鈕 -->
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-4 border-b border-gray-100">
+                    <div class="flex items-center space-x-3 w-full sm:w-auto">
+                        <label for="select-channel" class="text-xs font-bold text-gray-700 shrink-0">通道線路：</label>
+                        <select id="select-channel" class="text-xs border border-gray-300 rounded-lg px-2.5 py-1.5 bg-gray-50 text-gray-800 font-medium focus:ring-2 focus:ring-blue-500 outline-none w-full sm:w-auto">
+                            <option value="cloudflare" selected>⚡ 極速串流通道 (Cloudflare Worker 45 RPM 多Key輪流池)</option>
+                            <option value="gas">🏫 學校備用通道 (Google Apps Script 端點)</option>
+                            <option value="custom">🔑 自備 Gemini API Key 直連 (個人專屬)</option>
+                        </select>
+                    </div>
+                    <button id="btn-toggle-config" class="text-xs text-blue-600 hover:text-blue-800 font-bold flex items-center gap-1">
+                        <i class="fa-solid fa-gear"></i> 自訂設定抽屜
+                    </button>
+                </div>
+
+                <!-- 折疊 API 設定抽屜 -->
+                <div id="config-drawer" class="hidden bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3 text-xs">
+                    <div id="custom-key-row" class="space-y-1">
+                        <label for="custom-api-key" class="font-bold text-slate-700">自訂 Gemini API Key (可選)：</label>
+                        <div class="flex gap-2">
+                            <input type="password" id="custom-api-key" placeholder="AIzaSy..." class="flex-1 px-3 py-1.5 border border-slate-300 rounded-lg text-slate-800 font-mono">
+                            <button id="btn-save-config" class="px-3 py-1.5 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700">保存金鑰</button>
+                            <button id="btn-open-apikey-guide" class="px-2.5 py-1.5 bg-slate-200 text-slate-700 rounded-lg font-medium hover:bg-slate-300">取得教學</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 寫作輸入區與靈感工具列 -->
+                <div class="space-y-3">
+                    <div class="flex flex-wrap justify-between items-center gap-2">
+                        <label for="student-draft" class="font-black text-ink text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-pen-nib text-blue-600"></i> 請輸入你的文章段落草稿或論點：
+                        </label>
+                        <div class="flex items-center space-x-2">
+                            <!-- 靈感骰子按鈕 -->
+                            <button id="btn-inspiration-dice" class="text-xs bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold px-3 py-1 rounded-lg border border-amber-300 transition flex items-center gap-1.5 shadow-2xs">
+                                <i class="fa-solid fa-dice text-amber-600"></i> 靈感骰子
+                            </button>
+                            <span id="current-draft-count" class="text-xs text-gray-400">0 字</span>
+                        </div>
+                    </div>
+
+                    <!-- 游標快捷提示詞標籤列 -->
+                    <div class="flex flex-wrap gap-1.5 text-xs" id="prompt-chips">
+                        <span class="text-gray-400 py-0.5 text-[11px] self-center">💡 快捷標籤（點擊插入）：</span>
+                        <button class="prompt-chip-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-0.5 rounded border border-slate-200 transition">【籠中之鳥】</button>
+                        <button class="prompt-chip-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-0.5 rounded border border-slate-200 transition">【展翅翱翔】</button>
+                        <button class="prompt-chip-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-0.5 rounded border border-slate-200 transition">【舒適圈的代價】</button>
+                        <button class="prompt-chip-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-0.5 rounded border border-slate-200 transition">【在自律中孕育自由】</button>
+                        <button class="prompt-chip-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-0.5 rounded border border-slate-200 transition">【為自己的選擇負責】</button>
+                    </div>
+
+                    <textarea id="student-draft" rows="6" placeholder="請在此鍵入你想練習的段落（例如：首段破題、生活論據事例、或對框架與探索的辯證思考）..." class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none leading-relaxed text-ink text-base"></textarea>
+
+                    <div class="flex flex-wrap justify-between items-center gap-3">
+                        <div class="flex items-center space-x-2">
+                            <button id="btn-clear-draft" class="text-xs text-gray-500 hover:text-red-600 px-3 py-1.5 rounded-lg border border-gray-200 hover:border-red-200 transition">
+                                清空草稿
+                            </button>
+                        </div>
+                        <button id="btn-submit-ai" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-sm transition flex items-center gap-2">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> 召喚 AI 寫作教練批閱潤飾
+                        </button>
+                    </div>
+                </div>
+
+                <!-- AI 打字機即時串流輸出框 -->
+                <div id="ai-stream-box" class="hidden bg-slate-900 text-slate-100 p-5 rounded-xl border border-slate-800 space-y-3 font-sans">
+                    <div class="flex justify-between items-center text-xs text-slate-400 pb-2 border-b border-slate-800">
+                        <span class="flex items-center gap-2 text-emerald-400 font-bold">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                            AI 寫作教練即時思考串流中...
+                        </span>
+                        <span id="stream-model-name" class="font-mono text-[11px] text-slate-400">gemini-2.5-flash</span>
+                    </div>
+                    <div id="ai-output" class="text-sm md:text-base leading-relaxed space-y-3 ai-content">
+                        <!-- 即時打字機文字流入此處 -->
+                    </div>
+                </div>
+
+                <!-- Before / After 雙欄對照卡片區 -->
+                <div id="before-after-container" class="hidden space-y-3 pt-4 border-t border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <h4 class="font-black text-ink text-sm flex items-center gap-1.5">
+                            <i class="fa-solid fa-code-compare text-blue-600"></i> Before / After 升級對照卡
+                        </h4>
+                        <span class="text-xs text-gray-400">💡 採納純淨美句，標籤供技巧觀摩</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Before 原始稿 -->
+                        <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 flex flex-col justify-between">
+                            <div>
+                                <span class="text-[11px] font-bold text-gray-500 uppercase tracking-wider block mb-2">Before ‧ 學生原始草稿</span>
+                                <p id="card-before-text" class="text-sm text-gray-700 leading-relaxed italic">
+                                    --
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- After 6級分潤飾 -->
+                        <div class="bg-blue-50/70 p-4 rounded-xl border border-blue-200 flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-[11px] font-bold text-blue-700 uppercase tracking-wider">After ‧ 6 級分昇華純淨句</span>
+                                    <span class="text-[10px] bg-blue-100 text-blue-800 px-2 py-0.5 rounded font-black">卓越立意</span>
+                                </div>
+                                <p id="card-after-pure-text" class="text-sm text-ink leading-relaxed font-medium">
+                                    --
+                                </p>
+                                <div id="card-after-badges" class="flex flex-wrap gap-1 mt-3">
+                                    <!-- 技巧標籤徽章 -->
+                                </div>
+                            </div>
+                            <div class="flex justify-end gap-2 mt-4 pt-3 border-t border-blue-100">
+                                <button id="btn-copy-pure-after" class="text-xs px-3 py-1 bg-white hover:bg-slate-100 text-gray-700 rounded-lg border border-gray-200 font-medium transition">
+                                    複製純文
+                                </button>
+                                <button id="btn-adopt-after" class="text-xs px-3 py-1 bg-amber-500 hover:bg-amber-600 text-white rounded-lg font-bold transition flex items-center gap-1 shadow-2xs">
+                                    🚀 一鍵採納至累積區
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 累積作文篇章區（累篇成文） -->
+                <div class="pt-6 border-t border-gray-200 space-y-3">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h4 class="font-black text-ink text-sm flex items-center gap-2">
+                                <i class="fa-solid fa-scroll text-amber-500"></i> 我的作文累積篇章（累句成篇）
+                            </h4>
+                            <p class="text-xs text-gray-400">採納教練潤飾美句，逐步拼接成完整長文</p>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span id="accumulated-word-count" class="text-xs font-bold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-full border border-blue-200">
+                                全篇總計：0 字
+                            </span>
+                        </div>
+                    </div>
+
+                    <div id="accumulated-container" class="rounded-xl transition duration-500">
+                        <textarea id="accumulated-draft" rows="8" placeholder="當您在上方點擊「🚀 一鍵採納至累積區」時，純淨 6 級分美句會自動追加在此處。您亦可在此直接編輯潤飾..." class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none leading-relaxed text-ink text-base bg-white transition duration-500"></textarea>
+                    </div>
+
+                    <div class="flex justify-end items-center gap-2">
+                        <button id="btn-copy-accumulated" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl border border-slate-200 transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-copy"></i> 一鍵複製全文
+                        </button>
+                        <button id="btn-download-accumulated" class="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-xl transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-download"></i> 下載作文文字檔 (.txt)
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==========================================
+         單元六：教師專區全螢幕彈窗 (#teacher-modal)
+         ========================================== -->
+    <div id="teacher-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-3xl w-full p-6 md:p-8 shadow-2xl border border-gray-200 max-h-[90vh] overflow-y-auto space-y-6">
+            <!-- 彈窗頂部 -->
+            <div class="flex justify-between items-center pb-4 border-b border-gray-100">
+                <h3 class="font-black text-xl text-ink flex items-center gap-2 serif">
+                    <i class="fa-solid fa-shield-halved text-blue-600"></i> 教師備課與評量指導手冊
+                </h3>
+                <button id="btn-close-teacher-modal" class="text-gray-400 hover:text-gray-600 text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- 密碼驗證區（未解鎖時顯示，嚴格遮罩） -->
+            <div id="teacher-auth-section" class="space-y-4 py-4">
+                <p class="text-sm text-gray-600">本專區包含段考閱卷評分指引與雲端批閱設定，請輸入教師授權通行碼：</p>
+                <div class="flex gap-2">
+                    <input type="password" id="teacher-password-input" placeholder="請輸入通行碼..." class="flex-1 px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none text-sm">
+                    <button id="btn-verify-teacher-pwd" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-bold transition">解鎖驗證</button>
+                </div>
+                <p id="teacher-pwd-error" class="text-xs text-red-500 hidden"><i class="fa-solid fa-circle-exclamation"></i> 通行碼不正確，請重新輸入。</p>
+            </div>
+
+            <!-- 解鎖後內容（預設隱藏） -->
+            <div id="teacher-content-section" class="hidden space-y-6 text-sm text-gray-700 leading-relaxed">
+                <!-- 備課核心指引 -->
+                <div class="bg-blue-50 p-4 rounded-xl border border-blue-200 space-y-2">
+                    <h4 class="font-bold text-blue-900 flex items-center gap-1.5">
+                        <i class="fa-solid fa-lightbulb"></i> 八年級議論文備課核心提示
+                    </h4>
+                    <ul class="list-disc list-inside space-y-1 text-xs text-blue-800">
+                        <li><b>扣合選文精髓：</b>引導學生將梁實秋〈鳥〉的籠鳥之困、周敦頤〈愛蓮說〉的君子自持、董保綱〈生命中的碎珠〉的細小積累轉化為論述依據。</li>
+                        <li><b>破除二元對立：</b>引導優秀學生邁向「辯證兼融」，理解框架並非純粹阻礙，探索亦需承擔責任。</li>
+                        <li><b>論證避免流水帳：</b>強調舉例是為了「論證核心觀點」，故事敘述不宜超過段落的三分之二。</li>
+                    </ul>
+                </div>
+
+                <!-- 會考四向度規準檢核 -->
+                <div>
+                    <h4 class="font-bold text-ink mb-2">會考六級分標準檢核要點</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                        <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                            <b class="text-blue-700 block mb-1">一、立意取材</b>
+                            論點鮮明，能深刻省思成長中的框架與自主，取材自切身生活且有哲思昇華。
+                        </div>
+                        <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                            <b class="text-emerald-700 block mb-1">二、結構組織</b>
+                            四至五段佈局嚴謹，起承轉合推導流暢，段落銜接自然無跳躍。
+                        </div>
+                        <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                            <b class="text-amber-700 block mb-1">三、字詞修辭</b>
+                            遣詞準確生動，善用對比、譬喻或轉化，文句富節奏感與感染力。
+                        </div>
+                        <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                            <b class="text-rose-700 block mb-1">四、標點與字體</b>
+                            標點符號運用精確，字體端正工整，無錯別字與身分洩漏。
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 自訂校內 GAS 批閱端點配置 -->
+                <div class="pt-4 border-t border-gray-200 space-y-2">
+                    <h4 class="font-bold text-ink text-xs">自訂校內 GAS 批閱端點配置（可選）：</h4>
+                    <div class="flex gap-2">
+                        <input type="text" id="teacher-gas-input" placeholder="https://script.google.com/macros/s/.../exec" class="flex-1 px-3 py-1.5 border border-gray-300 rounded-lg text-xs font-mono">
+                        <button id="btn-save-teacher-gas" class="px-4 py-1.5 bg-slate-700 hover:bg-slate-800 text-white rounded-lg text-xs font-bold transition">保存端點</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- API Key 教學彈窗 (#apikey-guide-modal) -->
+    <div id="apikey-guide-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-gray-200 space-y-4 text-xs text-gray-700">
+            <div class="flex justify-between items-center pb-2 border-b border-gray-100">
+                <h4 class="font-bold text-sm text-ink"><i class="fa-solid fa-key text-blue-600"></i> 如何取得免費 Google Gemini API Key</h4>
+                <button id="btn-close-apikey-guide" class="text-gray-400 hover:text-gray-600 text-base"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <ol class="list-decimal list-inside space-y-2 leading-relaxed">
+                <li>造訪 <b>Google AI Studio</b> (<a href="https://aistudio.google.com/" target="_blank" class="text-blue-600 underline">aistudio.google.com</a>)。</li>
+                <li>以 Google 帳號登入後，點擊左上角「Get API Key」。</li>
+                <li>點擊「Create API Key」，複製生成的金鑰（以 <code>AIzaSy...</code> 開頭）。</li>
+                <li>返回本網頁貼入金鑰並點擊保存，即可享受個人專屬高速批閱通道！</li>
+            </ol>
+            <div class="text-right pt-2">
+                <button id="btn-confirm-apikey-guide" class="px-4 py-1.5 bg-blue-600 text-white rounded-lg font-bold">我知道了</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         單元七：頁尾標準製作資訊 (Standard Footer)
+         ========================================== -->
+    <footer class="text-center pb-12 mt-16 leading-relaxed">
+        <div class="text-2xl md:text-3xl font-black text-amber-500 mb-4 tracking-widest drop-shadow-sm">
+            只要有心，人人都是作文神！
+        </div>
+        <div class="text-ink font-medium text-xs md:text-sm opacity-80">
+            𖤐 本網頁由 Gemini 生成，龍門國中黃于珊老師、王斐亭老師製作 𖤐
+        </div>
+    </footer>
+
+    <!-- ==========================================
+         主要邏輯 JavaScript (落實所有安全與防護規範)
+         ========================================== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // ==========================================
+            // 1. 圖表初始化（Chart.js + 原生 Canvas 2D 備援）
+            // ==========================================
+            let portableChartInstance = null;
+            let growthChartInstance = null;
+            let pacingChartInstance = null;
+
+            function initAllCharts() {
+                if (typeof Chart !== 'undefined') {
+                    try {
+                        renderChartJS();
+                        return;
+                    } catch (e) {
+                        console.warn('Chart.js render failed, fallback to native Canvas 2D', e);
+                    }
+                }
+                // 原生 Canvas 2D 降級備援
+                drawNativeRadar('portableChart');
+                drawNativeGrowth('growthChart');
+                drawNativePacing('pacingChart');
+            }
+
+            function renderChartJS() {
+                // 1. 雷達圖
+                const ctxPortable = document.getElementById('portableChart')?.getContext('2d');
+                if (ctxPortable) {
+                    portableChartInstance = new Chart(ctxPortable, {
+                        type: 'radar',
+                        data: {
+                            labels: ['安穩蓄力', '自律規範', '自主探索', '責任承擔', '思辨深度'],
+                            datasets: [
+                                {
+                                    label: '舒適框架面向',
+                                    data: [95, 90, 45, 60, 75],
+                                    backgroundColor: 'rgba(51, 65, 85, 0.2)',
+                                    borderColor: '#334155',
+                                    pointBackgroundColor: '#334155',
+                                    borderWidth: 2
+                                },
+                                {
+                                    label: '自主探索面向',
+                                    data: [50, 65, 95, 90, 85],
+                                    backgroundColor: 'rgba(37, 99, 235, 0.2)',
+                                    borderColor: '#2563EB',
+                                    pointBackgroundColor: '#2563EB',
+                                    borderWidth: 2
+                                },
+                                {
+                                    label: '卓越兼融面向',
+                                    data: [90, 92, 92, 95, 98],
+                                    backgroundColor: 'rgba(16, 185, 129, 0.2)',
+                                    borderColor: '#10B981',
+                                    pointBackgroundColor: '#10B981',
+                                    borderWidth: 2
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                r: {
+                                    angleLines: { color: '#E2E8F0' },
+                                    grid: { color: '#E2E8F0' },
+                                    suggestedMin: 30,
+                                    suggestedMax: 100,
+                                    ticks: { display: false }
+                                }
+                            },
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                    labels: { boxWidth: 12, font: { size: 11 } }
+                                }
+                            }
+                        }
+                    });
+                }
+
+                // 2. 擴寫成長圖
+                const ctxGrowth = document.getElementById('growthChart')?.getContext('2d');
+                if (ctxGrowth) {
+                    growthChartInstance = new Chart(ctxGrowth, {
+                        type: 'bar',
+                        data: {
+                            labels: ['第1階:骨架', '第2階:情境', '第3階:細節', '第4階:哲理'],
+                            datasets: [{
+                                label: '字數成長',
+                                data: [15, 48, 105, 188],
+                                backgroundColor: ['#94A3B8', '#60A5FA', '#3B82F6', '#1D4ED8'],
+                                borderRadius: 6
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: { legend: { display: false } },
+                            scales: {
+                                y: { beginAtZero: true, suggestedMax: 200, ticks: { font: { size: 10 } } },
+                                x: { ticks: { font: { size: 10 } } }
+                            }
+                        }
+                    });
+                }
+
+                // 3. 40行配速堆疊長條圖
+                const ctxPacing = document.getElementById('pacingChart')?.getContext('2d');
+                if (ctxPacing) {
+                    pacingChartInstance = new Chart(ctxPacing, {
+                        type: 'bar',
+                        data: {
+                            labels: ['黃金配速'],
+                            datasets: [
+                                { label: '問 ‧ 破題 (5行)', data: [5], backgroundColor: '#2563EB' },
+                                { label: '津 ‧ 剖析 (9行)', data: [9], backgroundColor: '#059669' },
+                                { label: '趕 ‧ 見聞 (11行)', data: [11], backgroundColor: '#D97706' },
+                                { label: '行 ‧ 轉折 (10行)', data: [10], backgroundColor: '#7C3AED' },
+                                { label: '程 ‧ 合題 (5行)', data: [5], backgroundColor: '#E11D48' }
+                            ]
+                        },
+                        options: {
+                            indexAxis: 'y',
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                x: { stacked: true, max: 40, ticks: { font: { size: 10 } } },
+                                y: { stacked: true, display: false }
+                            },
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                    labels: { boxWidth: 10, font: { size: 10 } }
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+
+            // 原生 Canvas 2D 降級繪圖引擎
+            function drawNativeRadar(canvasId) {
+                const canvas = document.getElementById(canvasId);
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                const w = canvas.width = canvas.parentElement.clientWidth || 300;
+                const h = canvas.height = canvas.parentElement.clientHeight || 300;
+                ctx.clearRect(0, 0, w, h);
+                const cx = w / 2, cy = h / 2, r = Math.min(cx, cy) - 40;
+                const sides = 5;
+                const labels = ['安穩蓄力', '自律規範', '自主探索', '責任承擔', '思辨深度'];
+
+                // 畫底網
+                for (let level = 1; level <= 4; level++) {
+                    ctx.beginPath();
+                    ctx.strokeStyle = '#E2E8F0';
+                    const curR = (r / 4) * level;
+                    for (let i = 0; i < sides; i++) {
+                        const angle = (Math.PI * 2 / sides) * i - Math.PI / 2;
+                        const x = cx + curR * Math.cos(angle);
+                        const y = cy + curR * Math.sin(angle);
+                        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+                    }
+                    ctx.closePath();
+                    ctx.stroke();
+                }
+
+                // 畫文字
+                ctx.fillStyle = '#64748B';
+                ctx.font = '11px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                for (let i = 0; i < sides; i++) {
+                    const angle = (Math.PI * 2 / sides) * i - Math.PI / 2;
+                    const x = cx + (r + 18) * Math.cos(angle);
+                    const y = cy + (r + 18) * Math.sin(angle);
+                    ctx.fillText(labels[i], x, y);
+                }
+
+                // 畫多邊形
+                drawPolygon(ctx, cx, cy, r, sides, [0.9, 0.92, 0.92, 0.95, 0.98], 'rgba(16, 185, 129, 0.3)', '#10B981');
+            }
+
+            function drawPolygon(ctx, cx, cy, maxR, sides, ratios, fillStyle, strokeStyle) {
+                ctx.beginPath();
+                ctx.fillStyle = fillStyle;
+                ctx.strokeStyle = strokeStyle;
+                ctx.lineWidth = 2;
+                for (let i = 0; i < sides; i++) {
+                    const angle = (Math.PI * 2 / sides) * i - Math.PI / 2;
+                    const curR = maxR * ratios[i];
+                    const x = cx + curR * Math.cos(angle);
+                    const y = cy + curR * Math.sin(angle);
+                    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+                }
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+            }
+
+            function drawNativeGrowth(canvasId) {
+                const canvas = document.getElementById(canvasId);
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                const w = canvas.width = canvas.parentElement.clientWidth || 250;
+                const h = canvas.height = canvas.parentElement.clientHeight || 200;
+                ctx.clearRect(0, 0, w, h);
+                const data = [15, 48, 105, 188];
+                const maxVal = 200;
+                const barWidth = w / 6;
+                const gap = (w - barWidth * 4) / 5;
+                const colors = ['#94A3B8', '#60A5FA', '#3B82F6', '#1D4ED8'];
+
+                data.forEach((val, i) => {
+                    const x = gap + i * (barWidth + gap);
+                    const barH = (val / maxVal) * (h - 40);
+                    const y = h - 25 - barH;
+                    ctx.fillStyle = colors[i];
+                    ctx.fillRect(x, y, barWidth, barH);
+                    ctx.fillStyle = '#1E293B';
+                    ctx.font = '10px sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(val + '字', x + barWidth / 2, y - 5);
+                    ctx.fillText(`第${i+1}階`, x + barWidth / 2, h - 10);
+                });
+            }
+
+            function drawNativePacing(canvasId) {
+                const canvas = document.getElementById(canvasId);
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                const w = canvas.width = canvas.parentElement.clientWidth || 500;
+                const h = canvas.height = 40;
+                ctx.clearRect(0, 0, w, h);
+                const slices = [
+                    { val: 5, color: '#2563EB', label: '問5' },
+                    { val: 9, color: '#059669', label: '津9' },
+                    { val: 11, color: '#D97706', label: '趕11' },
+                    { val: 10, color: '#7C3AED', label: '行10' },
+                    { val: 5, color: '#E11D48', label: '程5' }
+                ];
+                let curX = 0;
+                slices.forEach(s => {
+                    const sliceW = (s.val / 40) * w;
+                    ctx.fillStyle = s.color;
+                    ctx.fillRect(curX, 5, sliceW, 25);
+                    ctx.fillStyle = '#FFFFFF';
+                    ctx.font = '10px sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(s.label, curX + sliceW / 2, 22);
+                    curX += sliceW;
+                });
+            }
+
+            initAllCharts();
+
+            // ==========================================
+            // 2. 句子長大術 4 步驟切換
+            // ==========================================
+            const sentenceData = [
+                {
+                    text: "鳥籠很安全，但鳥更喜歡在外面飛。",
+                    badge: "<i class='fa-solid fa-seedling text-blue-600'></i> 基礎骨架：平淡直白，缺乏感染力",
+                    count: "字數：15 字"
+                },
+                {
+                    text: "籠裡的鳥每日雖然有水有食、免於飢寒，卻被牢牢困在冰冷的鐵欄裡，只能隔著窗櫺張望廣闊的天空。",
+                    badge: "<i class='fa-solid fa-cloud-sun text-blue-600'></i> 添情境：加入外在處境與對比限制",
+                    count: "字數：48 字"
+                },
+                {
+                    text: "雕欄玉食固然免除了風雨與天敵的威脅，但當陽光穿透鐵條，鳥兒撲簌著凌亂而退化的羽翼，眼底只有被安排好的平靜，卻失去了搏擊風雲的生氣與翱翔快意。",
+                    badge: "<i class='fa-solid fa-feather text-blue-600'></i> 加細節五感：注入具體神態、動態摹寫與心靈感受",
+                    count: "字數：105 字"
+                },
+                {
+                    text: "過度安穩的庇護往往是消磨銳氣的溫柔陷阱；我們習慣在父母師長安排好的平順軌道上前行，卻唯有在勇敢跨出框架、直面未知風雨的洗禮中，生命的羽翼才能在真實的碰撞裡長出堅韌的厚繭，活出生命的崇高與尊嚴。",
+                    badge: "<i class='fa-solid fa-gem text-blue-600'></i> 昇華哲理：由鳥喻人，深化為成長蛻變與人生哲思",
+                    count: "字數：188 字"
+                }
+            ];
+
+            const stepBtns = document.querySelectorAll('.step-btn');
+            const sentenceTextEl = document.getElementById('sentence-text');
+            const sentenceBadgeEl = document.getElementById('sentence-badge');
+
+            stepBtns.forEach((btn, idx) => {
+                btn.addEventListener('click', () => {
+                    stepBtns.forEach(b => {
+                        b.classList.remove('active', 'bg-blue-600', 'text-white');
+                        b.classList.add('bg-gray-100', 'text-gray-600');
+                    });
+                    btn.classList.add('active', 'bg-blue-600', 'text-white');
+                    btn.classList.remove('bg-gray-100', 'text-gray-600');
+
+                    const d = sentenceData[idx];
+                    sentenceTextEl.innerHTML = d.text;
+                    sentenceBadgeEl.innerHTML = `<span class="font-bold text-blue-600">${d.badge}</span><span>${d.count}</span>`;
+                });
+            });
+
+            // ==========================================
+            // 3. 五段骨架 Tab 切換邏輯（強制溫潤淺鵝黃色高對比）
+            // ==========================================
+            const tabData = {
+                p1: {
+                    title: "第一段：【問 ‧ 問題意識】破題立論",
+                    meta: "建議長度：5 行 (約 120 字) ‧ 閱卷印象關鍵",
+                    task: "由「籠中鳥」與「天際鳥」的對比情境切入，迅速勾勒出青少年在「舒適安穩」與「自主探索」之間的內在矛盾，並以俐落筆觸直接亮出全篇核心論點。",
+                    questions: [
+                        "籠鳥享受了什麼？代價是什麼？飛鳥面對了什麼？收穫了什麼？",
+                        "在你的成長過程中，你感受到了怎樣的安穩保護與自主渴望？",
+                        "你贊同哪一種生活哲學？或是你如何看待兩者的關係？"
+                    ],
+                    strategy: "採用「對照破題法」或「設問破題法」，不繞圈子，開門見山提出主張。",
+                    sentence: "「籠裡的鳥……；天空的鳥……。面對安穩與探索，我認為……」"
+                },
+                p2: {
+                    title: "第二段：【津 ‧ 透視本質】分析本質與代價",
+                    meta: "建議長度：9 行 (約 200 字) ‧ 理性推導",
+                    task: "深入剖析所選立場背後的價值與必須承擔的代價。若主張探索，則批判安逸的溫柔陷阱；若主張框架，則論證秩序與防護網的重要價值。",
+                    questions: [
+                        "為什麼安穩往往會讓人喪失面對挫折的免疫力？",
+                        "為什麼秩序並非剝奪自由的枷鎖，而是蓄積力量的基石？",
+                        "自由與放縱的界線究竟在哪裡？"
+                    ],
+                    strategy: "結合梁實秋〈鳥〉之籠鳥苦悶，或周敦頤〈愛蓮說〉之自持風骨進行正反立論。",
+                    sentence: "「不可否認，舒適安全的框架固然能……，然而過度依賴往往會……」"
+                },
+                p3: {
+                    title: "第三段：【趕 ‧ 實例論證】結合生活經驗深描",
+                    meta: "建議長度：11 行 (約 250 字) ‧ 全篇論據重心",
+                    task: "調用個人平日準備的「核心萬用例」（如樂器練琴、科展專題、體育長跑、社團自治或自主學習），以具體情節與心境轉折佐證核心論點。",
+                    questions: [
+                        "你曾經在什麼時刻依賴過既定的軌道？那帶來了什麼感受？",
+                        "你何時勇敢做出了自主選擇？經歷了怎樣的焦慮、失敗與突破？",
+                        "那次經驗如何讓你徹底體會到安穩與自主的真實滋味？"
+                    ],
+                    strategy: "注意「故事佔三分之一，思辨析理佔三分之二」，切忌流於流水帳。",
+                    sentence: "「記得在國二那年，我曾深陷於……的安穩中，直到我決定跨出……」"
+                },
+                p4: {
+                    title: "第四段：【行 ‧ 思辨昇華】轉折深化與責任擔當",
+                    meta: "建議長度：10 行 (約 220 字) ‧ 思維高層次展現",
+                    task: "由單一經驗躍升至普遍的生命哲理。指出「真正的自由是建立在自律之上」，或是「在框架中厚實筋骨，在天際中實踐理想」，展現兼融辯證的成熟視野。",
+                    questions: [
+                        "經歷了挑戰之後，你對『框架』與『自由』有了什麼全新理解？",
+                        "如何才能在遵守規則的同時，依然保有獨立思考與探索的勇氣？",
+                        "青少年應如何為自己的選擇做好準備？"
+                    ],
+                    strategy: "強調日常自律積累正是未來翱翔的翅膀。",
+                    sentence: "「那一刻我終於明白：真正的自由從不是脫韁的任性，而是……」"
+                },
+                p5: {
+                    title: "第五段：【程 ‧ 生命期許】回扣主題與展望未來",
+                    meta: "建議長度：5 行 (約 110 字) ‧ 鏗鏘有力收束",
+                    task: "總結全篇論點，回扣開篇的鳥兒意象，提出對未來的具體行動期許與生命願景，留下耐人尋味的高遠餘韻。",
+                    questions: [
+                        "面對未來的漫漫長路，你期許自己成為怎樣的一隻鳥？",
+                        "你將如何平衡身邊的規矩與內心渴望飛翔的夢想？"
+                    ],
+                    strategy: "使用對偶句、象徵名句或感召語氣，將文章氣勢推向最高潮。",
+                    sentence: "「我們因框架而厚實，因探索而偉大。當狂風吹起，天空自會敞開……」"
+                }
+            };
+
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContentCard = document.getElementById('tab-content-card');
+
+            function updateTabContent(key) {
+                const d = tabData[key];
+                if (!d || !tabContentCard) return;
+
+                tabContentCard.innerHTML = `
+                    <div class="border-b border-gray-100 pb-3 flex flex-col md:flex-row justify-between items-start md:items-center gap-1">
+                        <h4 class="text-lg md:text-xl font-black text-ink serif">${d.title}</h4>
+                        <span class="text-xs text-blue-700 font-bold bg-blue-50 px-2.5 py-1 rounded-full border border-blue-200">${d.meta}</span>
+                    </div>
+
+                    <div class="space-y-3">
+                        <div>
+                            <span class="text-xs font-black text-blue-700 bg-blue-50 px-2 py-0.5 rounded uppercase">🎯 核心任務</span>
+                            <p class="text-sm md:text-base text-gray-800 font-medium leading-relaxed mt-1.5">${d.task}</p>
+                        </div>
+
+                        <div>
+                            <span class="text-xs font-black text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded uppercase">❓ 引導思考提問</span>
+                            <ul class="list-disc list-inside text-xs md:text-sm text-gray-600 mt-1.5 space-y-1">
+                                ${d.questions.map(q => `<li>${q}</li>`).join('')}
+                            </ul>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+                            <div class="bg-paper p-3 rounded-xl border border-gray-200">
+                                <span class="text-xs font-bold text-amber-700 block mb-1">💡 寫作策略指引</span>
+                                <p class="text-xs text-gray-600 leading-relaxed">${d.strategy}</p>
+                            </div>
+                            <div class="bg-paper p-3 rounded-xl border border-gray-200">
+                                <span class="text-xs font-bold text-purple-700 block mb-1">✍️ 實用提示句型</span>
+                                <p class="text-xs text-gray-600 leading-relaxed italic">${d.sentence}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    const id = btn.getAttribute('data-id');
+                    updateTabContent(id);
+                });
+            });
+
+            // 預設載入第一段
+            updateTabContent('p1');
+
+            // ==========================================
+            // 4. 四篇範文手風琴展開折疊
+            // ==========================================
+            const essayToggleBtns = document.querySelectorAll('.essay-toggle-btn');
+            essayToggleBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const targetId = btn.getAttribute('data-target');
+                    const targetEl = document.getElementById(targetId);
+                    const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+
+                    if (isExpanded) {
+                        btn.setAttribute('aria-expanded', 'false');
+                        targetEl?.classList.remove('open');
+                    } else {
+                        btn.setAttribute('aria-expanded', 'true');
+                        targetEl?.classList.add('open');
+                    }
+                });
+            });
+
+            // ==========================================
+            // 5. 實戰成語庫與名言佳句渲染與一鍵複製
+            // ==========================================
+            const vocabGroups = {
+                1: ['燕雀處堂', '作繭自縛', '隨波逐流', '因循苟且', '坐井觀天', '委靡不振', '安步當車', '瞻前顧後'],
+                2: ['中通外直', '積羽沉舟', '循序漸進', '滴水穿石', '厚積薄發', '居安思危', '行遠自邇', '持之以恆'],
+                3: ['風雨如晦', '展翅高飛', '鷹擊長空', '力爭上游', '破繭成蝶', '披荊斬棘', '勇往直前', '中流砥柱'],
+                4: ['頂天立地', '獨當一面', '自強不息', '卓爾不群', '運籌帷幄', '泰然處之', '卓有成效', '返璞歸真']
+            };
+
+            function renderVocabGroup(groupId, containerId, colorClass) {
+                const container = document.getElementById(containerId);
+                if (!container) return;
+                const words = vocabGroups[groupId] || [];
+                container.innerHTML = words.map(w => `
+                    <button class="vocab-btn px-2.5 py-1 text-xs rounded-lg border border-gray-200 bg-gray-50 hover:bg-white hover:border-gray-400 text-gray-700 font-medium transition cursor-pointer" data-word="${w}">
+                        ${w}
+                    </button>
+                `).join('');
+            }
+
+            renderVocabGroup(1, 'vocab-group-1');
+            renderVocabGroup(2, 'vocab-group-2');
+            renderVocabGroup(3, 'vocab-group-3');
+            renderVocabGroup(4, 'vocab-group-4');
+
+            document.querySelectorAll('.vocab-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const word = btn.getAttribute('data-word');
+                    if (!word) return;
+                    navigator.clipboard.writeText(word).then(() => {
+                        const orig = btn.innerText;
+                        btn.innerText = '✓ 已複製';
+                        btn.classList.add('bg-emerald-50', 'text-emerald-700', 'border-emerald-300');
+                        setTimeout(() => {
+                            btn.innerText = orig;
+                            btn.classList.remove('bg-emerald-50', 'text-emerald-700', 'border-emerald-300');
+                        }, 1200);
+                    });
+                });
+            });
+
+            // 名言佳句
+            const quotes = [
+                {
+                    text: "鳥的身軀都是玲瓏飽滿的，細瘦的腳，生得各處都是勻稱的……但籠鳥卻苦悶、羽毛凌亂、食不甘味。",
+                    author: "梁實秋 ‧ 〈鳥〉",
+                    tag: "處境反思"
+                },
+                {
+                    text: "予獨愛蓮之出淤泥而不染，濯清漣而不妖，中通外直，不蔓不枝，香遠益清，亭亭淨植。",
+                    author: "周敦頤 ‧ 〈愛蓮說〉",
+                    tag: "品格自持"
+                },
+                {
+                    text: "把這些微碎的時間串合起來，那就可以做很多的事了。",
+                    author: "董保綱 ‧ 〈生命中的碎珠〉",
+                    tag: "積微成著"
+                },
+                {
+                    text: "你們是弓，你們的孩子是從弦上發出的生命的箭鏃。",
+                    author: "紀伯倫 ‧ 《先知》",
+                    tag: "自立成長"
+                },
+                {
+                    text: "世界上只有一種真正的英雄主義，那就是認清生活的真相後依然熱愛生活。",
+                    author: "羅曼 ‧ 羅蘭",
+                    tag: "勇於面對"
+                },
+                {
+                    text: "鳥要掙脫出殼，蛋就是世界。人要誕生，就必須摧毀一個世界。",
+                    author: "赫曼 ‧ 赫塞 ‧ 《徬徨少年時》",
+                    tag: "破繭超越"
+                }
+            ];
+
+            const quotesContainer = document.getElementById('quotes-container');
+            if (quotesContainer) {
+                quotesContainer.innerHTML = quotes.map(q => `
+                    <div class="quote-card bg-white p-4 rounded-xl border border-gray-200 shadow-2xs hover:shadow-sm transition cursor-pointer flex flex-col justify-between" data-quote="「${q.text}」——${q.author}">
+                        <div>
+                            <span class="text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200 mb-2 inline-block">${q.tag}</span>
+                            <p class="text-xs text-gray-700 leading-relaxed italic mb-2">「${q.text}」</p>
+                        </div>
+                        <div class="flex justify-between items-center text-[11px] text-gray-400 pt-2 border-t border-gray-100">
+                            <span class="font-medium">${q.author}</span>
+                            <span class="text-blue-600 copy-hint hover:underline"><i class="fa-regular fa-copy"></i> 複製</span>
+                        </div>
+                    </div>
+                `).join('');
+
+                document.querySelectorAll('.quote-card').forEach(card => {
+                    card.addEventListener('click', () => {
+                        const text = card.getAttribute('data-quote');
+                        if (!text) return;
+                        navigator.clipboard.writeText(text).then(() => {
+                            const hint = card.querySelector('.copy-hint');
+                            if (hint) {
+                                hint.innerHTML = '<span class="text-emerald-600 font-bold">✓ 已複製</span>';
+                                setTimeout(() => { hint.innerHTML = '<i class="fa-regular fa-copy"></i> 複製'; }, 1200);
+                            }
+                        });
+                    });
+                });
+            }
+
+            // ==========================================
+            // 6. AI 寫作工作坊（四大升級核心體驗）
+            // ==========================================
+            const studentDraft = document.getElementById('student-draft');
+            const currentDraftCount = document.getElementById('current-draft-count');
+            const btnSubmitAi = document.getElementById('btn-submit-ai');
+            const aiStreamBox = document.getElementById('ai-stream-box');
+            const aiOutput = document.getElementById('ai-output');
+            const beforeAfterContainer = document.getElementById('before-after-container');
+            const cardBeforeText = document.getElementById('card-before-text');
+            const cardAfterPureText = document.getElementById('card-after-pure-text');
+            const cardAfterBadges = document.getElementById('card-after-badges');
+            const accumulatedDraft = document.getElementById('accumulated-draft');
+            const accumulatedWordCount = document.getElementById('accumulated-word-count');
+            const accumulatedContainer = document.getElementById('accumulated-container');
+            const btnAdoptAfter = document.getElementById('btn-adopt-after');
+            const btnCopyPureAfter = document.getElementById('btn-copy-pure-after');
+            const btnCopyAccumulated = document.getElementById('btn-copy-accumulated');
+            const btnDownloadAccumulated = document.getElementById('btn-download-accumulated');
+
+            // 通道端點配置
+            const CF_WORKER_URL = "https://gemini-stream-coach.oaoadna.workers.dev";
+            const GAS_FALLBACK_URL = "https://script.google.com/macros/s/AKfycbwTX1R33gA3Sz_gPOJ-FXRRK5buWGHZvybTsNUKAD57y48sSJVdjAiaRMzbuxqRJoUtLA/exec";
+
+            // 實時字數計算
+            if (studentDraft && currentDraftCount) {
+                studentDraft.addEventListener('input', () => {
+                    const count = studentDraft.value.trim().length;
+                    currentDraftCount.innerText = `${count} 字`;
+                });
+            }
+
+            function updateAccumulatedCount() {
+                if (accumulatedDraft && accumulatedWordCount) {
+                    const count = accumulatedDraft.value.trim().length;
+                    accumulatedWordCount.innerText = `全篇總計：${count} 字`;
+                }
+            }
+
+            if (accumulatedDraft) {
+                accumulatedDraft.addEventListener('input', updateAccumulatedCount);
+            }
+
+            // 游標插入演算法
+            function insertAtCursor(textarea, text) {
+                if (!textarea) return;
+                const start = textarea.selectionStart ?? textarea.value.length;
+                const end = textarea.selectionEnd ?? textarea.value.length;
+                const before = textarea.value.substring(0, start);
+                const after = textarea.value.substring(end);
+                textarea.value = before + (before && !before.endsWith('\n') && !before.endsWith(' ') ? ' ' : '') + text + (after && !after.startsWith('\n') && !after.startsWith(' ') ? ' ' : '') + after;
+                const newPos = start + text.length + 1;
+                textarea.selectionStart = textarea.selectionEnd = newPos;
+                textarea.dispatchEvent(new Event('input'));
+                textarea.focus();
+            }
+
+            // 靈感骰子按鈕
+            const btnDice = document.getElementById('btn-inspiration-dice');
+            if (btnDice) {
+                btnDice.addEventListener('click', () => {
+                    btnDice.classList.add('rotate-12', 'scale-105');
+                    setTimeout(() => btnDice.classList.remove('rotate-12', 'scale-105'), 300);
+
+                    const diceQuotes = [
+                        "籠裡的鳥每日有水有食，卻失去了翱翔九霄的生氣。",
+                        "真正的自由從非盲目脫序，而是建立在高度自律之上的從容選擇。",
+                        "生命因框架而厚實，因探索而偉大。",
+                        "溫室裡的牡丹固然嬌貴，卻永遠無法體會懸崖青松搏擊風雪的豪邁。",
+                        "沒有前期嚴苛音階的淬鍊，就絕不可能有後期指尖游刃有餘的絕對自由。"
+                    ];
+                    const rand = diceQuotes[Math.floor(Math.random() * diceQuotes.length)];
+                    insertAtCursor(studentDraft, rand);
+                });
+            }
+
+            // 快捷提示標籤點擊
+            document.querySelectorAll('.prompt-chip-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    insertAtCursor(studentDraft, btn.innerText);
+                });
+            });
+
+            // 清空草稿按鈕
+            document.getElementById('btn-clear-draft')?.addEventListener('click', () => {
+                if (studentDraft) {
+                    studentDraft.value = '';
+                    studentDraft.dispatchEvent(new Event('input'));
+                    studentDraft.focus();
+                }
+            });
+
+            // 折疊 API 設定抽屜切換
+            const btnToggleConfig = document.getElementById('btn-toggle-config');
+            const configDrawer = document.getElementById('config-drawer');
+            btnToggleConfig?.addEventListener('click', () => {
+                configDrawer?.classList.toggle('hidden');
+            });
+
+            // 儲存自訂 API Key
+            const btnSaveConfig = document.getElementById('btn-save-config');
+            const customApiKeyInput = document.getElementById('custom-api-key');
+            const savedKey = localStorage.getItem('gemini_zuowen_key');
+            if (savedKey && customApiKeyInput) customApiKeyInput.value = savedKey;
+
+            btnSaveConfig?.addEventListener('click', () => {
+                const val = customApiKeyInput?.value.trim() || '';
+                localStorage.setItem('gemini_zuowen_key', val);
+                alert(val ? '自訂 API Key 已保存！' : '已清除自訂 API Key。');
+            });
+
+            // API Key 教學彈窗
+            const apikeyGuideModal = document.getElementById('apikey-guide-modal');
+            document.getElementById('btn-open-apikey-guide')?.addEventListener('click', () => apikeyGuideModal?.classList.remove('hidden'));
+            document.getElementById('btn-close-apikey-guide')?.addEventListener('click', () => apikeyGuideModal?.classList.add('hidden'));
+            document.getElementById('btn-confirm-apikey-guide')?.addEventListener('click', () => apikeyGuideModal?.classList.add('hidden'));
+
+            // 純淨散文隔離演算法
+            function separateProseAndBreakdown(rawText) {
+                if (!rawText) return { pureProse: '', badges: [] };
+
+                // 移除括號內的技法標籤
+                const badgeRegex = /[\(（][^）\)]*?(?:修辭|動作|具體|摹寫|意境|言外之意|譬喻|轉化|映襯|誇飾|象徵|細節)[^）\)]*?[\)）]/g;
+                const badges = [];
+                let m;
+                while ((m = badgeRegex.exec(rawText)) !== null) {
+                    const tag = m[0].replace(/[\(（\)）]/g, '').trim();
+                    if (tag && !badges.includes(tag)) badges.push(tag);
+                }
+
+                let pureProse = rawText.replace(badgeRegex, '').trim();
+                pureProse = pureProse.replace(/\s{2,}/g, ' ');
+
+                return { pureProse, badges };
+            }
+
+            // 點擊召喚 AI 寫作教練
+            btnSubmitAi?.addEventListener('click', async () => {
+                const text = studentDraft?.value.trim() || '';
+                if (!text) {
+                    alert('請先輸入你想練習的段落草稿！');
+                    studentDraft?.focus();
+                    return;
+                }
+
+                btnSubmitAi.disabled = true;
+                btnSubmitAi.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 教練思考潤飾中...';
+                aiStreamBox?.classList.remove('hidden');
+                if (aiOutput) aiOutput.innerHTML = '';
+
+                const userPrompt = `
+你是一位專精於國中會考寫作測驗（特別是議論文）的特級國文教師兼寫作教練。
+本次考題為八年級國文科寫作測驗：「在框架與探索之間」（面對「舒適安全的框架」與「充滿未知但自主的探索」）。
+學生的段落草稿如下：
+"""
+${text}
+"""
+
+請依照以下標準格式輸出回饋（請用 Markdown 清楚排版）：
+### 🌟 【教練的肯定】
+（指出草稿中立意、遣詞或論證令人讚賞之處）
+
+### 💡 【具體建議】
+（點出可進一步深化之處，例如：如何避免過於空泛、如何增強對比張力、如何扣合責任與自律）
+
+### ✍️ 【6 級分潤飾示範與拆解】
+請提供一段融合了精湛文采、深刻思辨的高分示範句（約 100~200 字），並在句末或適當處以（括號標註修辭或論證手法），例如：（譬喻象徵）、（正反映襯）、（哲理昇華）。
+`;
+
+                const channel = document.getElementById('select-channel')?.value || 'cloudflare';
+                const apiKey = customApiKeyInput?.value.trim() || localStorage.getItem('gemini_zuowen_key') || '';
+
+                try {
+                    let fullReply = '';
+
+                    if (channel === 'cloudflare') {
+                        // Cloudflare Worker SSE 串流
+                        const resp = await fetch(CF_WORKER_URL, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                prompt: userPrompt,
+                                model: 'gemini-2.5-flash',
+                                systemInstruction: "你是一位精通台灣國中會考國文作文評分規準的王牌作文教練。用語溫暖、精準、富含文采與啟發性。"
+                            })
+                        });
+
+                        if (!resp.ok) throw new Error(`串流通道回應異常: ${resp.status}`);
+
+                        const reader = resp.body.getReader();
+                        const decoder = new TextDecoder('utf-8');
+                        let done = false;
+
+                        while (!done) {
+                            const { value, done: readerDone } = await reader.read();
+                            done = readerDone;
+                            if (value) {
+                                const chunk = decoder.decode(value, { stream: true });
+                                fullReply += chunk;
+                                if (aiOutput) {
+                                    aiOutput.innerHTML = fullReply
+                                        .replace(/\n/g, '<br>')
+                                        .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+                                }
+                            }
+                        }
+                    } else if (channel === 'custom' && apiKey) {
+                        // 自備 API Key 直連 Google
+                        const directUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+                        const resp = await fetch(directUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                contents: [{ parts: [{ text: userPrompt }] }]
+                            })
+                        });
+                        const data = await resp.json();
+                        fullReply = data?.candidates?.[0]?.content?.parts?.[0]?.text || '無回傳內容';
+                        if (aiOutput) {
+                            aiOutput.innerHTML = fullReply.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+                        }
+                    } else {
+                        // GAS 備用通道
+                        const gasEndpoint = localStorage.getItem('teacher_gas_endpoint') || GAS_FALLBACK_URL;
+                        const resp = await fetch(gasEndpoint, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                            body: JSON.stringify({ prompt: userPrompt })
+                        });
+                        const data = await resp.json();
+                        fullReply = data?.reply || data?.text || '無回傳內容';
+                        if (aiOutput) {
+                            aiOutput.innerHTML = fullReply.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+                        }
+                    }
+
+                    // 解析 Before / After 卡片
+                    if (beforeAfterContainer && cardBeforeText && cardAfterPureText) {
+                        cardBeforeText.innerText = text;
+
+                        // 嘗試從回覆中提取【6 級分潤飾示範與拆解】
+                        let afterCandidate = '';
+                        const match = fullReply.match(/###\s*✍️\s*【6\s*級分潤飾示範與拆解】([\s\S]*?)$/i);
+                        if (match && match[1]) {
+                            afterCandidate = match[1].trim();
+                        } else {
+                            afterCandidate = fullReply.slice(-250).trim();
+                        }
+
+                        const { pureProse, badges } = separateProseAndBreakdown(afterCandidate);
+                        cardAfterPureText.innerText = pureProse || afterCandidate;
+
+                        if (cardAfterBadges) {
+                            if (badges.length > 0) {
+                                cardAfterBadges.innerHTML = badges.map(b => `
+                                    <span class="text-[10px] bg-blue-100 text-blue-800 px-2 py-0.5 rounded font-bold">${b}</span>
+                                `).join('');
+                            } else {
+                                cardAfterBadges.innerHTML = `
+                                    <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">譬喻象徵</span>
+                                    <span class="text-[10px] bg-blue-100 text-blue-800 px-2 py-0.5 rounded font-bold">思辨深化</span>
+                                `;
+                            }
+                        }
+
+                        beforeAfterContainer.classList.remove('hidden');
+                    }
+
+                } catch (err) {
+                    console.error('AI 呼叫失敗:', err);
+                    if (aiOutput) {
+                        aiOutput.innerHTML = `
+                            <p class="text-amber-400 font-bold"><i class="fa-solid fa-triangle-exclamation"></i> 網路連線或端點暫時繁忙：</p>
+                            <p class="text-xs text-slate-300">已自動切換本地智慧示範句：</p>
+                            <div class="mt-2 p-3 bg-slate-800 rounded-lg text-emerald-300 text-sm">
+                                「真正的自由絕非脫韁野馬般的放任，而是建立在自律之上的從容抉擇。若無前期嚴苛框架的束縛與涵養，便不可能在長空中有游刃有餘的展翅。」
+                            </div>
+                        `;
+                    }
+                    if (cardAfterPureText) {
+                        cardAfterPureText.innerText = "真正的自由絕非脫韁野馬般的放任，而是建立在自律之上的從容抉擇。若無前期嚴苛框架的束縛與涵養，便不可能在長空中有游刃有餘的展翅。";
+                    }
+                    beforeAfterContainer?.classList.remove('hidden');
+                } finally {
+                    btnSubmitAi.disabled = false;
+                    btnSubmitAi.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> 再次召喚教練批閱';
+                }
+            });
+
+            // 複製 After 純文
+            btnCopyPureAfter?.addEventListener('click', () => {
+                const text = cardAfterPureText?.innerText.trim() || '';
+                if (!text) return;
+                navigator.clipboard.writeText(text).then(() => {
+                    const orig = btnCopyPureAfter.innerText;
+                    btnCopyPureAfter.innerText = '✓ 已複製';
+                    setTimeout(() => btnCopyPureAfter.innerText = orig, 1200);
+                });
+            });
+
+            // 一鍵採納至累積區（金色光環回饋）
+            btnAdoptAfter?.addEventListener('click', () => {
+                const text = cardAfterPureText?.innerText.trim() || '';
+                if (!text) return;
+
+                if (accumulatedDraft) {
+                    const cur = accumulatedDraft.value.trim();
+                    accumulatedDraft.value = cur ? cur + '\n\n' + text : text;
+                    accumulatedDraft.dispatchEvent(new Event('input'));
+                }
+
+                // 平滑滾動至累積區
+                accumulatedContainer?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                // 施加 1.5 秒金色呼吸光環
+                accumulatedContainer?.classList.add('golden-glow', 'ring-4', 'ring-amber-400', 'bg-amber-50/70');
+                setTimeout(() => {
+                    accumulatedContainer?.classList.remove('golden-glow', 'ring-4', 'ring-amber-400', 'bg-amber-50/70');
+                }, 1500);
+            });
+
+            // 複製累積全文
+            btnCopyAccumulated?.addEventListener('click', () => {
+                const text = accumulatedDraft?.value.trim() || '';
+                if (!text) {
+                    alert('累積區目前尚無文字！');
+                    return;
+                }
+                navigator.clipboard.writeText(text).then(() => {
+                    const orig = btnCopyAccumulated.innerHTML;
+                    btnCopyAccumulated.innerHTML = '<i class="fa-solid fa-check text-emerald-600"></i> 全文已複製！';
+                    setTimeout(() => btnCopyAccumulated.innerHTML = orig, 1500);
+                });
+            });
+
+            // 下載作文文字檔 (.txt)
+            btnDownloadAccumulated?.addEventListener('click', () => {
+                const text = accumulatedDraft?.value.trim() || '';
+                if (!text) {
+                    alert('累積區目前尚無文字！');
+                    return;
+                }
+                const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = '段考作文_在框架與探索之間.txt';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+
+            // ==========================================
+            // 7. 教師專區（密碼遮罩、SHA-256 驗證）
+            // ==========================================
+            const teacherModal = document.getElementById('teacher-modal');
+            const btnOpenTeacher = document.getElementById('btn-open-teacher-modal');
+            const btnCloseTeacher = document.getElementById('btn-close-teacher-modal');
+            const teacherPwdInput = document.getElementById('teacher-password-input');
+            const btnVerifyTeacher = document.getElementById('btn-verify-teacher-pwd');
+            const teacherAuthSection = document.getElementById('teacher-auth-section');
+            const teacherContentSection = document.getElementById('teacher-content-section');
+            const teacherPwdError = document.getElementById('teacher-pwd-error');
+            const btnSaveTeacherGas = document.getElementById('btn-save-teacher-gas');
+            const teacherGasInput = document.getElementById('teacher-gas-input');
+
+            // 授權 SHA-256 雜湊碼清單（無明文密碼）
+            const AUTHORIZED_HASHES = [
+                '88cf986449b61aeba90a4baedfaeba95cc12e8d04dedfebe53b78dd29fc0a4ac',
+                '996b48fd3814ad825c594e692903a8bf5bb17018ed3214576c487426f425504a',
+                '7bb3615c6fffb5c6aa3c9a16bf2217dd103ee3b5af80048b183e2d705467c7ef'
+            ];
+
+            async function computeSHA256(str) {
+                const enc = new TextEncoder().encode(str);
+                const hashBuf = await crypto.subtle.digest('SHA-256', enc);
+                return Array.from(new Uint8Array(hashBuf)).map(b => b.toString(16).padStart(2, '0')).join('');
+            }
+
+            btnOpenTeacher?.addEventListener('click', () => {
+                teacherModal?.classList.remove('hidden');
+                teacherPwdInput?.focus();
+            });
+
+            btnCloseTeacher?.addEventListener('click', () => {
+                teacherModal?.classList.add('hidden');
+            });
+
+            btnVerifyTeacher?.addEventListener('click', async () => {
+                const pwd = teacherPwdInput?.value.trim() || '';
+                if (!pwd) return;
+
+                const hash = await computeSHA256(pwd);
+                if (AUTHORIZED_HASHES.includes(hash)) {
+                    teacherAuthSection?.classList.add('hidden');
+                    teacherContentSection?.classList.remove('hidden');
+                    teacherPwdError?.classList.add('hidden');
+                } else {
+                    teacherPwdError?.classList.remove('hidden');
+                }
+            });
+
+            teacherPwdInput?.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') btnVerifyTeacher?.click();
+            });
+
+            // 讀取/儲存教師專用 GAS 端點
+            const savedTeacherGas = localStorage.getItem('teacher_gas_endpoint');
+            if (savedTeacherGas && teacherGasInput) teacherGasInput.value = savedTeacherGas;
+
+            btnSaveTeacherGas?.addEventListener('click', () => {
+                const val = teacherGasInput?.value.trim() || '';
+                localStorage.setItem('teacher_gas_endpoint', val);
+                alert(val ? '教師 GAS 批閱端點已保存！' : '已清除自訂端點。');
+            });
+
+        });
+    </script>
+</body>
+</html>
